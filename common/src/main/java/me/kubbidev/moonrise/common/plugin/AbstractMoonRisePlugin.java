@@ -125,7 +125,7 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
         // setup platform hooks
         this.setupPlatformHooks();
 
-        // register with the LP API
+        // register with the MoonRise API
         this.apiProvider = new MoonRiseApiProvider(this);
         this.apiProvider.ensureApiWasLoadedByPlugin();
         this.eventDispatcher = new EventDispatcher(provideEventBus(this.apiProvider));

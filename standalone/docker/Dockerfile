@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-alpine
 RUN apk add --no-cache netcat-openbsd
 
 # create a simple 'send' command that will allow users
-# to run, for example: docker exec <container> send lp info
+# to run, for example: docker exec <container> send m info
 RUN printf '#!/bin/sh\n\
 echo "$@" | nc -NU /opt/moonrise/moonrise.sock\n' >> /usr/bin/send && chmod 777 /usr/bin/send
 
