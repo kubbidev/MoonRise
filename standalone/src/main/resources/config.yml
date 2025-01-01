@@ -1,0 +1,100 @@
+####################################################################################################
+# +----------------------------------------------------------------------------------------------+ #
+# |                                 ___   ___        __  ___  __   ___                           | #
+# |                           |\/| /   \ /   \ |\ | |__)  |  /__` |__                            | #
+# |                           |  | \___/ \___/ | \| |  \ _|_ .__/ |___                           | #
+# |                                                                                              | #
+# |                                     https://kubbidev.me                                      | #
+# |                                                                                              | #
+# |  DISCORD:     https://discord.kubbidev.me                                                    | #
+# |  BUG REPORTS: https://gitlab.com/kubbidev/moonrise/-/issues                                  | #
+# |                                                                                              | #
+# |  New options are not added to this file automatically. Default values are used if an         | #
+# |  option cannot be found.                                                                     | #
+# +----------------------------------------------------------------------------------------------+ #
+####################################################################################################
+
+# +----------------------------------------------------------------------------------------------+ #
+# |                                                                                              | #
+# |                                       DATABASE SETTINGS                                      | #
+# |                                                                                              | #
+# |                 Controls which database method MoonRise will use to store data.              | #
+# |                                                                                              | #
+# +----------------------------------------------------------------------------------------------+ #
+
+# How the plugin should store data
+#
+# - Possible options:
+#
+#   |  Remote databases - require connection information to be configured below
+#   |=> MySQL
+#   |=> MariaDB (preferred over MySQL)
+#   |=> PostgreSQL
+#
+#   |  Flatfile/local database - don't require any extra configuration
+#   |=> H2 (preferred over SQLite)
+#   |=> SQLite
+#
+#   |  Other databases
+#   |=> Custom
+#
+# - A H2 database is the default option.
+storage-method: h2
+
+# The following block defines the settings for remote database storage methods.
+#
+# - You don't need to touch any of the settings here if you're using a local storage method!
+# - The connection detail options are shared between all remote storage types.
+data:
+
+  # Define the address and port for the database.
+  # - The standard DB engine port is used by default
+  #   (MySQL: 3306, PostgreSQL: 5432)
+  # - Specify as "host:port" if differs
+  address: localhost
+
+  # The name of the database to store MoonRise data in.
+  # - This must be created already.
+  database: moonrise
+
+  # Credentials for the database.
+  username: root
+  password: ''
+
+  # The prefix for all MoonRise SQL tables.
+  #
+  # - This only applies for remote SQL storage types (MySQL, MariaDB, etc).
+  # - Change this if you want to use different tables for different processes.
+  table-prefix: 'moonrise_'
+
+
+
+
+# +----------------------------------------------------------------------------------------------+ #
+# |                                                                                              | #
+# |                                     UPDATE PROPAGATION                                       | #
+# |                                                                                              | #
+# |                  Controls the ways in which MoonRise will sync data.                         | #
+# |                                                                                              | #
+# +----------------------------------------------------------------------------------------------+ #
+
+# This option controls how frequently MoonRise will perform a sync task.
+#
+# - A sync task will refresh all data from the storage, and ensure that the most up-to-date data is
+#   being used by the application.
+# - Set to -1 to disable the task completely.
+sync-minutes: 10
+
+
+
+
+# +----------------------------------------------------------------------------------------------+ #
+# |                                                                                              | #
+# |                                    CUSTOMIZATION SETTINGS                                    | #
+# |                                                                                              | #
+# |              Settings that allow admins to customize the way MoonRise operates.              | #
+# |                                                                                              | #
+# +----------------------------------------------------------------------------------------------+ #
+
+# If MoonRise should automatically install translation bundles and periodically update them.
+auto-install-translations: true

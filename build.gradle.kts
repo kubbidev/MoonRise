@@ -1,19 +1,74 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+import java.io.ByteArrayOutputStream
+
 plugins {
-    id("java")
+    java
 }
 
-group = "me.kubbidev"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
+base {
+    archivesName.set("moonrise")
 }
 
-dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+fun determinePatchVersion(): Int {
+    // get the name of the last tag
+    val tagInfo = ByteArrayOutputStream()
+    exec {
+        commandLine("git", "describe", "--tags")
+        standardOutput = tagInfo
+    }
+    val tagString = String(tagInfo.toByteArray())
+    if (tagString.contains("-")) {
+        return tagString.split("-")[1].toInt()
+    }
+    return 0
 }
 
-tasks.test {
-    useJUnitPlatform()
+val majorVersion = "1"
+val minorVersion = "0"
+val patchVersion = determinePatchVersion()
+val releaseVersion = "$majorVersion.$minorVersion"
+val projectVersion = "$releaseVersion.$patchVersion"
+
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "java-library")
+
+    group = "me.kubbidev.moonrise"
+    version = "1.0-SNAPSHOT"
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+        withSourcesJar()
+    }
+
+    extra["releaseVersion"] = releaseVersion
+    extra["projectVersion"] = projectVersion
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        // tests
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+        testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
+        testImplementation("org.testcontainers:junit-jupiter:1.19.8")
+
+    }
+
+    tasks.withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
+    tasks.test {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<Test>().configureEach {
+        testLogging {
+            events = setOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED)
+        }
+    }
 }

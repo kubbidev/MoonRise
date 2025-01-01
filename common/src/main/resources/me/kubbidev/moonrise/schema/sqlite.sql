@@ -1,0 +1,1 @@
+-- MoonRise SQLite Schema
