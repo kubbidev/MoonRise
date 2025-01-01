@@ -18,10 +18,6 @@ dependencies {
     testImplementation("org.spongepowered:configurate-hocon:3.7.2")
     testImplementation("org.yaml:snakeyaml:1.28")
 
-    testImplementation("net.dv8tion:JDA:5.2.2") {
-        exclude(module = "opus-java")
-    }
-
     testImplementation(project(":standalone:app"))
     testImplementation(project(":common:loader-utils"))
 }
@@ -43,7 +39,6 @@ tasks.shadowJar {
     relocate("com.zaxxer.hikari", "me.kubbidev.moonrise.lib.hikari")
     relocate("ninja.leaping.configurate", "me.kubbidev.moonrise.lib.configurate")
     relocate("org.yaml.snakeyaml", "me.kubbidev.moonrise.lib.yaml")
-    relocate("net.dv8tion.jda", "me.kubbidev.moonrise.lib.jda")
 }
 
 artifacts {

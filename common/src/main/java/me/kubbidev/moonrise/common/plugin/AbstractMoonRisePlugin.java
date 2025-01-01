@@ -212,14 +212,7 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
                 Dependency.CAFFEINE,
                 Dependency.OKIO,
                 Dependency.OKHTTP,
-                Dependency.EVENT,
-                Dependency.TROVE4J,
-                Dependency.NEOVISIONARIES,
-                Dependency.JACKSON_ANNOTATIONS,
-                Dependency.JACKSON_CORE,
-                Dependency.JACKSON_DATABIND,
-                Dependency.COLLECTIONS4,
-                Dependency.JDA
+                Dependency.EVENT
         );
     }
 

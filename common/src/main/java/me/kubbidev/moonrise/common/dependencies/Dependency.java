@@ -19,13 +19,13 @@ public enum Dependency {
     ASM(
             "org.ow2.asm",
             "asm",
-            "9.5",
+            "9.1",
             "ti6EtZgHKXUbBFjFNM8TZvcnVCu40VhiEzVoKkYPA1M="
     ),
     ASM_COMMONS(
             "org.ow2.asm",
             "asm-commons",
-            "9.5",
+            "9.1",
             "cu7p+6+53o2UY/IN1YSkjO635RUq1MmHv74X3UgRya4="
     ),
     JAR_RELOCATOR(
@@ -156,60 +156,6 @@ public enum Dependency {
             "1.28",
             "NURqFCFDXUXkxqwN47U3hSfVzCRGwHGD4kRHcwzh//o=",
             Relocation.of("yaml", "org{}yaml{}snakeyaml")
-    ),
-    TROVE4J(
-            "net.sf.trove4j",
-            "core",
-            "3.1.0",
-            "4f7U1xiobSfF67QngQVQ+lwDJg41DkGoXvLC226sCFY=",
-            Relocation.of("trove4j", "gnu{}trove")
-    ),
-    NEOVISIONARIES(
-            "com.neovisionaries",
-            "nv-websocket-client",
-            "2.14",
-            "7tD7b1712xfQhwOfHoKc/oJzY7KGMmUlipbw7TIzE7c=",
-            Relocation.of("neovisionaries", "com{}neovisionaries{}ws{}client")
-    ),
-    JACKSON_ANNOTATIONS(
-            "com.fasterxml.jackson.core",
-            "jackson-annotations",
-            "2.17.2",
-            "hzpgbiNQeWn5u76pOdXhknSoh3XqWhabp+LXlapRVuE=",
-            Relocation.of("jackson", "com{}fasterxml{}jackson")
-    ),
-    JACKSON_CORE(
-            "com.fasterxml.jackson.core",
-            "jackson-core",
-            "2.17.2",
-            "choYkkHasFJdnoWOXLYE0+zA7eCB4t531vNPpXeaW0Y=",
-            Relocation.of("jackson", "com{}fasterxml{}jackson")
-    ),
-    JACKSON_DATABIND(
-            "com.fasterxml.jackson.core",
-            "jackson-databind",
-            "2.17.2",
-            "wEmT8zwPhFNCZTeE8U84Nz0AUoDmNZ21+AhwHPrnPAw=",
-            Relocation.of("jackson", "com{}fasterxml{}jackson")
-    ),
-    COLLECTIONS4(
-            "org.apache.commons",
-            "commons-collections4",
-            "4.4",
-            "Hfi5QwtcjtFD14FeQD4z71NxskAKrb6b2giDdi4IRtE=",
-            Relocation.of("collections4", "org{}apache{}commons{}collections4")
-    ),
-    JDA(
-            "net{}dv8tion",
-            "JDA",
-            "5.2.2",
-            "wF2S3v4+5DQZmRO39pWL1OV1HuLWH2Fqj7uJhuW6hdA=",
-            Relocation.of("jda", "net{}dv8tion{}jda"),
-            Relocation.of("trove4j", "gnu{}trove"),
-            Relocation.of("neovisionaries", "com{}neovisionaries{}ws{}client"),
-            Relocation.of(RelocationHelper.OKHTTP3_STRING, RelocationHelper.OKHTTP3_STRING),
-            Relocation.of("jackson", "com{}fasterxml{}jackson"),
-            Relocation.of("collections4", "org{}apache{}commons{}collections4")
     );
 
     private final String mavenRepoPath;

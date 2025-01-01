@@ -56,8 +56,4 @@ dependencies {
     compileOnly("com.zaxxer:HikariCP:4.0.3")
     compileOnly("org.postgresql:postgresql:42.6.0")
     compileOnly("org.yaml:snakeyaml:1.28")
-
-    compileOnly("net.dv8tion:JDA:5.2.2") {
-        exclude(module = "opus-java")
-    }
 }
