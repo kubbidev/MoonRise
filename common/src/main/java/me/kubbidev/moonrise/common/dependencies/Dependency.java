@@ -20,13 +20,13 @@ public enum Dependency {
             "org.ow2.asm",
             "asm",
             "9.1",
-            "ti6EtZgHKXUbBFjFNM8TZvcnVCu40VhiEzVoKkYPA1M="
+            "zaTeRV+rSP8Ly3xItGOUR9TehZp6/DCglKmG8JNr66I="
     ),
     ASM_COMMONS(
             "org.ow2.asm",
             "asm-commons",
             "9.1",
-            "cu7p+6+53o2UY/IN1YSkjO635RUq1MmHv74X3UgRya4="
+            "r8sm3B/BLAxKma2mcJCN2C4Y38SIyvXuklRplrRwwAw="
     ),
     JAR_RELOCATOR(
             "me.lucko",
