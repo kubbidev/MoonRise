@@ -1,11 +1,10 @@
 package me.kubbidev.moonrise.common.event;
 
-import me.kubbidev.api.event.EventSubscription;
-import me.kubbidev.api.event.MoonRiseEvent;
+import net.moonrise.api.event.EventSubscription;
+import net.moonrise.api.event.MoonRiseEvent;
 import net.kyori.event.EventSubscriber;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -65,7 +64,7 @@ public class MoonRiseEventSubscription<T extends MoonRiseEvent> implements Event
     }
 
     @Override
-    public void invoke(@NonNull T event) {
+    public void invoke(@NotNull T event) {
         try {
             this.consumer.accept(event);
         } catch (Throwable t) {

@@ -2,6 +2,9 @@ plugins {
     `maven-publish`
 }
 
+group = "net.moonrise"
+project.version = project.extra["releaseVersion"].toString()
+
 dependencies {
     compileOnly("org.jetbrains:annotations:26.0.1")
 }
@@ -11,7 +14,6 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             artifactId = "api"
-            version = project.extra["releaseVersion"].toString()
 
             from(components["java"])
             pom {

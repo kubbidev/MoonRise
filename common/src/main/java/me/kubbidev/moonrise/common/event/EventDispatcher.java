@@ -1,13 +1,13 @@
 package me.kubbidev.moonrise.common.event;
 
-import me.kubbidev.api.event.MoonRiseEvent;
-import me.kubbidev.api.event.extension.ExtensionLoadEvent;
-import me.kubbidev.api.event.sync.ConfigReloadEvent;
-import me.kubbidev.api.event.sync.PostSyncEvent;
-import me.kubbidev.api.event.sync.PreSyncEvent;
-import me.kubbidev.api.event.type.Cancellable;
-import me.kubbidev.api.event.type.ResultEvent;
-import me.kubbidev.api.extension.Extension;
+import net.moonrise.api.event.MoonRiseEvent;
+import net.moonrise.api.event.extension.ExtensionLoadEvent;
+import net.moonrise.api.event.sync.ConfigReloadEvent;
+import net.moonrise.api.event.sync.PostSyncEvent;
+import net.moonrise.api.event.sync.PreSyncEvent;
+import net.moonrise.api.event.type.Cancellable;
+import net.moonrise.api.event.type.ResultEvent;
+import net.moonrise.api.extension.Extension;
 
 public record EventDispatcher(AbstractEventBus<?> eventBus) {
     private void post(MoonRiseEvent event) {

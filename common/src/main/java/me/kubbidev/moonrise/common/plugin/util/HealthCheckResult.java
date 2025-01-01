@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.common.plugin.util;
 
 import com.google.gson.Gson;
-import me.kubbidev.api.platform.Health;
+import net.moonrise.api.platform.Health;
 
 import java.util.Map;
 

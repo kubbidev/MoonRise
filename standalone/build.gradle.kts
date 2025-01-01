@@ -9,13 +9,6 @@ dependencies {
 
     compileOnly("org.spongepowered:configurate-yaml:3.7.2")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.1")
-    testImplementation("org.testcontainers:junit-jupiter:1.18.3")
-    testImplementation("org.mockito:mockito-core:4.11.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.11.0")
-
     testImplementation("com.zaxxer:HikariCP:4.0.3")
     testImplementation("org.postgresql:postgresql:42.6.0")
     testImplementation("com.h2database:h2:2.1.214")
@@ -24,7 +17,11 @@ dependencies {
     testImplementation("org.mariadb.jdbc:mariadb-java-client:3.1.3")
     testImplementation("org.spongepowered:configurate-hocon:3.7.2")
     testImplementation("org.yaml:snakeyaml:1.28")
-    
+
+    testImplementation("net.dv8tion:JDA:5.2.2") {
+        exclude(module = "opus-java")
+    }
+
     testImplementation(project(":standalone:app"))
     testImplementation(project(":common:loader-utils"))
 }

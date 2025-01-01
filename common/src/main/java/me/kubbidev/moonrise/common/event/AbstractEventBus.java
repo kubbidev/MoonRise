@@ -1,13 +1,12 @@
 package me.kubbidev.moonrise.common.event;
 
-import me.kubbidev.api.event.EventBus;
-import me.kubbidev.api.event.EventSubscription;
-import me.kubbidev.api.event.MoonRiseEvent;
+import net.moonrise.api.event.EventBus;
+import net.moonrise.api.event.EventSubscription;
+import net.moonrise.api.event.MoonRiseEvent;
 import me.kubbidev.moonrise.common.api.MoonRiseApiProvider;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import net.kyori.event.EventSubscriber;
 import net.kyori.event.SimpleEventBus;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -127,7 +126,7 @@ public abstract class AbstractEventBus<P> implements EventBus, AutoCloseable {
         }
 
         @Override
-        protected boolean shouldPost(@NonNull MoonRiseEvent event, @NonNull EventSubscriber<?> subscriber) {
+        protected boolean shouldPost(@NotNull MoonRiseEvent event, @NotNull EventSubscriber<?> subscriber) {
             return true;
         }
 

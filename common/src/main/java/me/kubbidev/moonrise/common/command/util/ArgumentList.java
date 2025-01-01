@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.common.command.util;
 
 import com.google.common.collect.ForwardingList;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class ArgumentList extends ForwardingList<String> {
     }
 
     @Override
-    public @NonNull ArgumentList subList(int fromIndex, int toIndex) {
+    public @NotNull ArgumentList subList(int fromIndex, int toIndex) {
         return new ArgumentList(super.subList(fromIndex, toIndex));
     }
 }

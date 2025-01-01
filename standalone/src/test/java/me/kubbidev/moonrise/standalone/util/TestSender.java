@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.standalone.util;
 
-import me.kubbidev.api.util.Tristate;
+import net.moonrise.api.util.Tristate;
 import me.kubbidev.moonrise.standalone.app.integration.StandaloneSender;
 import me.kubbidev.moonrise.standalone.app.integration.StandaloneUser;
 import net.kyori.adventure.text.Component;

@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.standalone;
 
 import com.google.common.collect.ImmutableMap;
-import me.kubbidev.api.platform.Health;
+import net.moonrise.api.platform.Health;
 import me.kubbidev.moonrise.standalone.app.MoonRiseApplication;
 import me.kubbidev.moonrise.standalone.util.TestPluginBootstrap;
 import me.kubbidev.moonrise.standalone.util.TestPluginProvider;

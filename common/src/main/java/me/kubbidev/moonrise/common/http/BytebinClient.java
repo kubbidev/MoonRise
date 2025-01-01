@@ -44,7 +44,7 @@ public class BytebinClient extends AbstractHttpClient {
     public Content postContent(byte[] buf, MediaType contentType, String userAgentExtra)
             throws IOException, UnsuccessfulRequestException {
 
-        RequestBody body = RequestBody.create(contentType, buf);
+        RequestBody body = RequestBody.create(buf, contentType);
 
         String userAgent = this.userAgent;
         if (userAgentExtra != null) {

@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.standalone;
 
-import me.kubbidev.api.platform.Platform;
+import net.moonrise.api.platform.Platform;
 import me.kubbidev.moonrise.common.loader.LoaderBootstrap;
 import me.kubbidev.moonrise.common.plugin.bootstrap.BootstrappedWithLoader;
 import me.kubbidev.moonrise.common.plugin.bootstrap.MoonRiseBootstrap;

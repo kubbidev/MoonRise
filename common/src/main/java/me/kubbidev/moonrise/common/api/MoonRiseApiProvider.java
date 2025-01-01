@@ -1,10 +1,10 @@
 package me.kubbidev.moonrise.common.api;
 
-import me.kubbidev.api.MoonRise;
-import me.kubbidev.api.MoonRiseProvider;
-import me.kubbidev.api.platform.Health;
-import me.kubbidev.api.platform.Platform;
-import me.kubbidev.api.platform.PluginMetadata;
+import net.moonrise.api.MoonRise;
+import net.moonrise.api.MoonRiseProvider;
+import net.moonrise.api.platform.Health;
+import net.moonrise.api.platform.Platform;
+import net.moonrise.api.platform.PluginMetadata;
 import me.kubbidev.moonrise.common.api.implementation.ApiPlatform;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.plugin.bootstrap.BootstrappedWithLoader;

@@ -1,11 +1,4 @@
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.1")
-    testImplementation("org.testcontainers:junit-jupiter:1.19.8")
-    testImplementation("org.mockito:mockito-core:5.11.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
-
     api(project(":api"))
     api("org.jetbrains:annotations:26.0.1")
 
@@ -63,4 +56,8 @@ dependencies {
     compileOnly("com.zaxxer:HikariCP:4.0.3")
     compileOnly("org.postgresql:postgresql:42.6.0")
     compileOnly("org.yaml:snakeyaml:1.28")
+
+    compileOnly("net.dv8tion:JDA:5.2.2") {
+        exclude(module = "opus-java")
+    }
 }

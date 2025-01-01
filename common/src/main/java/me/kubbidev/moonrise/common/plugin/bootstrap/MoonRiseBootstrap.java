@@ -1,10 +1,10 @@
 package me.kubbidev.moonrise.common.plugin.bootstrap;
 
-import me.kubbidev.api.platform.Platform;
+import net.moonrise.api.platform.Platform;
 import me.kubbidev.moonrise.common.plugin.classpath.ClassPathAppender;
 import me.kubbidev.moonrise.common.plugin.logging.PluginLogger;
 import me.kubbidev.moonrise.common.plugin.scheduler.SchedulerAdapter;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 import java.nio.file.Path;
