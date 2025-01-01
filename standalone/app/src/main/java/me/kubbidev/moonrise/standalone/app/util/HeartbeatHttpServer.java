@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import net.moonrise.api.platform.Health;
+import me.kubbidev.moonrise.api.platform.Health;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

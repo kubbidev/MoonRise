@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.common.dependencies;
 
 import com.google.common.collect.ImmutableSet;
-import net.moonrise.api.platform.Platform;
+import me.kubbidev.moonrise.api.platform.Platform;
 import me.kubbidev.moonrise.common.database.DatabaseType;
 import me.kubbidev.moonrise.common.dependencies.classloader.IsolatedClassLoader;
 import me.kubbidev.moonrise.common.dependencies.relocation.Relocation;

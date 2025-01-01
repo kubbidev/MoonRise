@@ -2,7 +2,7 @@ package me.kubbidev.moonrise.common.locale;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import net.moonrise.api.platform.Platform;
+import me.kubbidev.moonrise.api.platform.Platform;
 import me.kubbidev.moonrise.common.command.spec.Argument;
 import me.kubbidev.moonrise.common.command.spec.CommandSpec;
 import me.kubbidev.moonrise.common.database.Database;

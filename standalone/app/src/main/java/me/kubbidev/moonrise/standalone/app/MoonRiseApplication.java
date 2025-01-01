@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.standalone.app;
 
-import net.moonrise.api.MoonRise;
+import me.kubbidev.moonrise.api.MoonRise;
 import me.kubbidev.moonrise.standalone.app.integration.CommandExecutor;
 import me.kubbidev.moonrise.standalone.app.integration.ShutdownCallback;
 import me.kubbidev.moonrise.standalone.app.util.DockerCommandSocket;

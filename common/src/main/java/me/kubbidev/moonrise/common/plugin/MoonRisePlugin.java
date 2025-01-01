@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.common.plugin;
 
-import net.moonrise.api.platform.Health;
+import me.kubbidev.moonrise.api.platform.Health;
 import me.kubbidev.moonrise.common.api.MoonRiseApiProvider;
 import me.kubbidev.moonrise.common.command.CommandManager;
 import me.kubbidev.moonrise.common.command.abstraction.Command;

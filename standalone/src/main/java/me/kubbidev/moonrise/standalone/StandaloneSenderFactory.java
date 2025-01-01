@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.standalone;
 
-import net.moonrise.api.util.Tristate;
+import me.kubbidev.moonrise.api.util.Tristate;
 import me.kubbidev.moonrise.common.sender.SenderFactory;
 import me.kubbidev.moonrise.common.locale.TranslationManager;
 import me.kubbidev.moonrise.standalone.app.integration.StandaloneSender;

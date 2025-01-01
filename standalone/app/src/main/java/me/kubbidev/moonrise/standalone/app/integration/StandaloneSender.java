@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.standalone.app.integration;
 
-import net.moonrise.api.util.Tristate;
+import me.kubbidev.moonrise.api.util.Tristate;
 import net.kyori.adventure.text.Component;
 
 import java.util.Locale;

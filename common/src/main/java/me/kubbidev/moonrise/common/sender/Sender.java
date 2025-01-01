@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.common.sender;
 
-import net.moonrise.api.util.Tristate;
+import me.kubbidev.moonrise.api.util.Tristate;
 import me.kubbidev.moonrise.common.command.access.CommandPermission;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import net.kyori.adventure.text.Component;

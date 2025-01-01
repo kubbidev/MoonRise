@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.standalone;
 
-import net.moonrise.api.MoonRise;
+import me.kubbidev.moonrise.api.MoonRise;
 import me.kubbidev.moonrise.common.api.MoonRiseApiProvider;
 import me.kubbidev.moonrise.common.event.AbstractEventBus;
 import me.kubbidev.moonrise.common.config.generic.adapter.ConfigurationAdapter;

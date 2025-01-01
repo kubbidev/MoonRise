@@ -1,9 +1,9 @@
 package me.kubbidev.moonrise.common.extension;
 
 import com.google.gson.JsonObject;
-import net.moonrise.api.MoonRise;
-import net.moonrise.api.extension.Extension;
-import net.moonrise.api.extension.ExtensionManager;
+import me.kubbidev.moonrise.api.MoonRise;
+import me.kubbidev.moonrise.api.extension.Extension;
+import me.kubbidev.moonrise.api.extension.ExtensionManager;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.plugin.classpath.URLClassLoaderAccess;
 import me.kubbidev.moonrise.common.util.MoreFiles;

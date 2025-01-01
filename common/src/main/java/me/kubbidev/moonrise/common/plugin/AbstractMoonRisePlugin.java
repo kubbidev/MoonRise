@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.common.plugin;
 
-import net.moonrise.api.MoonRise;
-import net.moonrise.api.platform.Health;
+import me.kubbidev.moonrise.api.MoonRise;
+import me.kubbidev.moonrise.api.platform.Health;
 import me.kubbidev.moonrise.common.api.ApiRegistrationUtil;
 import me.kubbidev.moonrise.common.api.MoonRiseApiProvider;
 import me.kubbidev.moonrise.common.config.ConfigKeys;

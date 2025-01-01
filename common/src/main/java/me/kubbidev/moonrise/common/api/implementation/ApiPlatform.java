@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.common.api.implementation;
 
-import net.moonrise.api.platform.Platform;
-import net.moonrise.api.platform.PluginMetadata;
+import me.kubbidev.moonrise.api.platform.Platform;
+import me.kubbidev.moonrise.api.platform.PluginMetadata;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import org.jetbrains.annotations.NotNull;
 

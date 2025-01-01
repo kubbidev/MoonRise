@@ -3,7 +3,7 @@ package me.kubbidev.moonrise.common.dependencies;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.SetMultimap;
-import net.moonrise.api.platform.Platform;
+import me.kubbidev.moonrise.api.platform.Platform;
 import me.kubbidev.moonrise.common.database.DatabaseType;
 import me.kubbidev.moonrise.common.dependencies.relocation.Relocation;
 

@@ -2,7 +2,6 @@ plugins {
     `maven-publish`
 }
 
-group = "net.moonrise"
 project.version = project.extra["releaseVersion"].toString()
 
 dependencies {
@@ -13,7 +12,7 @@ dependencies {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifactId = "api"
+            artifactId = "moonrise"
 
             from(components["java"])
             pom {

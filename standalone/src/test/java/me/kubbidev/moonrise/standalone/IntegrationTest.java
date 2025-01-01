@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.standalone;
 
-import net.moonrise.api.platform.Health;
+import me.kubbidev.moonrise.api.platform.Health;
 import me.kubbidev.moonrise.common.config.ConfigKeys;
 import me.kubbidev.moonrise.standalone.util.TestPluginProvider;
 import org.junit.jupiter.api.Test;

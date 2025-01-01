@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.common.event;
 
-import net.moonrise.api.event.EventSubscription;
-import net.moonrise.api.event.MoonRiseEvent;
+import me.kubbidev.moonrise.api.event.EventSubscription;
+import me.kubbidev.moonrise.api.event.MoonRiseEvent;
 import net.kyori.event.EventSubscriber;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

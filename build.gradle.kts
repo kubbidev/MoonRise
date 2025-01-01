@@ -33,7 +33,7 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "java-library")
 
-    group = "me.kubbidev.moonrise"
+    group = "me.kubbidev"
     version = "1.0-SNAPSHOT"
 
     java {

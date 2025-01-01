@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.common.api;
 
-import net.moonrise.api.MoonRise;
-import net.moonrise.api.MoonRiseProvider;
+import me.kubbidev.moonrise.api.MoonRise;
+import me.kubbidev.moonrise.api.MoonRiseProvider;
 
 import java.lang.reflect.Method;
 

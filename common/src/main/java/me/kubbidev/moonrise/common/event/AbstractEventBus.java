@@ -1,8 +1,8 @@
 package me.kubbidev.moonrise.common.event;
 
-import net.moonrise.api.event.EventBus;
-import net.moonrise.api.event.EventSubscription;
-import net.moonrise.api.event.MoonRiseEvent;
+import me.kubbidev.moonrise.api.event.EventBus;
+import me.kubbidev.moonrise.api.event.EventSubscription;
+import me.kubbidev.moonrise.api.event.MoonRiseEvent;
 import me.kubbidev.moonrise.common.api.MoonRiseApiProvider;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import net.kyori.event.EventSubscriber;

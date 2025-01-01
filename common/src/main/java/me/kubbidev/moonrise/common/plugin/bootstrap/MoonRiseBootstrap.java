@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.common.plugin.bootstrap;
 
-import net.moonrise.api.platform.Platform;
+import me.kubbidev.moonrise.api.platform.Platform;
 import me.kubbidev.moonrise.common.plugin.classpath.ClassPathAppender;
 import me.kubbidev.moonrise.common.plugin.logging.PluginLogger;
 import me.kubbidev.moonrise.common.plugin.scheduler.SchedulerAdapter;

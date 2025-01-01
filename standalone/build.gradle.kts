@@ -26,7 +26,10 @@ tasks.shadowJar {
     archiveFileName = "moonrise-standalone.jarinjar"
 
     dependencies {
-        include(dependency("me.kubbidev.moonrise:.*"))
+        include(dependency("me.kubbidev:.*"))
+
+        // Prevent the api shading into the jarinjar
+        exclude(project(":api"))
     }
 
     relocate("net.kyori.event", "me.kubbidev.moonrise.lib.eventbus")
