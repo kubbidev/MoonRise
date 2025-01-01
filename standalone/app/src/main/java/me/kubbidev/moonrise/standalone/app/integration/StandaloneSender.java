@@ -1,5 +1,6 @@
 package me.kubbidev.moonrise.standalone.app.integration;
 
+import me.kubbidev.api.util.Tristate;
 import net.kyori.adventure.text.Component;
 
 import java.util.Locale;
@@ -11,6 +12,8 @@ public interface StandaloneSender {
     UUID getUniqueId();
 
     void sendMessage(Component component);
+
+    Tristate getPermissionValue(String permission);
 
     boolean hasPermission(String permission);
 

@@ -1,5 +1,6 @@
 package me.kubbidev.moonrise.standalone;
 
+import me.kubbidev.api.util.Tristate;
 import me.kubbidev.moonrise.common.sender.SenderFactory;
 import me.kubbidev.moonrise.common.locale.TranslationManager;
 import me.kubbidev.moonrise.standalone.app.integration.StandaloneSender;
@@ -27,6 +28,11 @@ public class StandaloneSenderFactory extends SenderFactory<MStandalonePlugin, St
     protected void sendMessage(StandaloneSender sender, Component message) {
         Component rendered = TranslationManager.render(message, sender.getLocale());
         sender.sendMessage(rendered);
+    }
+
+    @Override
+    protected Tristate getPermissionValue(StandaloneSender sender, String node) {
+        return sender.getPermissionValue(node);
     }
 
     @Override

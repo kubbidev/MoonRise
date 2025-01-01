@@ -1,5 +1,6 @@
 package me.kubbidev.moonrise.common.sender;
 
+import me.kubbidev.api.util.Tristate;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import net.kyori.adventure.text.Component;
 
@@ -28,6 +29,8 @@ public abstract class SenderFactory<P extends MoonRisePlugin, T> implements Auto
     protected abstract String getName(T sender);
 
     protected abstract void sendMessage(T sender, Component message);
+
+    protected abstract Tristate getPermissionValue(T sender, String node);
 
     protected abstract boolean hasPermission(T sender, String node);
 

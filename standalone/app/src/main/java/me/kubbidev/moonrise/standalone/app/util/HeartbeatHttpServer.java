@@ -54,7 +54,7 @@ public class HeartbeatHttpServer implements HttpHandler, AutoCloseable {
         Health health = this.healthReporter.get();
         byte[] response = health.toString().getBytes(StandardCharsets.UTF_8);
 
-        exchange.sendResponseHeaders(health.healthy() ? 200 : 503, response.length);
+        exchange.sendResponseHeaders(health.isHealthy() ? 200 : 503, response.length);
         try (OutputStream responseBody = exchange.getResponseBody()) {
             responseBody.write(response);
         }

@@ -1,4 +1,11 @@
 dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.1")
+    testImplementation("org.testcontainers:junit-jupiter:1.19.8")
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+
     api(project(":api"))
     api("org.jetbrains:annotations:26.0.1")
 

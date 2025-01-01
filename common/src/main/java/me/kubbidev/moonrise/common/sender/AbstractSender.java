@@ -1,6 +1,7 @@
 package me.kubbidev.moonrise.common.sender;
 
 import com.google.common.collect.Iterables;
+import me.kubbidev.api.util.Tristate;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
@@ -55,6 +56,11 @@ public final class AbstractSender<T> implements Sender {
         } else {
             this.factory.sendMessage(this.sender, message);
         }
+    }
+
+    @Override
+    public Tristate getPermissionValue(String permission) {
+        return this.isConsole() ? Tristate.TRUE : this.factory.getPermissionValue(this.sender, permission);
     }
 
     @Override

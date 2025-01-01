@@ -12,12 +12,12 @@ public interface Health {
      *
      * @return if MoonRise is healthy
      */
-    boolean healthy();
+    boolean isHealthy();
 
     /**
      * Gets extra metadata/details about the healthcheck result.
      *
      * @return details about the healthcheck status
      */
-    Map<String, Object> details();
+    Map<String, Object> getDetails();
 }

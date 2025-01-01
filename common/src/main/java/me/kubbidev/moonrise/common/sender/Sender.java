@@ -1,5 +1,6 @@
 package me.kubbidev.moonrise.common.sender;
 
+import me.kubbidev.api.util.Tristate;
 import me.kubbidev.moonrise.common.command.access.CommandPermission;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import net.kyori.adventure.text.Component;
@@ -46,6 +47,14 @@ public interface Sender {
      * @param message the message to send.
      */
     void sendMessage(Component message);
+
+    /**
+     * Gets the tristate a permission is set to.
+     *
+     * @param permission the permission to check for
+     * @return a tristate
+     */
+    Tristate getPermissionValue(String permission);
 
     /**
      * Check if the Sender has a permission.

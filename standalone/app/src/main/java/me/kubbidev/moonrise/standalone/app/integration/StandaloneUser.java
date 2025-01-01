@@ -1,5 +1,6 @@
 package me.kubbidev.moonrise.standalone.app.integration;
 
+import me.kubbidev.api.util.Tristate;
 import me.kubbidev.moonrise.standalone.app.MoonRiseApplication;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer;
@@ -33,6 +34,11 @@ public class StandaloneUser implements StandaloneSender {
     @Override
     public void sendMessage(Component component) {
         MoonRiseApplication.LOGGER.info(ANSIComponentSerializer.ansi().serialize(component));
+    }
+
+    @Override
+    public Tristate getPermissionValue(String permission) {
+        return Tristate.TRUE;
     }
 
     @Override

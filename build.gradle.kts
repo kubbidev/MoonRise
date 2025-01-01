@@ -49,15 +49,6 @@ subprojects {
         mavenCentral()
     }
 
-    dependencies {
-        // tests
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
-        testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
-        testImplementation("org.testcontainers:junit-jupiter:1.19.8")
-
-    }
-
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
     }

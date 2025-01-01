@@ -12,6 +12,7 @@ import me.kubbidev.moonrise.standalone.app.integration.StandaloneUser;
 import me.kubbidev.moonrise.standalone.stub.StandaloneEventBus;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * MoonRise implementation for the standalone app.
@@ -89,6 +90,11 @@ public class MStandalonePlugin extends AbstractMoonRisePlugin {
     @Override
     protected void performFinalSetup() {
 
+    }
+
+    @Override
+    public Stream<Sender> getOnlineSenders() {
+        return Stream.of(getConsoleSender());
     }
 
     @Override

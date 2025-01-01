@@ -19,6 +19,7 @@ import me.kubbidev.moonrise.common.tasks.SyncTask;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Main internal interface for MoonRise plugins, providing the base for
@@ -118,6 +119,13 @@ public interface MoonRisePlugin {
      * @return the result of the healthcheck
      */
     Health runHealthCheck();
+
+    /**
+     * Gets a list of online Senders on the platform
+     *
+     * @return a {@link List} of senders online on the platform
+     */
+    Stream<Sender> getOnlineSenders();
 
     /**
      * Gets the console.
