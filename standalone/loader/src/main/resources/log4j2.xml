@@ -2,7 +2,7 @@
 <Configuration status="warn" shutdownHook="disable">
     <Appenders>
         <TerminalConsole name="Console">
-            <PatternLayout pattern="%highlightError{[%d{HH:mm:ss} %level]: %msg%n%xEx}"/>
+            <PatternLayout pattern="%highlight{[%d{HH:mm:ss} %level]: %msg%n%xEx}"/>
         </TerminalConsole>
     </Appenders>
 
