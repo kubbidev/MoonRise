@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.SetMultimap;
 import me.kubbidev.moonrise.api.platform.Platform;
-import me.kubbidev.moonrise.common.database.DatabaseType;
+import me.kubbidev.moonrise.common.storage.StorageType;
 import me.kubbidev.moonrise.common.dependencies.relocation.Relocation;
 
 import java.util.LinkedHashSet;
@@ -16,12 +16,12 @@ import java.util.Set;
  */
 public class DependencyRegistry {
 
-    private static final SetMultimap<DatabaseType, Dependency> STORAGE_DEPENDENCIES = ImmutableSetMultimap.<DatabaseType, Dependency>builder()
-            .putAll(DatabaseType.MARIADB,        Dependency.SLF4J_API, Dependency.SLF4J_SIMPLE, Dependency.HIKARI, Dependency.MARIADB_DRIVER)
-            .putAll(DatabaseType.MYSQL,          Dependency.SLF4J_API, Dependency.SLF4J_SIMPLE, Dependency.HIKARI, Dependency.MYSQL_DRIVER)
-            .putAll(DatabaseType.POSTGRESQL,     Dependency.SLF4J_API, Dependency.SLF4J_SIMPLE, Dependency.HIKARI, Dependency.POSTGRESQL_DRIVER)
-            .putAll(DatabaseType.SQLITE,         Dependency.SQLITE_DRIVER)
-            .putAll(DatabaseType.H2,             Dependency.H2_DRIVER)
+    private static final SetMultimap<StorageType, Dependency> STORAGE_DEPENDENCIES = ImmutableSetMultimap.<StorageType, Dependency>builder()
+            .putAll(StorageType.MARIADB,        Dependency.SLF4J_API, Dependency.SLF4J_SIMPLE, Dependency.HIKARI, Dependency.MARIADB_DRIVER)
+            .putAll(StorageType.MYSQL,          Dependency.SLF4J_API, Dependency.SLF4J_SIMPLE, Dependency.HIKARI, Dependency.MYSQL_DRIVER)
+            .putAll(StorageType.POSTGRESQL,     Dependency.SLF4J_API, Dependency.SLF4J_SIMPLE, Dependency.HIKARI, Dependency.POSTGRESQL_DRIVER)
+            .putAll(StorageType.SQLITE,         Dependency.SQLITE_DRIVER)
+            .putAll(StorageType.H2,             Dependency.H2_DRIVER)
             .build();
 
     private static final Set<Platform.Type> SNAKEYAML_PROVIDED_BY_PLATFORM = ImmutableSet.of(
@@ -34,8 +34,8 @@ public class DependencyRegistry {
         this.platformType = platformType;
     }
 
-    public Set<Dependency> resolveStorageDependencies(DatabaseType databaseType) {
-        Set<Dependency> dependencies = new LinkedHashSet<>(STORAGE_DEPENDENCIES.get(databaseType));
+    public Set<Dependency> resolveStorageDependencies(StorageType storageType) {
+        Set<Dependency> dependencies = new LinkedHashSet<>(STORAGE_DEPENDENCIES.get(storageType));
 
         // don't load slf4j if it's already present
         if ((dependencies.contains(Dependency.SLF4J_API) || dependencies.contains(Dependency.SLF4J_SIMPLE)) && slf4jPresent()) {

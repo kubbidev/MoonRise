@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.common.dependencies;
 
-import me.kubbidev.moonrise.common.database.DatabaseType;
+import me.kubbidev.moonrise.common.storage.StorageType;
 
 import java.util.Set;
 
@@ -17,11 +17,11 @@ public interface DependencyManager extends AutoCloseable {
     void loadDependencies(Set<Dependency> dependencies);
 
     /**
-     * Loads database dependencies.
+     * Loads storage dependencies.
      *
-     * @param databaseType the database type in use
+     * @param storageType the storage type in use
      */
-    void loadStorageDependencies(DatabaseType databaseType);
+    void loadStorageDependencies(StorageType storageType);
 
     /**
      * Obtains an isolated classloader containing the given dependencies.

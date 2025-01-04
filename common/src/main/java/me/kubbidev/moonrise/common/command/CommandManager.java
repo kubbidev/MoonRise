@@ -10,11 +10,9 @@ import me.kubbidev.moonrise.common.command.tabcomplete.TabCompletions;
 import me.kubbidev.moonrise.common.command.util.ArgumentList;
 import me.kubbidev.moonrise.common.commands.InfoCommand;
 import me.kubbidev.moonrise.common.commands.ReloadConfigCommand;
-import me.kubbidev.moonrise.common.commands.SyncCommand;
 import me.kubbidev.moonrise.common.commands.TranslationsCommand;
 import me.kubbidev.moonrise.common.config.ConfigKeys;
 import me.kubbidev.moonrise.common.locale.Message;
-import me.kubbidev.moonrise.common.plugin.AbstractMoonRisePlugin;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.plugin.scheduler.SchedulerAdapter;
 import me.kubbidev.moonrise.common.plugin.scheduler.SchedulerTask;
@@ -58,7 +56,6 @@ public class CommandManager {
         this.tabCompletions = new TabCompletions(plugin);
         this.mainCommands = ImmutableList.<Command<?>>builder()
                 .addAll(plugin.getExtraCommands())
-                .add(new SyncCommand())
                 .add(new InfoCommand())
                 .add(new ReloadConfigCommand())
                 .add(new TranslationsCommand())
@@ -93,6 +90,7 @@ public class CommandManager {
         // if the executingCommand flag is set, there is another command executing at the moment
         if (this.executingCommand.get()) {
             Message.ALREADY_EXECUTING_COMMAND.send(sender);
+            return CompletableFuture.completedFuture(null);
         }
 
         // a reference to the thread being used to execute the command
@@ -193,7 +191,7 @@ public class CommandManager {
             return false;
         }
 
-        this.sendPluginInfoMessage(sender);
+        Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
         if (this.hasPermissionForAny(sender)) {
             Message.VIEW_AVAILABLE_COMMANDS_PROMPT.send(sender, label);
             return true;
@@ -220,19 +218,8 @@ public class CommandManager {
                 .complete(arguments);
     }
 
-    private void sendPluginInfoMessage(Sender sender) {
-        sender.sendMessage(Message.prefixed(Component.text()
-                .color(NamedTextColor.DARK_GREEN)
-                .append(Component.text("Running "))
-                .append(Component.text(AbstractMoonRisePlugin.getPluginName(), NamedTextColor.AQUA))
-                .append(Component.space())
-                .append(Component.text("v" + this.plugin.getBootstrap().getVersion(), NamedTextColor.AQUA))
-                .append(Message.FULL_STOP)
-        ));
-    }
-
     private void sendCommandUsage(Sender sender, String label) {
-        this.sendPluginInfoMessage(sender);
+        Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
 
         this.mainCommands.values().stream()
                 .filter(Command::shouldDisplay)

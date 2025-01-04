@@ -14,7 +14,6 @@ import java.util.Locale;
 @SuppressWarnings("SpellCheckingInspection")
 public enum CommandSpec {
 
-    SYNC("/%s sync"),
     INFO("/%s info"),
     RELOAD_CONFIG("/%s reloadconfig"),
     TRANSLATIONS("/%s translations",

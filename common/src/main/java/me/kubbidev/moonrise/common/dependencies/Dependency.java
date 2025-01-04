@@ -19,14 +19,14 @@ public enum Dependency {
     ASM(
             "org.ow2.asm",
             "asm",
-            "9.1",
-            "zaTeRV+rSP8Ly3xItGOUR9TehZp6/DCglKmG8JNr66I="
+            "9.5",
+            "ti6EtZgHKXUbBFjFNM8TZvcnVCu40VhiEzVoKkYPA1M="
     ),
     ASM_COMMONS(
             "org.ow2.asm",
             "asm-commons",
-            "9.1",
-            "r8sm3B/BLAxKma2mcJCN2C4Y38SIyvXuklRplrRwwAw="
+            "9.5",
+            "cu7p+6+53o2UY/IN1YSkjO635RUq1MmHv74X3UgRya4="
     ),
     JAR_RELOCATOR(
             "me.lucko",
@@ -37,8 +37,8 @@ public enum Dependency {
     ADVENTURE(
             "net{}kyori",
             "adventure-api",
-            "4.13.0",
-            "VCFKCCgtuXUzFsU7fSX9eoEtCcURWfVpDWYvypqh7vo=",
+            "4.14.0",
+            "HUzIW6vEmRdGk2L9tLzSjvvIHIblK/Rz0Wful8DsXHY=",
             Relocation.of("adventure", "net{}kyori{}adventure")
     ),
     EVENT(
@@ -136,6 +136,27 @@ public enum Dependency {
             "1.7.30",
             "zboHlk0btAoHYUhcax6ML4/Z6x0ZxTkorA1/lRAQXFc="
     ),
+    JACKSON_ANNOTATIONS(
+            "com{}fasterxml{}jackson{}core",
+            "jackson-annotations",
+            "2.17.2",
+            "hzpgbiNQeWn5u76pOdXhknSoh3XqWhabp+LXlapRVuE=",
+            Relocation.of("jackson", "com{}fasterxml{}jackson")
+    ),
+    JACKSON_CORE(
+            "com{}fasterxml{}jackson{}core",
+            "jackson-core",
+            "2.17.2",
+            "choYkkHasFJdnoWOXLYE0+zA7eCB4t531vNPpXeaW0Y=",
+            Relocation.of("jackson", "com{}fasterxml{}jackson")
+    ),
+    JACKSON_DATABIND(
+            "com{}fasterxml{}jackson{}core",
+            "jackson-databind",
+            "2.17.2",
+            "wEmT8zwPhFNCZTeE8U84Nz0AUoDmNZ21+AhwHPrnPAw=",
+            Relocation.of("jackson", "com{}fasterxml{}jackson")
+    ),
     CONFIGURATE_CORE(
             "org{}spongepowered",
             "configurate-core",
@@ -156,6 +177,39 @@ public enum Dependency {
             "1.28",
             "NURqFCFDXUXkxqwN47U3hSfVzCRGwHGD4kRHcwzh//o=",
             Relocation.of("yaml", "org{}yaml{}snakeyaml")
+    ),
+    TROVE4J(
+            "net.sf.trove4j",
+            "core",
+            "3.1.0",
+            "4f7U1xiobSfF67QngQVQ+lwDJg41DkGoXvLC226sCFY=",
+            Relocation.of("trove4j", "gnu{}trove")
+    ),
+    NEOVISIONARIES(
+            "com.neovisionaries",
+            "nv-websocket-client",
+            "2.14",
+            "7tD7b1712xfQhwOfHoKc/oJzY7KGMmUlipbw7TIzE7c=",
+            Relocation.of("neovisionaries", "com{}neovisionaries{}ws{}client")
+    ),
+    COLLECTIONS4(
+            "org.apache.commons",
+            "commons-collections4",
+            "4.4",
+            "Hfi5QwtcjtFD14FeQD4z71NxskAKrb6b2giDdi4IRtE=",
+            Relocation.of("collections4", "org{}apache{}commons{}collections4")
+    ),
+    JDA(
+            "net.dv8tion",
+            "JDA",
+            "5.2.2",
+            "wF2S3v4+5DQZmRO39pWL1OV1HuLWH2Fqj7uJhuW6hdA=",
+            Relocation.of("jda", "net{}dv8tion{}jda"),
+            Relocation.of(RelocationHelper.OKHTTP3_STRING, RelocationHelper.OKHTTP3_STRING),
+            Relocation.of("jackson", "com{}fasterxml{}jackson"),
+            Relocation.of("trove4j", "gnu{}trove"),
+            Relocation.of("neovisionaries", "com{}neovisionaries{}ws{}client"),
+            Relocation.of("collections4", "org{}apache{}commons{}collections4")
     );
 
     private final String mavenRepoPath;

@@ -16,9 +16,26 @@
 
 # +----------------------------------------------------------------------------------------------+ #
 # |                                                                                              | #
-# |                                       DATABASE SETTINGS                                      | #
+# |                                      ESSENTIAL SETTINGS                                      | #
 # |                                                                                              | #
-# |                 Controls which database method MoonRise will use to store data.              | #
+# |                    Important settings that control how MoonRise functions.                   | #
+# |                                                                                              | #
+# +----------------------------------------------------------------------------------------------+ #
+
+# The Discord application authentication token used to connect.
+#
+# - This configuration key is the most important and will determine which
+#   Discord application will be used when starting MoonRise application.
+authentication-token: ''
+
+
+
+
+# +----------------------------------------------------------------------------------------------+ #
+# |                                                                                              | #
+# |                                        STORAGE SETTINGS                                      | #
+# |                                                                                              | #
+# |                  Controls which storage method MoonRise will use to store data.              | #
 # |                                                                                              | #
 # +----------------------------------------------------------------------------------------------+ #
 
@@ -35,7 +52,7 @@
 #   |=> H2 (preferred over SQLite)
 #   |=> SQLite
 #
-#   |  Other databases
+#   |  Other storages
 #   |=> Custom
 #
 # - A H2 database is the default option.
@@ -66,24 +83,6 @@ data:
   # - This only applies for remote SQL storage types (MySQL, MariaDB, etc).
   # - Change this if you want to use different tables for different processes.
   table-prefix: 'moonrise_'
-
-
-
-
-# +----------------------------------------------------------------------------------------------+ #
-# |                                                                                              | #
-# |                                     UPDATE PROPAGATION                                       | #
-# |                                                                                              | #
-# |                  Controls the ways in which MoonRise will sync data.                         | #
-# |                                                                                              | #
-# +----------------------------------------------------------------------------------------------+ #
-
-# This option controls how frequently MoonRise will perform a sync task.
-#
-# - A sync task will refresh all data from the storage, and ensure that the most up-to-date data is
-#   being used by the application.
-# - Set to -1 to disable the task completely.
-sync-minutes: 10
 
 
 

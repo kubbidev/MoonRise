@@ -1,4 +1,4 @@
 /**
- * Events relating to {@link me.kubbidev.moonrise.api.MoonRise#runUpdateTask() sync/update task}s.
+ * Events relating to sync/update tasks.
  */
 package me.kubbidev.moonrise.api.event.sync;

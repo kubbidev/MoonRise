@@ -3,9 +3,9 @@ package me.kubbidev.moonrise.common.config;
 import me.kubbidev.moonrise.common.config.generic.KeyedConfiguration;
 import me.kubbidev.moonrise.common.config.generic.key.ConfigKey;
 import me.kubbidev.moonrise.common.config.generic.key.SimpleConfigKey;
-import me.kubbidev.moonrise.common.database.DatabaseType;
+import me.kubbidev.moonrise.common.storage.StorageType;
 import me.kubbidev.moonrise.common.config.generic.key.ConfigKeyFactory;
-import me.kubbidev.moonrise.common.database.misc.DatabaseCredentials;
+import me.kubbidev.moonrise.common.storage.misc.StorageCredentials;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,9 +22,9 @@ import static me.kubbidev.moonrise.common.config.generic.key.ConfigKeyFactory.*;
 public final class ConfigKeys {
 
     /**
-     * How many minutes to wait between syncs. A value <= 0 will disable syncing.
+     * The Discord application authentication token used to connect.
      */
-    public static final ConfigKey<Integer> SYNC_TIME = notReloadable(ConfigKeyFactory.integerKey("sync-minutes", 10));
+    public static final ConfigKey<String> AUTHENTICATION_TOKEN = notReloadable(ConfigKeyFactory.stringKey("authentication-token", ""));
 
     /**
      * If MoonRise should automatically install translation bundles and periodically update them.
@@ -39,8 +39,8 @@ public final class ConfigKeys {
     /**
      * The database settings, username, password, etc for use by any database
      */
-    public static final ConfigKey<DatabaseCredentials> DATABASE_VALUES = notReloadable(key(c -> {
-        return new DatabaseCredentials(
+    public static final ConfigKey<StorageCredentials> DATABASE_VALUES = notReloadable(key(c -> {
+        return new StorageCredentials(
                 c.getString("data.address", null),
                 c.getString("data.database", null),
                 c.getString("data.username", null),
@@ -56,10 +56,10 @@ public final class ConfigKeys {
     }));
 
     /**
-     * The name of the database method being used
+     * The name of the storage method being used
      */
-    public static final ConfigKey<DatabaseType> DATABASE_METHOD = notReloadable(key(c -> {
-        return DatabaseType.parse(c.getString("database-method", "h2"), DatabaseType.H2);
+    public static final ConfigKey<StorageType> STORAGE_METHOD = notReloadable(key(c -> {
+        return StorageType.parse(c.getString("storage-method", "h2"), StorageType.H2);
     }));
 
     /**
@@ -84,6 +84,6 @@ public final class ConfigKeys {
      */
     public static boolean shouldCensorValue(String path) {
         String lower = path.toLowerCase(Locale.ROOT);
-        return lower.contains("password") || lower.contains("uri");
+        return lower.contains("password") || lower.contains("uri") || lower.contains("token");
     }
 }

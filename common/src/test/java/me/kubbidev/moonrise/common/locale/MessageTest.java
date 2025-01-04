@@ -5,10 +5,10 @@ import com.google.common.collect.ImmutableSet;
 import me.kubbidev.moonrise.api.platform.Platform;
 import me.kubbidev.moonrise.common.command.spec.Argument;
 import me.kubbidev.moonrise.common.command.spec.CommandSpec;
-import me.kubbidev.moonrise.common.database.Database;
 import me.kubbidev.moonrise.common.extension.SimpleExtensionManager;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.plugin.bootstrap.MoonRiseBootstrap;
+import me.kubbidev.moonrise.common.storage.Storage;
 import me.kubbidev.moonrise.common.util.ImmutableCollectors;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -182,8 +182,8 @@ public class MessageTest {
             MoonRiseBootstrap bootstrap = (MoonRiseBootstrap) mockArgument(MoonRiseBootstrap.class);
             lenient().when(plugin.getBootstrap()).thenReturn(bootstrap);
 
-            Database database = (Database) mockArgument(Database.class);
-            lenient().when(plugin.getDatabase()).thenReturn(database);
+            Storage storage = (Storage) mockArgument(Storage.class);
+            lenient().when(plugin.getStorage()).thenReturn(storage);
 
             SimpleExtensionManager extensionManager = (SimpleExtensionManager) mockArgument(SimpleExtensionManager.class);
             lenient().when(plugin.getExtensionManager()).thenReturn(extensionManager);

@@ -1,11 +1,10 @@
 package me.kubbidev.moonrise.api;
 
+import me.kubbidev.moonrise.api.event.EventBus;
 import me.kubbidev.moonrise.api.platform.PluginMetadata;
 import me.kubbidev.moonrise.api.platform.Health;
 import me.kubbidev.moonrise.api.platform.Platform;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.CompletableFuture;
 
 /**
  * The MoonRise API.
@@ -44,17 +43,12 @@ public interface MoonRise {
     @NotNull PluginMetadata getPluginMetadata();
 
     /**
-     * Schedules the execution of an update task, and returns an encapsulation
-     * of the task as a {@link CompletableFuture}.
+     * Gets the {@link EventBus}, used for subscribing to internal MoonRise
+     * events.
      *
-     * <p>The exact actions performed in an update task remains an
-     * implementation detail of the plugin, however, as a minimum, it is
-     * expected to perform a full reload of data, and ensure that any
-     * changes are fully applied and propagated.</p>
-     *
-     * @return a future
+     * @return the event bus
      */
-    @NotNull CompletableFuture<Void> runUpdateTask();
+    @NotNull EventBus getEventBus();
 
     /**
      * Executes a health check.

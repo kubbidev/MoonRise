@@ -15,8 +15,13 @@ dependencies {
     testImplementation("org.xerial:sqlite-jdbc:3.42.0.0")
     testImplementation("mysql:mysql-connector-java:8.0.23")
     testImplementation("org.mariadb.jdbc:mariadb-java-client:3.1.3")
-    testImplementation("org.spongepowered:configurate-hocon:3.7.2")
+    testImplementation("com.fasterxml.jackson.core:jackson-annotations:2.17.2")
+    testImplementation("com.fasterxml.jackson.core:jackson-core:2.17.2")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
     testImplementation("org.yaml:snakeyaml:1.28")
+
+    // Discord dependencies: https://github.com/discord-jda/JDA
+    testImplementation("net.dv8tion:JDA:5.2.2") { exclude(module = "opus-java") }
 
     testImplementation(project(":standalone:app"))
     testImplementation(project(":common:loader-utils"))
@@ -40,8 +45,10 @@ tasks.shadowJar {
     relocate("com.mysql", "me.kubbidev.moonrise.lib.mysql")
     relocate("org.postgresql", "me.kubbidev.moonrise.lib.postgresql")
     relocate("com.zaxxer.hikari", "me.kubbidev.moonrise.lib.hikari")
+    relocate("com.fasterxml.jackson", "me.kubbidev.moonrise.lib.jackson")
     relocate("ninja.leaping.configurate", "me.kubbidev.moonrise.lib.configurate")
     relocate("org.yaml.snakeyaml", "me.kubbidev.moonrise.lib.yaml")
+    relocate("net.dv8tion.jda", "me.kubbidev.moonrise.lib.jda")
 }
 
 artifacts {
