@@ -3,8 +3,6 @@ package me.kubbidev.moonrise.common.event;
 import me.kubbidev.moonrise.api.event.MoonRiseEvent;
 import me.kubbidev.moonrise.api.event.extension.ExtensionLoadEvent;
 import me.kubbidev.moonrise.api.event.sync.ConfigReloadEvent;
-import me.kubbidev.moonrise.api.event.sync.PostSyncEvent;
-import me.kubbidev.moonrise.api.event.sync.PreSyncEvent;
 import me.kubbidev.moonrise.api.event.type.Cancellable;
 import me.kubbidev.moonrise.api.event.type.ResultEvent;
 import me.kubbidev.moonrise.api.extension.Extension;
@@ -66,13 +64,5 @@ public record EventDispatcher(AbstractEventBus<?> eventBus) {
 
     public void dispatchConfigReload() {
         this.postAsync(new ConfigReloadEvent());
-    }
-
-    public void dispatchPostSync() {
-        this.postAsync(new PostSyncEvent());
-    }
-
-    public boolean dispatchPreSync(boolean initialState) {
-        return this.postCancellable(new PreSyncEvent(), initialState);
     }
 }

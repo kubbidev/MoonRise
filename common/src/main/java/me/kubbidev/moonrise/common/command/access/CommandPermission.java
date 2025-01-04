@@ -7,7 +7,6 @@ import me.kubbidev.moonrise.common.sender.Sender;
  */
 public enum CommandPermission {
 
-    SYNC("sync", Type.NONE),
     INFO("info", Type.NONE),
     RELOAD_CONFIG("reloadconfig", Type.NONE),
     TRANSLATIONS("translations", Type.NONE);

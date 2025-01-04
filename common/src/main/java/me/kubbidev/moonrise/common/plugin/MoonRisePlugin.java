@@ -4,7 +4,8 @@ import me.kubbidev.moonrise.api.platform.Health;
 import me.kubbidev.moonrise.common.api.MoonRiseApiProvider;
 import me.kubbidev.moonrise.common.command.CommandManager;
 import me.kubbidev.moonrise.common.command.abstraction.Command;
-import me.kubbidev.moonrise.common.database.Database;
+import me.kubbidev.moonrise.common.gateway.GatewayClient;
+import me.kubbidev.moonrise.common.storage.Storage;
 import me.kubbidev.moonrise.common.event.EventDispatcher;
 import me.kubbidev.moonrise.common.extension.SimpleExtensionManager;
 import me.kubbidev.moonrise.common.config.MoonRiseConfiguration;
@@ -15,7 +16,6 @@ import me.kubbidev.moonrise.common.plugin.bootstrap.MoonRiseBootstrap;
 import me.kubbidev.moonrise.common.plugin.logging.PluginLogger;
 import me.kubbidev.moonrise.common.sender.Sender;
 import me.kubbidev.moonrise.common.locale.TranslationManager;
-import me.kubbidev.moonrise.common.tasks.SyncTask;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +37,13 @@ public interface MoonRisePlugin {
     MoonRiseBootstrap getBootstrap();
 
     /**
+     * Get the gateway instance associated with the plugin.
+     *
+     * @return the gateway used to manage and interact with the distributed shards.
+     */
+    GatewayClient getGatewayClient();
+
+    /**
      * Gets the plugin's configuration
      *
      * @return the plugin config
@@ -44,11 +51,11 @@ public interface MoonRisePlugin {
     MoonRiseConfiguration getConfiguration();
 
     /**
-     * Gets the primary database instance. This is likely to be wrapped with extra layers for caching, etc.
+     * Gets the primary storage instance. This is likely to be wrapped with extra layers for caching, etc.
      *
-     * @return the database handler instance
+     * @return the storage handler instance
      */
-    Database getDatabase();
+    Storage getStorage();
 
     /**
      * Gets a wrapped logger instance for the platform.
@@ -136,19 +143,5 @@ public interface MoonRisePlugin {
 
     default List<Command<?>> getExtraCommands() {
         return Collections.emptyList();
-    }
-
-    /**
-     * Gets the sync task buffer of the platform, used for scheduling and running sync tasks.
-     *
-     * @return the sync task buffer instance
-     */
-    SyncTask.Buffer getSyncTaskBuffer();
-
-    /**
-     * Called at the end of the sync task.
-     */
-    default void performPlatformDataSync() {
-
     }
 }

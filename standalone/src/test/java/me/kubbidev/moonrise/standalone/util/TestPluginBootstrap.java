@@ -1,6 +1,6 @@
 package me.kubbidev.moonrise.standalone.util;
 
-import me.kubbidev.moonrise.common.database.DatabaseType;
+import me.kubbidev.moonrise.common.storage.StorageType;
 import me.kubbidev.moonrise.common.dependencies.Dependency;
 import me.kubbidev.moonrise.common.dependencies.DependencyManager;
 import me.kubbidev.moonrise.common.plugin.classpath.ClassPathAppender;
@@ -86,7 +86,7 @@ public final class TestPluginBootstrap extends MStandaloneBootstrap {
         }
 
         @Override
-        public void loadStorageDependencies(DatabaseType databaseType) {
+        public void loadStorageDependencies(StorageType storageType) {
 
         }
 

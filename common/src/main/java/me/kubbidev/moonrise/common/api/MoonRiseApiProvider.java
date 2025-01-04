@@ -2,6 +2,7 @@ package me.kubbidev.moonrise.common.api;
 
 import me.kubbidev.moonrise.api.MoonRise;
 import me.kubbidev.moonrise.api.MoonRiseProvider;
+import me.kubbidev.moonrise.api.event.EventBus;
 import me.kubbidev.moonrise.api.platform.Health;
 import me.kubbidev.moonrise.api.platform.Platform;
 import me.kubbidev.moonrise.api.platform.PluginMetadata;
@@ -11,8 +12,6 @@ import me.kubbidev.moonrise.common.plugin.bootstrap.BootstrappedWithLoader;
 import me.kubbidev.moonrise.common.plugin.bootstrap.MoonRiseBootstrap;
 import me.kubbidev.moonrise.common.plugin.logging.PluginLogger;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Implements the MoonRise API using the plugin instance
@@ -69,12 +68,12 @@ public class MoonRiseApiProvider implements MoonRise {
     }
 
     @Override
-    public @NotNull CompletableFuture<Void> runUpdateTask() {
-        return this.plugin.getSyncTaskBuffer().request();
+    public @NotNull Health runHealthCheck() {
+        return this.plugin.runHealthCheck();
     }
 
     @Override
-    public @NotNull Health runHealthCheck() {
-        return this.plugin.runHealthCheck();
+    public @NotNull EventBus getEventBus() {
+        return this.plugin.getEventDispatcher().eventBus();
     }
 }

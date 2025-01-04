@@ -2,7 +2,7 @@ package me.kubbidev.moonrise.common.dependencies;
 
 import com.google.common.collect.ImmutableSet;
 import me.kubbidev.moonrise.api.platform.Platform;
-import me.kubbidev.moonrise.common.database.DatabaseType;
+import me.kubbidev.moonrise.common.storage.StorageType;
 import me.kubbidev.moonrise.common.dependencies.classloader.IsolatedClassLoader;
 import me.kubbidev.moonrise.common.dependencies.relocation.Relocation;
 import me.kubbidev.moonrise.common.dependencies.relocation.RelocationHandler;
@@ -100,8 +100,8 @@ public class DependencyManagerImpl implements DependencyManager {
     }
 
     @Override
-    public void loadStorageDependencies(DatabaseType databaseType) {
-        this.loadDependencies(this.registry.resolveStorageDependencies(databaseType));
+    public void loadStorageDependencies(StorageType storageType) {
+        this.loadDependencies(this.registry.resolveStorageDependencies(storageType));
     }
 
     @Override

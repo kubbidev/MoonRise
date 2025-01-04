@@ -10,9 +10,10 @@ import me.kubbidev.moonrise.common.config.generic.adapter.ConfigurationAdapter;
 import me.kubbidev.moonrise.common.config.generic.adapter.EnvironmentVariableConfigAdapter;
 import me.kubbidev.moonrise.common.config.generic.adapter.MultiConfigurationAdapter;
 import me.kubbidev.moonrise.common.config.generic.adapter.SystemPropertyConfigAdapter;
-import me.kubbidev.moonrise.common.database.Database;
-import me.kubbidev.moonrise.common.database.DatabaseMetadata;
-import me.kubbidev.moonrise.common.database.DatabaseType;
+import me.kubbidev.moonrise.common.gateway.GatewayClient;
+import me.kubbidev.moonrise.common.storage.Storage;
+import me.kubbidev.moonrise.common.storage.StorageMetadata;
+import me.kubbidev.moonrise.common.storage.StorageType;
 import me.kubbidev.moonrise.common.dependencies.Dependency;
 import me.kubbidev.moonrise.common.dependencies.DependencyManager;
 import me.kubbidev.moonrise.common.dependencies.DependencyManagerImpl;
@@ -25,7 +26,6 @@ import me.kubbidev.moonrise.common.locale.TranslationManager;
 import me.kubbidev.moonrise.common.locale.TranslationRepository;
 import me.kubbidev.moonrise.common.plugin.logging.PluginLogger;
 import me.kubbidev.moonrise.common.plugin.util.HealthCheckResult;
-import me.kubbidev.moonrise.common.tasks.SyncTask;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
@@ -50,11 +50,11 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
     private OkHttpClient httpClient;
     private BytebinClient bytebin;
     private TranslationRepository translationRepository;
-    private Database database;
-    private SyncTask.Buffer syncTaskBuffer;
+    private Storage storage;
     private MoonRiseApiProvider apiProvider;
     private EventDispatcher eventDispatcher;
     private SimpleExtensionManager extensionManager;
+    private GatewayClient gateway;
 
     private boolean running = false;
 
@@ -105,22 +105,23 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
         this.translationRepository.scheduleRefresh();
 
         // now the configuration is loaded, we can create a storage factory and load initial dependencies
-        this.dependencyManager.loadStorageDependencies(DatabaseType.getRequiredType(this));
+        this.dependencyManager.loadStorageDependencies(StorageType.getRequiredType(this));
 
         // register listeners
         this.registerPlatformListeners();
 
         // initialise storage
-        this.database = DatabaseType.getInstance(this);
-
-        // setup the update task buffer
-        this.syncTaskBuffer = new SyncTask.Buffer(this);
+        this.storage = StorageType.getInstance(this);
 
         // register commands
         this.registerCommands();
 
         // setup guild/user/member manager
         this.setupManagers();
+
+        // establish the connection
+        this.gateway = new GatewayClient(this, this.storage);
+        this.gateway.connect(getConfiguration().get(ConfigKeys.AUTHENTICATION_TOKEN));
 
         // setup platform hooks
         this.setupPlatformHooks();
@@ -136,26 +137,11 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
         this.extensionManager = new SimpleExtensionManager(this);
         this.extensionManager.loadExtensions(getBootstrap().getConfigDirectory().resolve("extensions"));
 
-        // schedule update tasks
-        int syncMins = getConfiguration().get(ConfigKeys.SYNC_TIME);
-        if (syncMins > 0) {
-            getBootstrap().getScheduler().asyncRepeating(() -> this.syncTaskBuffer.request(), syncMins, TimeUnit.MINUTES);
-        }
-
-        // run an update instantly.
-        getLogger().info("Performing initial data load...");
-        try {
-            new SyncTask(this).run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         // perform any platform-specific final setup tasks
         this.performFinalSetup();
 
         // mark as running
         this.running = true;
-
 
         Duration timeTaken = getBootstrap().getStartupDuration();
         getLogger().info("Successfully enabled. (took " + timeTaken.toMillis() + "ms)");
@@ -167,6 +153,9 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
         // cancel delayed/repeating tasks
         getBootstrap().getScheduler().shutdownScheduler();
 
+        // close connection
+        this.gateway.close();
+
         // unload extensions
         this.extensionManager.close();
 
@@ -177,8 +166,8 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
         this.removePlatformHooks();
 
         // close storage
-        getLogger().info("Closing database...");
-        this.database.shutdown();
+        getLogger().info("Closing storage...");
+        this.storage.shutdown();
 
         // unregister api
         ApiRegistrationUtil.unregisterProvider();
@@ -212,7 +201,14 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
                 Dependency.CAFFEINE,
                 Dependency.OKIO,
                 Dependency.OKHTTP,
-                Dependency.EVENT
+                Dependency.EVENT,
+                Dependency.JACKSON_ANNOTATIONS,
+                Dependency.JACKSON_CORE,
+                Dependency.JACKSON_DATABIND,
+                Dependency.TROVE4J,
+                Dependency.NEOVISIONARIES,
+                Dependency.COLLECTIONS4,
+                Dependency.JDA
         );
     }
 
@@ -272,7 +268,7 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
             return HealthCheckResult.unhealthy(Collections.emptyMap());
         }
 
-        DatabaseMetadata meta = this.database.getMeta();
+        StorageMetadata meta = this.storage.getMeta();
         if (meta.connected() != null && !meta.connected()) {
             return HealthCheckResult.unhealthy(Collections.singletonMap("reason", "storage disconnected"));
         }
@@ -289,6 +285,11 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
         }
 
         return HealthCheckResult.healthy(map);
+    }
+
+    @Override
+    public GatewayClient getGatewayClient() {
+        return this.gateway;
     }
 
     @Override
@@ -321,13 +322,8 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
     }
 
     @Override
-    public Database getDatabase() {
-        return this.database;
-    }
-
-    @Override
-    public SyncTask.Buffer getSyncTaskBuffer() {
-        return this.syncTaskBuffer;
+    public Storage getStorage() {
+        return this.storage;
     }
 
     @Override

@@ -110,7 +110,7 @@ Section 1 -- Definitions.
      of a Creative Commons Public License. The License Elements of this
      Public License are Attribution, NonCommercial, and ShareAlike.
 
-  h. Licensed Material means the artistic or literary work, database,
+  h. Licensed Material means the artistic or literary work, storage,
      or other material to which the Licensor applied this Public
      License.
 
@@ -307,17 +307,17 @@ apply to Your use of the Licensed Material:
 
   a. for the avoidance of doubt, Section 2(a)(1) grants You the right
      to extract, reuse, reproduce, and Share all or a substantial
-     portion of the contents of the database for NonCommercial purposes
+     portion of the contents of the storage for NonCommercial purposes
      only;
 
-  b. if You include all or a substantial portion of the database
-     contents in a database in which You have Sui Generis Database
-     Rights, then the database in which You have Sui Generis Database
+  b. if You include all or a substantial portion of the storage
+     contents in a storage in which You have Sui Generis Database
+     Rights, then the storage in which You have Sui Generis Database
      Rights (but not its individual contents) is Adapted Material,
      including for purposes of Section 3(b); and
 
   c. You must comply with the conditions in Section 3(a) if You Share
-     all or a substantial portion of the contents of the database.
+     all or a substantial portion of the contents of the storage.
 
 For the avoidance of doubt, this Section 4 supplements and does not
 replace Your obligations under this Public License where the Licensed

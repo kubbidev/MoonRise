@@ -6,7 +6,7 @@ import me.kubbidev.moonrise.api.MoonRiseProvider;
 import java.lang.reflect.Method;
 
 @SuppressWarnings("CallToPrintStackTrace")
-public class ApiRegistrationUtil {
+public final class ApiRegistrationUtil {
     private static final Method REGISTER;
     private static final Method UNREGISTER;
     static {
@@ -20,6 +20,8 @@ public class ApiRegistrationUtil {
             throw new ExceptionInInitializerError(e);
         }
     }
+
+    private ApiRegistrationUtil() {}
 
     public static void registerProvider(MoonRise moonRiseApi) {
         try {

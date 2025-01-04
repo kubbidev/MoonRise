@@ -29,20 +29,20 @@ public class IntegrationTest {
     @Test
     public void testReloadConfig(@TempDir Path tempDir) throws IOException {
         TestPluginProvider.use(tempDir, (app, bootstrap, plugin) -> {
-            Integer syncTime = plugin.getConfiguration().get(ConfigKeys.SYNC_TIME);
-            assertEquals(10, syncTime);
+            String token = plugin.getConfiguration().get(ConfigKeys.AUTHENTICATION_TOKEN);
+            assertEquals("", token);
 
             Path config = tempDir.resolve("config.yml");
             assertTrue(Files.exists(config));
 
             String configString = Files.readString(config)
-                    .replace("sync-minutes: 10", "sync-minutes: -1");
+                    .replace("authentication-token: ''", "authentication-token: 'TOKEN'");
 
             Files.writeString(config, configString);
             plugin.getConfiguration().reload();
 
-            syncTime = plugin.getConfiguration().get(ConfigKeys.SYNC_TIME);
-            assertEquals(10, syncTime); // unchanged
+            token = plugin.getConfiguration().get(ConfigKeys.AUTHENTICATION_TOKEN);
+            assertEquals("", token); // unchanged
         });
     }
 }

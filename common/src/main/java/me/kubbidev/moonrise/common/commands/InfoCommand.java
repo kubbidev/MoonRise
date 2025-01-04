@@ -16,6 +16,6 @@ public class InfoCommand extends SingleCommand {
 
     @Override
     public void execute(MoonRisePlugin plugin, Sender sender, ArgumentList args, String label) {
-        Message.INFO.send(sender, plugin, plugin.getDatabase().getMeta());
+        Message.INFO.send(sender, plugin, plugin.getStorage().getMeta());
     }
 }

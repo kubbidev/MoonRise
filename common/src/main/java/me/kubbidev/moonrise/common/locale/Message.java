@@ -1,11 +1,12 @@
 package me.kubbidev.moonrise.common.locale;
 
-import me.kubbidev.moonrise.common.database.DatabaseMetadata;
+import me.kubbidev.moonrise.common.sender.Sender;
+import me.kubbidev.moonrise.common.storage.StorageMetadata;
 import me.kubbidev.moonrise.common.plugin.AbstractMoonRisePlugin;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.plugin.bootstrap.MoonRiseBootstrap;
-import me.kubbidev.moonrise.common.sender.Sender;
 import me.kubbidev.moonrise.common.util.DurationFormatter;
+import me.kubbidev.moonrise.common.util.Emote;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.JoinConfiguration;
@@ -85,6 +86,16 @@ public interface Message {
         );
     };
 
+    Args1<MoonRiseBootstrap> PLUGIN_INFO = bootstrap -> prefixed(text()
+            // "&2Running &b{} v{}&2."
+            .color(DARK_GREEN)
+            .append(text("Running "))
+            .append(text(AbstractMoonRisePlugin.getPluginName(), AQUA))
+            .append(space())
+            .append(text("v" + bootstrap.getVersion(), AQUA))
+            .append(FULL_STOP)
+    );
+
     Args1<String> VIEW_AVAILABLE_COMMANDS_PROMPT = label -> prefixed(translatable()
             // "&3Use &a/{} help &3to view available commands."
             .key("moonrise.commandsystem.available-commands")
@@ -154,6 +165,26 @@ public interface Message {
             .append(text(':'))
     );
 
+    Args0 COMMAND_EXECUTION_EXCEPTION_HEADER = () -> text()
+            // "&c:warning:Exception whilst executing command:"
+            .color(RED)
+            .append(text(Emote.WARNING.asString()))
+            .append(space())
+            .append(text()
+                    .decorate(BOLD)
+                    .append(translatable("moonrise.commandsystem.execution.exception-header"))
+                    .append(text(':')))
+            .build();
+
+    Args1<Integer> COMMAND_EXECUTION_EXCEPTION_OVERFLOW = overflow -> text()
+            // "&f... and {} more"
+            .color(WHITE)
+            .content("... ")
+            .append(translatable()
+                    .key("moonrise.commandsystem.execution.exception-overflow")
+                    .args(text(overflow)))
+            .build();
+
     Args2<Component, Component> COMMAND_USAGE_DETAILED_ARG = (arg, usage) -> prefixed(text()
             // "&b- {}&3 -> &7{}"
             .append(text('-', AQUA))
@@ -177,20 +208,6 @@ public interface Message {
             .append(text(']'))
             .build();
 
-    Args0 UPDATE_TASK_REQUEST = () -> prefixed(translatable()
-            // "&bAn update task has been requested. Please wait..."
-            .color(AQUA)
-            .key("moonrise.command.update-task.request")
-            .append(FULL_STOP)
-    );
-
-    Args0 UPDATE_TASK_COMPLETE = () -> prefixed(translatable()
-            // "&aUpdate task complete."
-            .color(GREEN)
-            .key("moonrise.command.update-task.complete")
-            .append(FULL_STOP)
-    );
-
     Args0 RELOAD_CONFIG_SUCCESS = () -> prefixed(translatable()
             // "&aThe configuration file was reloaded. &7(some options will only apply after the application has restarted)"
             .key("moonrise.command.reload-config.success")
@@ -205,13 +222,13 @@ public interface Message {
             )
     );
 
-    Args2<MoonRisePlugin, DatabaseMetadata> INFO = (plugin, databaseMeta) -> joinNewline(
+    Args2<MoonRisePlugin, StorageMetadata> INFO = (plugin, storageMeta) -> joinNewline(
             // "&2Running &bMoonRise v{}&2 by &bkubbidev&2."
             // "&f-  &3Platform: &f{}"
             // "&f-  &3Server Brand: &f{}"
             // "&f-  &3Server Version:"
             // "     &f{}"
-            // "&f-  &bDatabase:"
+            // "&f-  &bStorage:"
             // "     &3Type: &f{}"
             // "     &3Some meta value: {}"
             // "&f-  &3Extensions:"
@@ -252,49 +269,49 @@ public interface Message {
             prefixed(text()
                     .color(AQUA)
                     .append(text("-  ", WHITE))
-                    .append(translatable("moonrise.command.info.database-key"))
+                    .append(translatable("moonrise.command.info.storage-key"))
                     .append(text(':'))),
             prefixed(text()
                     .apply(builder -> {
                         builder.append(text()
                                 .color(DARK_AQUA)
                                 .append(text("     "))
-                                .append(translatable("moonrise.command.info.database-type-key"))
+                                .append(translatable("moonrise.command.info.storage-type-key"))
                                 .append(text(": "))
-                                .append(text(plugin.getDatabase().getName(), WHITE))
+                                .append(text(plugin.getStorage().getName(), WHITE))
                         );
 
-                        if (databaseMeta.connected() != null) {
+                        if (storageMeta.connected() != null) {
                             builder.append(newline());
                             builder.append(prefixed(text()
                                     .color(DARK_AQUA)
                                     .append(text("     "))
-                                    .append(translatable("moonrise.command.info.database.meta.connected-key"))
+                                    .append(translatable("moonrise.command.info.storage.meta.connected-key"))
                                     .append(text(": "))
-                                    .append(formatBoolean(databaseMeta.connected()))
+                                    .append(formatBoolean(storageMeta.connected()))
                             ));
                         }
 
-                        if (databaseMeta.ping() != null) {
+                        if (storageMeta.ping() != null) {
                             builder.append(newline());
                             builder.append(prefixed(text()
                                     .color(DARK_AQUA)
                                     .append(text("     "))
-                                    .append(translatable("moonrise.command.info.database.meta.ping-key"))
+                                    .append(translatable("moonrise.command.info.storage.meta.ping-key"))
                                     .append(text(": "))
-                                    .append(text(databaseMeta.ping() + "ms", GREEN))
+                                    .append(text(storageMeta.ping() + "ms", GREEN))
                             ));
                         }
 
-                        if (databaseMeta.sizeBytes() != null) {
+                        if (storageMeta.sizeBytes() != null) {
                             DecimalFormat format = new DecimalFormat("#.##");
-                            String size = format.format(databaseMeta.sizeBytes() / 1048576D) + "MB";
+                            String size = format.format(storageMeta.sizeBytes() / 1048576D) + "MB";
 
                             builder.append(newline());
                             builder.append(prefixed(text()
                                     .color(DARK_AQUA)
                                     .append(text("     "))
-                                    .append(translatable("moonrise.command.info.database.meta.file-size-key"))
+                                    .append(translatable("moonrise.command.info.storage.meta.file-size-key"))
                                     .append(text(": "))
                                     .append(text(size, GREEN))
                             ));
