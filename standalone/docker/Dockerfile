@@ -14,10 +14,6 @@ USER app
 WORKDIR /opt/moonrise
 COPY moonrise-standalone.jar .
 
-# create volume for data directory
-RUN mkdir data
-VOLUME ["/opt/moonrise/data"]
-
 # preload and relocate dependency jars
 RUN java -jar moonrise-standalone.jar preloadDependencies
 
