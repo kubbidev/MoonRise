@@ -269,6 +269,7 @@ public class SqlStorage implements StorageImplementation {
 
     @Override
     public void saveMember(ApiMember member) throws Exception {
+        saveUser(member);
         saveStatement(MEMBER_SELECT_BY_IDS, MEMBER_UPDATE_BY_IDS, MEMBER_INSERT,
                 ps -> {
                     ps.setLong(1, member.getId());
