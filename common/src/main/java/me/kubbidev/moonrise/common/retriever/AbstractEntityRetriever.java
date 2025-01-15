@@ -143,9 +143,6 @@ public abstract class AbstractEntityRetriever implements EntityRetriever {
             shouldSave = true;
         }
 
-        if (shouldSave) {
-            internal.getPlugin().getLogger().info("Updating user " + internal.getDisplayName());
-        }
         return shouldSave;
     }
 
@@ -164,9 +161,6 @@ public abstract class AbstractEntityRetriever implements EntityRetriever {
             shouldSave = true;
         }
 
-        if (shouldSave) {
-            internal.getPlugin().getLogger().info("Updating guild " + internal.getId());
-        }
         return shouldSave;
     }
 
@@ -185,9 +179,6 @@ public abstract class AbstractEntityRetriever implements EntityRetriever {
             shouldSave = true;
         }
 
-        if (shouldSave) {
-            internal.getPlugin().getLogger().info("Updating member " + internal.getDisplayName());
-        }
         return shouldSave;
     }
 }
