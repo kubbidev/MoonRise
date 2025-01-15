@@ -37,6 +37,16 @@ public final class ConfigKeys {
     public static final ConfigKey<Boolean> COMMANDS_RATE_LIMIT = booleanKey("commands-rate-limit", true);
 
     /**
+     * Represents the maximum number of activity voices that can be used concurrently.
+     */
+    public static final ConfigKey<Integer> ACTIVITY_MAX_VOICES = integerKey("activity-max-voices", 5);
+
+    /**
+     * A configuration key representing the multiplier applied to activity-based experience calculations.
+     */
+    public static final ConfigKey<Integer> ACTIVITY_EXPERIENCE_MULTIPLIER = integerKey("activity-experience-multiplier", 1);
+
+    /**
      * The database settings, username, password, etc for use by any database
      */
     public static final ConfigKey<StorageCredentials> DATABASE_VALUES = notReloadable(key(c -> {

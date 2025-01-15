@@ -18,6 +18,9 @@ public class ApiGuild extends Snowflake {
     /** The last known icon url of a guild */
     private @Nullable String icon = null;
 
+    private boolean leaderboardEnabled = false;
+    private long leaderboardChannelId = 0;
+
     public ApiGuild(long id, MoonRisePlugin plugin) {
         super(id);
         this.plugin = plugin;
@@ -55,5 +58,21 @@ public class ApiGuild extends Snowflake {
 
     public void setIcon(@Nullable String icon) {
         this.icon = DataConstraints.sanitize(icon);
+    }
+
+    public boolean isLeaderboardEnabled() {
+        return this.leaderboardEnabled;
+    }
+
+    public void setLeaderboardEnabled(boolean leaderboardEnabled) {
+        this.leaderboardEnabled = leaderboardEnabled;
+    }
+
+    public long getLeaderboardChannelId() {
+        return this.leaderboardChannelId;
+    }
+
+    public void setLeaderboardChannelId(long leaderboardChannelId) {
+        this.leaderboardChannelId = leaderboardChannelId;
     }
 }

@@ -61,7 +61,7 @@ public class TranslationRepository {
             try {
                 this.refresh();
             } catch (Exception e) {
-                // ignore
+                this.plugin.getLogger().warn("Unable to obtain a list of available translations", e);
             }
         });
     }
@@ -80,7 +80,7 @@ public class TranslationRepository {
         }
 
         // perform a refresh!
-        this.downloadAndInstallTranslations(metadata.languages, null, true);
+        this.downloadAndInstallTranslations(metadata.languages, this.plugin.getConsoleSender(), true);
     }
 
     private void clearDirectory(Path directory, Predicate<Path> predicate) {

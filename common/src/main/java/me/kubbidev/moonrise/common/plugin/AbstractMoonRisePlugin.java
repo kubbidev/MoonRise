@@ -10,7 +10,7 @@ import me.kubbidev.moonrise.common.config.generic.adapter.ConfigurationAdapter;
 import me.kubbidev.moonrise.common.config.generic.adapter.EnvironmentVariableConfigAdapter;
 import me.kubbidev.moonrise.common.config.generic.adapter.MultiConfigurationAdapter;
 import me.kubbidev.moonrise.common.config.generic.adapter.SystemPropertyConfigAdapter;
-import me.kubbidev.moonrise.common.gateway.GatewayClient;
+import me.kubbidev.moonrise.common.GatewayClient;
 import me.kubbidev.moonrise.common.storage.Storage;
 import me.kubbidev.moonrise.common.storage.StorageMetadata;
 import me.kubbidev.moonrise.common.storage.StorageType;
@@ -19,7 +19,6 @@ import me.kubbidev.moonrise.common.dependencies.DependencyManager;
 import me.kubbidev.moonrise.common.dependencies.DependencyManagerImpl;
 import me.kubbidev.moonrise.common.event.AbstractEventBus;
 import me.kubbidev.moonrise.common.event.EventDispatcher;
-import me.kubbidev.moonrise.common.extension.SimpleExtensionManager;
 import me.kubbidev.moonrise.common.http.BytebinClient;
 import me.kubbidev.moonrise.common.locale.Message;
 import me.kubbidev.moonrise.common.locale.TranslationManager;
@@ -53,7 +52,6 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
     private Storage storage;
     private MoonRiseApiProvider apiProvider;
     private EventDispatcher eventDispatcher;
-    private SimpleExtensionManager extensionManager;
     private GatewayClient gateway;
 
     private boolean running = false;
@@ -133,10 +131,6 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
         ApiRegistrationUtil.registerProvider(this.apiProvider);
         this.registerApiOnPlatform(this.apiProvider);
 
-        // setup extension manager
-        this.extensionManager = new SimpleExtensionManager(this);
-        this.extensionManager.loadExtensions(getBootstrap().getConfigDirectory().resolve("extensions"));
-
         // perform any platform-specific final setup tasks
         this.performFinalSetup();
 
@@ -155,9 +149,6 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
 
         // close connection
         this.gateway.close();
-
-        // unload extensions
-        this.extensionManager.close();
 
         // mark as not running
         this.running = false;
@@ -329,11 +320,6 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
     @Override
     public MoonRiseApiProvider getApiProvider() {
         return this.apiProvider;
-    }
-
-    @Override
-    public SimpleExtensionManager getExtensionManager() {
-        return this.extensionManager;
     }
 
     @Override

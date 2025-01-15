@@ -7,6 +7,7 @@ import me.kubbidev.moonrise.common.model.Snowflake;
 import me.kubbidev.moonrise.common.storage.StorageMetadata;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 
+import java.util.List;
 import java.util.Set;
 
 public interface StorageImplementation {
@@ -24,7 +25,11 @@ public interface StorageImplementation {
 
     ApiGuild loadGuild(long guildId) throws Exception;
 
+    Set<ApiGuild> loadGuilds() throws Exception;
+
     ApiMember loadMember(long guildId, long userId) throws Exception;
+
+    List<ApiMember> loadMembersWithHighestExperience(long guildId, int limit) throws Exception;
 
     void saveUser(ApiUser user) throws Exception;
 

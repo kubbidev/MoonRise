@@ -7,23 +7,31 @@ import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.plugin.bootstrap.MoonRiseBootstrap;
 import me.kubbidev.moonrise.common.util.DurationFormatter;
 import me.kubbidev.moonrise.common.util.Emote;
+import net.dv8tion.jda.api.entities.channel.Channel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.TextComponent;
 
 import java.text.DecimalFormat;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static net.kyori.adventure.text.Component.*;
 import static net.kyori.adventure.text.format.NamedTextColor.*;
+import static net.kyori.adventure.text.format.Style.style;
 import static net.kyori.adventure.text.format.TextDecoration.BOLD;
+import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
 
 /**
  * A collection of formatted messages used by the application.
  */
 public interface Message {
+
+    DateTimeFormatter DATE_TIME_FORMATTER
+            = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     TextComponent OPEN_BRACKET = text('(');
     TextComponent CLOSE_BRACKET = text(')');
@@ -176,15 +184,6 @@ public interface Message {
                     .append(text(':')))
             .build();
 
-    Args1<Integer> COMMAND_EXECUTION_EXCEPTION_OVERFLOW = overflow -> text()
-            // "&f... and {} more"
-            .color(WHITE)
-            .content("... ")
-            .append(translatable()
-                    .key("moonrise.commandsystem.execution.exception-overflow")
-                    .args(text(overflow)))
-            .build();
-
     Args2<Component, Component> COMMAND_USAGE_DETAILED_ARG = (arg, usage) -> prefixed(text()
             // "&b- {}&3 -> &7{}"
             .append(text('-', AQUA))
@@ -320,17 +319,6 @@ public interface Message {
             prefixed(text()
                     .color(AQUA)
                     .append(text("-  ", WHITE))
-                    .append(translatable("moonrise.command.info.extensions-key"))
-                    .append(text(':'))),
-            prefixed(text()
-                    .color(WHITE)
-                    .append(text("     "))
-                    .append(formatStringList(plugin.getExtensionManager().getLoadedExtensions().stream()
-                            .map(e -> e.getClass().getSimpleName())
-                            .collect(Collectors.toList())))),
-            prefixed(text()
-                    .color(AQUA)
-                    .append(text("-  ", WHITE))
                     .append(translatable("moonrise.command.info.instance-key"))
                     .append(text(':'))),
             prefixed(text()
@@ -439,6 +427,88 @@ public interface Message {
             .append(FULL_STOP)
     );
 
+    Args0 LEADERBOARD_FIELD_HEADER = () -> translatable()
+            // This week's leaderboard:
+            .key("moonrise.leaderboard.field-header")
+            .append(text(':'))
+            .build();
+
+    Args2<ZonedDateTime, ZonedDateTime> LEADERBOARD_FIELD_TITLE = (next, last) -> text()
+            // `{}` - `{}`
+            .append(text('`'))
+            .append(text(last.format(DATE_TIME_FORMATTER))).append(text("` - `"))
+            .append(text(next.format(DATE_TIME_FORMATTER)))
+            .append(text('`'))
+            .build();
+
+    Args3<Emote, Integer, String> LEADERBOARD_FILED_NAME = (emote, placement, username) -> text()
+            // {} `#{}` **{}**
+            .append(text(emote.asString()))
+            .append(text(" `#"))
+            .append(text(placement))
+            .append(text('`'))
+            .append(space())
+            .append(text(username, style(BOLD)))
+            .build();
+
+    Args2<String, String> LEADERBOARD_FIELD_GENERIC = (name, formattedValue) -> text()
+            // {}exp: `{}`
+            .append(text(Emote.EMPTY.asString()))
+            .append(text(name))
+            .append(text(": `"))
+            .append(text(formattedValue))
+            .append(text('`'))
+            .build();
+
+    Args1<Instant> LEADERBOARD_FIELD_UPDATE = nextUpdate -> text()
+            // *Next update of the ranking* :: <t:{}:R>
+            .append(translatable("moonrise.leaderboard.field-update", style(ITALIC)))
+            .append(text(" :: <t:"))
+            .append(text(nextUpdate.getEpochSecond()))
+            .append(text(":R>"))
+            .build();
+
+    Args0 BIOGRAPHY_UPDATED = () -> translatable()
+            // Your biography has been successfully updated.
+            .key("moonrise.command.biography.updated")
+            .append(FULL_STOP)
+            .build();
+
+    Args1<Channel> LEADERBOARD_CHANNEL_UPDATED = channel -> translatable()
+            // From now on, {} will be the transmission channel for the classification.
+            .key("moonrise.command.leaderboard.channel-updated")
+            .args(text(channel.getAsMention()))
+            .append(FULL_STOP)
+            .build();
+
+    Args0 LEADERBOARD_ENABLE = () -> translatable()
+            // The ranking and experience system are now enabled on the server.
+            .key("moonrise.command.leaderboard.enabled")
+            .append(FULL_STOP)
+            .build();
+
+    Args0 LEADERBOARD_DISABLE = () -> translatable()
+            // The ranking and experience system are now disabled on the server.
+            .key("moonrise.command.leaderboard.disabled")
+            .append(FULL_STOP)
+            .build();
+
+    Args0 LEADERBOARD_NOT_ACTIVE = () -> text()
+            // :x: The leaderboard is not active in this guild.
+            .content(Emote.RED_CROSS.asString())
+            .append(space())
+            .append(translatable("moonrise.command.leaderboard.not-active"))
+            .append(FULL_STOP)
+            .build();
+
+    Args0 LEADERBOARD_REFRESHED = () -> text()
+            // :information_source: The leaderboard have been successfully refreshed.
+            .content(Emote.INFO.asString())
+            .append(space())
+            .append(translatable("moonrise.command.leaderboard.refreshed"))
+            .append(FULL_STOP)
+            .build();
+
     static Component formatStringList(Collection<String> strings) {
         Iterator<String> it = strings.iterator();
         if (!it.hasNext()) {
@@ -484,6 +554,14 @@ public interface Message {
 
         default void send(Sender sender, A0 arg0, A1 arg1) {
             sender.sendMessage(build(arg0, arg1));
+        }
+    }
+
+    interface Args3<A0, A1, A2> {
+        Component build(A0 arg0, A1 arg1, A2 arg2);
+
+        default void send(Sender sender, A0 arg0, A1 arg1, A2 arg2) {
+            sender.sendMessage(build(arg0, arg1, arg2));
         }
     }
 

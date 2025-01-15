@@ -97,3 +97,9 @@ data:
 
 # If MoonRise should automatically install translation bundles and periodically update them.
 auto-install-translations: true
+
+# Maximum number of concurrent members that can be included in activity calculations.
+activity-max-voices: 5
+
+# A configuration key representing the multiplier applied to activity-based experience calculations.
+activity-experience-multiplier: 1

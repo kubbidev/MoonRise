@@ -8,6 +8,7 @@ import me.kubbidev.moonrise.common.storage.implementation.StorageImplementation;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.util.AsyncInterface;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -60,29 +61,28 @@ public class Storage extends AsyncInterface {
         return future(() -> this.implementation.loadGuild(guildId));
     }
 
+    public CompletableFuture<Set<ApiGuild>> loadGuilds() {
+        return future(this.implementation::loadGuilds);
+    }
+
     public CompletableFuture<ApiMember> loadMember(long guildId, long userId) {
         return future(() -> this.implementation.loadMember(guildId, userId));
     }
 
-    public CompletableFuture<ApiUser> saveUser(ApiUser user) {
-        return future(() -> {
-            this.implementation.saveUser(user);
-            return user;
-        });
+    public CompletableFuture<List<ApiMember>> loadMembersWithHighestExperience(long guildId, int limit) {
+        return future(() -> this.implementation.loadMembersWithHighestExperience(guildId, limit));
     }
 
-    public CompletableFuture<ApiGuild> saveGuild(ApiGuild guild) {
-        return future(() -> {
-            this.implementation.saveGuild(guild);
-            return guild;
-        });
+    public CompletableFuture<Void> saveUser(ApiUser user) {
+        return future(() -> this.implementation.saveUser(user));
     }
 
-    public CompletableFuture<ApiMember> saveMember(ApiMember member) {
-        return future(() -> {
-            this.implementation.saveMember(member);
-            return member;
-        });
+    public CompletableFuture<Void> saveGuild(ApiGuild guild) {
+        return future(() -> this.implementation.saveGuild(guild));
+    }
+
+    public CompletableFuture<Void> saveMember(ApiMember member) {
+        return future(() -> this.implementation.saveMember(member));
     }
 
     public CompletableFuture<Set<Snowflake>> getUniqueUsers() {

@@ -31,6 +31,12 @@ public class ApiMember extends ApiUser {
      */
     private @Nullable String biography = null;
 
+    private long experience;
+    private long voiceActivity;
+
+    /** Represents the previous placement of a member in a leaderboard or ranking system */
+    private int placement = -1;
+
     public ApiMember(long id, MoonRisePlugin plugin) {
         super(id, plugin);
     }
@@ -123,6 +129,30 @@ public class ApiMember extends ApiUser {
      */
     public void setBiography(@Nullable String biography) {
         this.biography = DataConstraints.sanitize(biography);
+    }
+
+    public long getExperience() {
+        return this.experience;
+    }
+
+    public void setExperience(long experience) {
+        this.experience = experience;
+    }
+
+    public long getVoiceActivity() {
+        return this.voiceActivity;
+    }
+
+    public void setVoiceActivity(long voiceActivity) {
+        this.voiceActivity = voiceActivity;
+    }
+
+    public int getPlacement() {
+        return this.placement;
+    }
+
+    public void setPlacement(int placement) {
+        this.placement = placement;
     }
 
     @Override

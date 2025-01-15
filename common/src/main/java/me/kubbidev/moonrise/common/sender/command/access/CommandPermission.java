@@ -1,0 +1,63 @@
+package me.kubbidev.moonrise.common.sender.command.access;
+
+import me.kubbidev.moonrise.common.sender.Sender;
+
+/**
+ * An enumeration of the permissions required to execute built in MoonRise commands.
+ */
+public enum CommandPermission {
+
+    INFO("info", Type.NONE),
+    RELOAD_CONFIG("reloadconfig", Type.NONE),
+    TRANSLATIONS("translations", Type.NONE);
+
+    public static final String ROOT = "moonrise.";
+
+    private final String node;
+    private final String permission;
+
+    private final Type type;
+
+    CommandPermission(String node, Type type) {
+        this.type = type;
+
+        if (type == Type.NONE) {
+            this.node = node;
+        } else {
+            this.node = type.getTag() + "." + node;
+        }
+
+        this.permission = ROOT + this.node;
+    }
+
+    public String getNode() {
+        return this.node;
+    }
+
+    public String getPermission() {
+        return this.permission;
+    }
+
+    public boolean isAuthorized(Sender sender) {
+        return sender.hasPermission(this);
+    }
+
+    public Type getType() {
+        return this.type;
+    }
+
+    public enum Type {
+
+        NONE(null);
+
+        private final String tag;
+
+        Type(String tag) {
+            this.tag = tag;
+        }
+
+        public String getTag() {
+            return this.tag;
+        }
+    }
+}

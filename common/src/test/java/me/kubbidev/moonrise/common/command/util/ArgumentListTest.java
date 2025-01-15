@@ -1,6 +1,7 @@
 package me.kubbidev.moonrise.common.command.util;
 
 import com.google.common.collect.ImmutableList;
+import me.kubbidev.moonrise.common.sender.command.util.ArgumentList;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

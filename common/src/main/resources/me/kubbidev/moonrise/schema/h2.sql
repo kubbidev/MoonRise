@@ -13,19 +13,24 @@ CREATE INDEX ON `{prefix}users` (`username`);
 
 CREATE TABLE `{prefix}guilds`
 (
-    `id`   BIGINT       NOT NULL,
-    `name` VARCHAR(100) NOT NULL,
-    `icon` VARCHAR(300) NOT NULL,
+    `id`                  BIGINT       NOT NULL,
+    `name`                VARCHAR(100) NOT NULL,
+    `icon`                VARCHAR(300) NOT NULL,
+    `leaderboard`         BOOL         NOT NULL,
+    `leaderboard_channel` BIGINT       NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `{prefix}members`
 (
-    `user_id`      BIGINT       NOT NULL,
-    `guild_id`     BIGINT       NOT NULL,
-    `nickname`     VARCHAR(32)  NOT NULL,
-    `guild_avatar` VARCHAR(300) NOT NULL,
-    `biography`    VARCHAR(300) NOT NULL,
+    `user_id`        BIGINT       NOT NULL,
+    `guild_id`       BIGINT       NOT NULL,
+    `nickname`       VARCHAR(32)  NOT NULL,
+    `guild_avatar`   VARCHAR(300) NOT NULL,
+    `biography`      VARCHAR(300) NOT NULL,
+    `experience`     BIGINT       NOT NULL,
+    `voice_activity` BIGINT       NOT NULL,
+    `placement`      INT          NOT NULL,
     PRIMARY KEY (`user_id`)
 );
 CREATE INDEX ON `{prefix}members` (`guild_id`);

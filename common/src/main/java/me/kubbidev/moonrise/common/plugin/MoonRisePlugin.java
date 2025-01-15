@@ -2,12 +2,11 @@ package me.kubbidev.moonrise.common.plugin;
 
 import me.kubbidev.moonrise.api.platform.Health;
 import me.kubbidev.moonrise.common.api.MoonRiseApiProvider;
-import me.kubbidev.moonrise.common.command.CommandManager;
-import me.kubbidev.moonrise.common.command.abstraction.Command;
-import me.kubbidev.moonrise.common.gateway.GatewayClient;
+import me.kubbidev.moonrise.common.sender.command.CommandManager;
+import me.kubbidev.moonrise.common.sender.command.abstraction.Command;
+import me.kubbidev.moonrise.common.GatewayClient;
 import me.kubbidev.moonrise.common.storage.Storage;
 import me.kubbidev.moonrise.common.event.EventDispatcher;
-import me.kubbidev.moonrise.common.extension.SimpleExtensionManager;
 import me.kubbidev.moonrise.common.config.MoonRiseConfiguration;
 import me.kubbidev.moonrise.common.dependencies.DependencyManager;
 import me.kubbidev.moonrise.common.http.BytebinClient;
@@ -77,13 +76,6 @@ public interface MoonRisePlugin {
      * @return the api
      */
     MoonRiseApiProvider getApiProvider();
-
-    /**
-     * Gets the extension manager.
-     *
-     * @return the extension manager
-     */
-    SimpleExtensionManager getExtensionManager();
 
     /**
      * Gets the command manager

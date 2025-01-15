@@ -1,11 +1,9 @@
 package me.kubbidev.moonrise.common.event;
 
 import me.kubbidev.moonrise.api.event.MoonRiseEvent;
-import me.kubbidev.moonrise.api.event.extension.ExtensionLoadEvent;
 import me.kubbidev.moonrise.api.event.sync.ConfigReloadEvent;
 import me.kubbidev.moonrise.api.event.type.Cancellable;
 import me.kubbidev.moonrise.api.event.type.ResultEvent;
-import me.kubbidev.moonrise.api.extension.Extension;
 
 public record EventDispatcher(AbstractEventBus<?> eventBus) {
     private void post(MoonRiseEvent event) {
@@ -56,10 +54,6 @@ public record EventDispatcher(AbstractEventBus<?> eventBus) {
 
         // return the final status
         return cancellable.isCancelled();
-    }
-
-    public void dispatchExtensionLoad(Extension extension) {
-        this.postAsync(new ExtensionLoadEvent(extension));
     }
 
     public void dispatchConfigReload() {

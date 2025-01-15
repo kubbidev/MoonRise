@@ -1,7 +1,7 @@
 package me.kubbidev.moonrise.standalone;
 
-import me.kubbidev.moonrise.common.command.CommandManager;
-import me.kubbidev.moonrise.common.command.util.ArgumentTokenizer;
+import me.kubbidev.moonrise.common.sender.command.CommandManager;
+import me.kubbidev.moonrise.common.sender.command.util.ArgumentTokenizer;
 import me.kubbidev.moonrise.common.sender.Sender;
 import me.kubbidev.moonrise.standalone.app.integration.CommandExecutor;
 import me.kubbidev.moonrise.standalone.app.integration.StandaloneSender;
