@@ -31,6 +31,6 @@ CREATE TABLE `{prefix}members`
     `experience`     BIGINT       NOT NULL,
     `voice_activity` BIGINT       NOT NULL,
     `placement`      INT          NOT NULL,
-    PRIMARY KEY (`user_id`)
+    PRIMARY KEY (`user_id`, `guild_id`)
 );
-CREATE INDEX ON `{prefix}members` (`guild_id`);
+CREATE INDEX ON `{prefix}members` (`user_id`, `guild_id`);

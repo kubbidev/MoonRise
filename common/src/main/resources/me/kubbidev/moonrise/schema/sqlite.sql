@@ -21,13 +21,14 @@ CREATE TABLE `{prefix}guilds`
 
 CREATE TABLE `{prefix}members`
 (
-    `user_id`        BIGINT PRIMARY KEY NOT NULL,
-    `guild_id`       BIGINT             NOT NULL,
-    `nickname`       VARCHAR(32)        NOT NULL,
-    `guild_avatar`   VARCHAR(300)       NOT NULL,
-    `biography`      VARCHAR(300)       NOT NULL,
-    `experience`     BIGINT             NOT NULL,
-    `voice_activity` BIGINT             NOT NULL,
-    `placement`      INTEGER            NOT NULL
+    `user_id`        BIGINT       NOT NULL,
+    `guild_id`       BIGINT       NOT NULL,
+    `nickname`       VARCHAR(32)  NOT NULL,
+    `guild_avatar`   VARCHAR(300) NOT NULL,
+    `biography`      VARCHAR(300) NOT NULL,
+    `experience`     BIGINT       NOT NULL,
+    `voice_activity` BIGINT       NOT NULL,
+    `placement`      INTEGER      NOT NULL,
+    PRIMARY KEY (`user_id`, `guild_id`)
 );
-CREATE INDEX `{prefix}members_guild_id` ON `{prefix}members` (`guild_id`);
+CREATE UNIQUE INDEX `{prefix}members_user_guild_unique` ON `{prefix}members` (`user_id`, `guild_id`);

@@ -31,6 +31,6 @@ CREATE TABLE `{prefix}members`
     `experience`     BIGINT       NOT NULL,
     `voice_activity` BIGINT       NOT NULL,
     `placement`      INT          NOT NULL,
-    PRIMARY KEY (`user_id`)
+    PRIMARY KEY (`user_id`, `guild_id`)
 ) DEFAULT CHARSET = utf8mb4;
-CREATE INDEX `{prefix}members_guild_id` ON `{prefix}members` (`guild_id`);
+CREATE UNIQUE INDEX `{prefix}members_user_guild_unique` ON `{prefix}members` (`user_id`, `guild_id`);
