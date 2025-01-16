@@ -6,10 +6,12 @@ import me.kubbidev.moonrise.common.leaderboard.tracker.ActivityListener;
 import me.kubbidev.moonrise.common.listener.GuildListener;
 import me.kubbidev.moonrise.common.listener.MemberListener;
 import me.kubbidev.moonrise.common.listener.UserListener;
+import me.kubbidev.moonrise.common.plugin.AbstractMoonRisePlugin;
 import me.kubbidev.moonrise.common.retriever.AbstractEntityRetriever;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.storage.Storage;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.events.session.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -72,6 +74,7 @@ public class GatewayClient extends AbstractEntityRetriever implements AutoClosea
                 )
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .setEnableShutdownHook(true)
+                .setActivity(Activity.playing(AbstractMoonRisePlugin.getPluginName()))
                 .addEventListeners(this.interactionManager)
                 .addEventListeners(
                         new UserListener(this),
