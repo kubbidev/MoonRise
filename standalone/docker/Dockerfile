@@ -20,4 +20,4 @@ RUN java -jar moonrise-standalone.jar preloadDependencies
 CMD ["java", "-jar", "moonrise-standalone.jar", "--docker"]
 
 HEALTHCHECK --interval=30s --timeout=15s --start-period=20s \
-    CMD wget http://localhost:3001/health -q -O - | grep -c '"up":true' || exit 1
+    CMD wget http://localhost:3001/health -q -O - | grep -c '"isHealthy":true' || exit 1
