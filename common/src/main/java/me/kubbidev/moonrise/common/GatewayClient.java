@@ -71,7 +71,7 @@ public class GatewayClient extends AbstractEntityRetriever implements AutoClosea
                         CacheFlag.ONLINE_STATUS
                 )
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
-                .setEnableShutdownHook(false)
+                .setEnableShutdownHook(true)
                 .addEventListeners(this.interactionManager)
                 .addEventListeners(
                         new UserListener(this),
