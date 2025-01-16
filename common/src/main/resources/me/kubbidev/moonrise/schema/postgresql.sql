@@ -31,4 +31,4 @@ CREATE TABLE "{prefix}members"
     "placement"      INTEGER      NOT NULL,
     PRIMARY KEY ("user_id", "guild_id")
 );
-CREATE UNIQUE INDEX "{prefix}members_user_guild_unique" ON "{prefix}members" ("user_id", "guild_id");
+CREATE INDEX "{prefix}members_user_guild_unique" ON "{prefix}members" ("user_id", "guild_id");

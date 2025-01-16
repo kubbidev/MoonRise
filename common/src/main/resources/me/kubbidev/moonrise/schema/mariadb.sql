@@ -33,4 +33,4 @@ CREATE TABLE `{prefix}members`
     `placement`      INT          NOT NULL,
     PRIMARY KEY (`user_id`, `guild_id`)
 ) DEFAULT CHARSET = utf8mb4;
-CREATE UNIQUE INDEX `{prefix}members_user_guild_unique` ON `{prefix}members` (`user_id`, `guild_id`);
+CREATE INDEX `{prefix}members_user_guild_unique` ON `{prefix}members` (`user_id`, `guild_id`);
