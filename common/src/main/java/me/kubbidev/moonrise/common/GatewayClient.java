@@ -73,7 +73,7 @@ public class GatewayClient extends AbstractEntityRetriever implements AutoClosea
                         CacheFlag.ONLINE_STATUS
                 )
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
-                .setEnableShutdownHook(true)
+                .setEnableShutdownHook(false)
                 .setActivity(Activity.playing(AbstractMoonRisePlugin.getPluginName()))
                 .addEventListeners(this.interactionManager)
                 .addEventListeners(
@@ -122,7 +122,9 @@ public class GatewayClient extends AbstractEntityRetriever implements AutoClosea
      */
     private void awaitShutdown() {
         try {
-            this.shutdownLatch.await();
+            if (!this.shutdownLatch.await(30, TimeUnit.SECONDS)) { // blocking
+                this.plugin.getLogger().severe("The gateway shutdown timed out!");
+            }
         } catch (InterruptedException e) {
             this.plugin.getLogger().warn("Interrupted while waiting for gateway shutdown", e);
         }
@@ -134,7 +136,7 @@ public class GatewayClient extends AbstractEntityRetriever implements AutoClosea
 
         if (this.shardManager != null) {
             this.shardManager.shutdown();
-            this.awaitShutdown();
+            this.awaitShutdown(); // blocking
         }
     }
 
