@@ -20,61 +20,93 @@ import java.util.*;
 
 public class SqlStorage implements StorageImplementation {
 
-    private static final String USER_SELECT_BY_ID = "SELECT" +
-            " username, global_name, avatar, last_seen FROM '{prefix}users'" +
-            " WHERE id=? LIMIT 1";
+    private static final String USER_SELECT_BY_ID = """
+                SELECT username, global_name, avatar, last_seen
+                FROM '{prefix}users'
+                WHERE id=?
+                LIMIT 1
+            """;
 
-    private static final String USER_UPDATE_BY_ID = "UPDATE '{prefix}users' SET" +
-            " username=?, global_name=?, avatar=?, last_seen=?" +
-            " WHERE id=?";
+    private static final String USER_UPDATE_BY_ID = """
+                UPDATE '{prefix}users'
+                SET username=?, global_name=?, avatar=?, last_seen=?
+                WHERE id=?
+            """;
 
-    private static final String USER_INSERT = "INSERT INTO '{prefix}users' " +
-            "(id, username, global_name, avatar, last_seen)" +
-            " VALUES(?, ?, ?, ?, ?)";
-    private static final String USER_SELECT_IDS
-            = "SELECT id FROM '{prefix}users'";
+    private static final String USER_INSERT = """
+                INSERT INTO '{prefix}users' (id, username, global_name, avatar, last_seen)
+                VALUES (?, ?, ?, ?, ?)
+            """;
 
-    private static final String GUILD_SELECT_ALL = "SELECT " +
-            "name, icon, leaderboard, leaderboard_channel FROM '{prefix}guilds'";
+    private static final String USER_SELECT_IDS = """
+                SELECT id
+                FROM '{prefix}users'
+            """;
 
-    private static final String GUILD_SELECT_BY_ID = "SELECT " +
-            "name, icon, leaderboard, leaderboard_channel FROM '{prefix}guilds'" +
-            " WHERE id=? LIMIT 1";
+    private static final String GUILD_SELECT_ALL = """
+                SELECT id, name, icon, leaderboard, leaderboard_channel
+                FROM '{prefix}guilds'
+            """;
 
-    private static final String GUILD_UPDATE_BY_ID = "UPDATE '{prefix}guilds'" +
-            " SET name=?, icon=?, leaderboard=?, leaderboard_channel=?" +
-            " WHERE id=?";
+    private static final String GUILD_SELECT_BY_ID = """
+                SELECT name, icon, leaderboard, leaderboard_channel
+                FROM '{prefix}guilds'
+                WHERE id=?
+                LIMIT 1
+            """;
 
-    private static final String GUILD_INSERT = "INSERT INTO '{prefix}guilds' " +
-            "(id, name, icon, leaderboard, leaderboard_channel) " +
-            "VALUES(?, ?, ?, ?, ?)";
-    private static final String GUILD_SELECT_IDS
-            = "SELECT id FROM '{prefix}guilds'";
+    private static final String GUILD_UPDATE_BY_ID = """
+                UPDATE '{prefix}guilds'
+                SET name=?, icon=?, leaderboard=?, leaderboard_channel=?
+                WHERE id=?
+            """;
+
+    private static final String GUILD_INSERT = """
+                INSERT INTO '{prefix}guilds' (id, name, icon, leaderboard, leaderboard_channel)
+                VALUES (?, ?, ?, ?, ?)
+            """;
+
+    private static final String GUILD_SELECT_IDS = """
+                SELECT id
+                FROM '{prefix}guilds'
+            """;
 
     private static final String MEMBER_SELECT_ALL_WITH_HIGHEST_EXPERIENCE = """
-            SELECT user_id, nickname, guild_avatar, biography, experience, voice_activity, placement \
-            FROM '{prefix}members' \
-            WHERE guild_id=? \
-            ORDER BY experience DESC \
-            LIMIT ?;""";
+                SELECT user_id, nickname, guild_avatar, biography, experience, voice_activity, placement
+                FROM '{prefix}members'
+                WHERE guild_id=?
+                ORDER BY experience DESC
+                LIMIT ?
+            """;
 
-    private static final String MEMBER_SELECT_BY_IDS = "SELECT " +
-            "nickname, guild_avatar, biography, experience, voice_activity, placement FROM '{prefix}members' " +
-            "WHERE user_id=? AND guild_id=? LIMIT 1";
+    private static final String MEMBER_SELECT_BY_IDS = """
+                SELECT nickname, guild_avatar, biography, experience, voice_activity, placement
+                FROM '{prefix}members'
+                WHERE user_id=? AND guild_id=?
+                LIMIT 1
+            """;
 
-    private static final String MEMBER_UPDATE_BY_IDS = "UPDATE '{prefix}members' " +
-            "SET nickname=?, guild_avatar=?, biography=?, experience=?, voice_activity=?, placement=?" +
-            " WHERE user_id=? AND guild_id=?";
+    private static final String MEMBER_UPDATE_BY_IDS = """
+                UPDATE '{prefix}members'
+                SET nickname=?, guild_avatar=?, biography=?, experience=?, voice_activity=?, placement=?
+                WHERE user_id=? AND guild_id=?
+            """;
 
-    private static final String MEMBER_INSERT = "INSERT INTO '{prefix}members' " +
-            "(user_id, guild_id, nickname, guild_avatar, biography, experience, voice_activity, placement) " +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String MEMBER_INSERT = """
+                INSERT INTO '{prefix}members' (user_id, guild_id, nickname, guild_avatar, biography, experience, voice_activity, placement)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """;
 
-    private static final String MEMBER_SELECT_USER_ID_BY_GUILD_ID
-            = "SELECT user_id FROM '{prefix}members' WHERE guild_id=?";
+    private static final String MEMBER_SELECT_USER_ID_BY_GUILD_ID = """
+                SELECT user_id
+                FROM '{prefix}members'
+                WHERE guild_id=?
+            """;
 
-    private static final String MEMBER_SELECT_USER_IDS
-            = "SELECT user_id FROM '{prefix}members'";
+    private static final String MEMBER_SELECT_USER_IDS = """
+                SELECT user_id
+                FROM '{prefix}members'
+            """;
 
     private final MoonRisePlugin plugin;
 
