@@ -38,4 +38,4 @@ You can find the output jars in the `build/libs` directory.
 
 ## License
 
-MoonRise © 2024 by kubbidev is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+MoonRise © 2025 by kubbidev is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
