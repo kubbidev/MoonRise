@@ -28,11 +28,10 @@ package me.kubbidev.moonrise.common.sender.command.spec;
 import me.kubbidev.moonrise.common.locale.Message;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import org.jetbrains.annotations.NotNull;
 
 public record Argument(String name, boolean required, TranslatableComponent description) {
 
-    public @NotNull Component asPrettyString() {
+    public Component asPrettyString() {
         return (this.required ? Message.REQUIRED_ARGUMENT : Message.OPTIONAL_ARGUMENT).build(this.name);
     }
 }

@@ -29,8 +29,8 @@ MoonRise uses Gradle to handle dependencies & building.
 #### Compiling from source
 
 ```sh
-git clone https://gitlab.com/kubbidev/moonrise.git
-cd moonrise/
+git clone https://github.com/kubbidev/MoonRise.git
+cd MoonRise/
 ./gradlew build
 ```
 

@@ -4,6 +4,7 @@ import com.google.common.collect.ForwardingList;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * A list of {@link String} arguments, with extra methods to help
@@ -37,5 +38,30 @@ public class ArgumentList extends ForwardingList<String> {
     @Override
     public @NotNull ArgumentList subList(int fromIndex, int toIndex) {
         return new ArgumentList(super.subList(fromIndex, toIndex));
+    }
+
+    public int getInt(int index) throws ArgumentException {
+        return getInt(index, ArgumentException.DetailedUsage::new);
+    }
+
+    public int getInt(int index, Supplier<ArgumentException> exceptionSupplier)
+            throws ArgumentException {
+        try {
+            return Integer.parseInt(get(index));
+        } catch (NumberFormatException e) {
+            throw exceptionSupplier.get();
+        }
+    }
+
+    public int getIntOrDefault(int index, int defaultValue) {
+        if (indexOutOfBounds(index)) {
+            return defaultValue;
+        }
+
+        try {
+            return Integer.parseInt(get(index));
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 }

@@ -17,32 +17,20 @@ import java.util.function.Predicate;
 
 /**
  * An abstract command class
+ *
+ * @param <T> the argument type required by the command
  */
 public abstract class Command<T> {
+    private final CommandSpec spec;
+    private final String name;
 
-    /**
-     * The commands specification.
-     * <p>
-     * Contains details about usage, description, etc
-     */
-    private final @NotNull CommandSpec spec;
+    @Nullable
+    private final CommandPermission permission;
 
-    /**
-     * The name of the command. Should be properly capitalised.
-     */
-    private final @NotNull String name;
+    /** A predicate used for testing the size of the arguments list passed to this command */
+    private final Predicate<Integer> argumentCheck;
 
-    /**
-     * The permission required to use this command. Nullable.
-     */
-    private final @Nullable CommandPermission permission;
-
-    /**
-     * A predicate used for testing the size of the arguments list passed to this command
-     */
-    private final @NotNull Predicate<Integer> argumentCheck;
-
-    public Command(@NotNull CommandSpec spec, @NotNull String name, @Nullable CommandPermission permission, @NotNull Predicate<Integer> argumentCheck) {
+    public Command(CommandSpec spec, String name, @Nullable CommandPermission permission, Predicate<Integer> argumentCheck) {
         this.spec = spec;
         this.name = name;
         this.permission = permission;
@@ -93,8 +81,8 @@ public abstract class Command<T> {
      *
      * @return the description
      */
-    public Component getDescription() {
-        return this.getSpec().description();
+    public @NotNull Component getDescription() {
+        return getSpec().description();
     }
 
     /**
@@ -103,8 +91,8 @@ public abstract class Command<T> {
      *
      * @return the usage of this command.
      */
-    public String getUsage() {
-        String usage = this.getSpec().usage();
+    public @NotNull String getUsage() {
+        String usage = getSpec().usage();
         return usage == null ? "" : usage;
     }
 
@@ -113,8 +101,8 @@ public abstract class Command<T> {
      *
      * @return the commands arguments
      */
-    public Optional<List<Argument>> getArgs() {
-        return Optional.ofNullable(this.getSpec().args());
+    public @NotNull Optional<List<Argument>> getArgs() {
+        return Optional.ofNullable(getSpec().args());
     }
 
     // Main execution method for the command.
@@ -160,9 +148,10 @@ public abstract class Command<T> {
     /**
      * Gets if this command should be displayed in command listings, or "hidden"
      *
+     * @param sender the sender
      * @return if the command should be displayed
      */
-    public boolean shouldDisplay() {
+    public boolean shouldDisplay(@SuppressWarnings("unused") Sender sender) {
         return true;
     }
 }

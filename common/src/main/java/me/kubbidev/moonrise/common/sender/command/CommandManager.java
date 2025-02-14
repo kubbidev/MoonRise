@@ -107,7 +107,7 @@ public class CommandManager {
 
             // actually try to execute the command
             try {
-                this.execute(sender, label, argsCopy);
+                execute(sender, label, argsCopy);
             } catch (Throwable e) {
                 // catch any exception
                 this.plugin.getLogger().severe("Exception whilst executing command: " + args, e);
@@ -127,7 +127,7 @@ public class CommandManager {
         // schedule another task to catch if the command doesn't complete after 10 seconds
         timeoutTask.set(scheduler.asyncLater(() -> {
             if (!future.isDone()) {
-                this.handleCommandTimeout(executorThread, argsCopy);
+                handleCommandTimeout(executorThread, argsCopy);
             }
         }, 10, TimeUnit.SECONDS));
 
@@ -147,7 +147,7 @@ public class CommandManager {
     }
 
     private void execute(Sender sender, String label, List<String> arguments) {
-        if (this.isEmptyCommandCall(sender, label, arguments)) {
+        if (isEmptyCommandCall(sender, label, arguments)) {
             return; // Handle no arguments
         }
 
@@ -156,13 +156,13 @@ public class CommandManager {
 
         // Main command not found
         if (main == null) {
-            this.sendCommandUsage(sender, label);
+            sendCommandUsage(sender, label);
             return;
         }
 
         // Check the Sender has permission to use the main command.
         if (!main.isAuthorized(sender)) {
-            this.sendCommandUsage(sender, label);
+            sendCommandUsage(sender, label);
             return;
         }
 
@@ -183,7 +183,7 @@ public class CommandManager {
     }
 
     public boolean hasPermissionForAny(Sender sender) {
-        return this.mainCommands.values().stream().anyMatch(c -> c.shouldDisplay() && c.isAuthorized(sender));
+        return this.mainCommands.values().stream().anyMatch(c -> c.shouldDisplay(sender) && c.isAuthorized(sender));
     }
 
     private boolean isEmptyCommandCall(Sender sender, String label, List<String> arguments) {
@@ -193,7 +193,7 @@ public class CommandManager {
         }
 
         Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
-        if (this.hasPermissionForAny(sender)) {
+        if (hasPermissionForAny(sender)) {
             Message.VIEW_AVAILABLE_COMMANDS_PROMPT.send(sender, label);
             return true;
         }
@@ -204,7 +204,7 @@ public class CommandManager {
 
     public List<String> tabCompleteCommand(Sender sender, List<String> arguments) {
         List<Command<?>> mains = this.mainCommands.values().stream()
-                .filter(Command::shouldDisplay)
+                .filter(m -> m.shouldDisplay(sender))
                 .filter(m -> m.isAuthorized(sender))
                 .collect(ImmutableCollectors.toList());
 
@@ -223,7 +223,7 @@ public class CommandManager {
         Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
 
         this.mainCommands.values().stream()
-                .filter(Command::shouldDisplay)
+                .filter(c -> c.shouldDisplay(sender))
                 .filter(c -> c.isAuthorized(sender))
                 .forEach(c -> sender.sendMessage(Component.text()
                         .append(Component.text('>', NamedTextColor.DARK_AQUA))

@@ -1,3 +1,8 @@
+# cd standalone/loader/build/libs
+#
+# cp MoonRise-*.jar moonrise-standalone.jar
+# docker build . -t moonrise -f ../../../../Dockerfile
+
 FROM eclipse-temurin:21-alpine
 RUN apk add --no-cache netcat-openbsd
 

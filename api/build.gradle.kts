@@ -18,7 +18,7 @@ publishing {
             pom {
                 name = "MoonRise"
                 description = "A simple but powerful Discord Bot used to enhance your Discord experience."
-                url = "https://gitlab.com/kubbidev/moonrise"
+                url = "https://github.com/kubbidev/MoonRise"
 
                 licenses {
                     license {
@@ -36,8 +36,8 @@ publishing {
                 }
 
                 issueManagement {
-                    system = "Gitlab"
-                    url = "https://gitlab.com/kubbidev/moonrise/-/issues"
+                    system = "GitHub"
+                    url = "https://github.com/kubbidev/MoonRise/issues"
                 }
             }
         }

@@ -11,27 +11,31 @@ import me.kubbidev.moonrise.common.util.ImmutableCollectors;
 import me.kubbidev.moonrise.common.util.Predicates;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class ParentCommand<T, I> extends Command<Void> {
-
     /** The type of parent command */
     private final Type type;
+    private final List<Command<T>> children = new ArrayList<>();
 
-    /** Child sub commands */
-    private final List<Command<T>> children;
-
-    public ParentCommand(CommandSpec spec, String name, Type type, List<Command<T>> children) {
+    public ParentCommand(CommandSpec spec, String name, Type type) {
         super(spec, name, null, Predicates.alwaysFalse());
         this.type = type;
-        this.children = children;
+    }
+
+    public boolean addChildren(Command<T> child) {
+        return this.children.add(child);
+    }
+
+    public boolean removeChildren(Command<T> child) {
+        return this.children.remove(child);
     }
 
     public @NotNull List<Command<T>> getChildren() {
-        return this.children;
+        return Collections.unmodifiableList(this.children);
     }
 
     @Override
@@ -42,19 +46,35 @@ public abstract class ParentCommand<T, I> extends Command<Void> {
             return;
         }
 
-        Command<T> sub = getChildren().stream()
+        List<Command<T>> subs = this.children.stream()
                 .filter(s -> s.getName().equalsIgnoreCase(args.get(this.type.index)))
-                .findFirst()
-                .orElse(null);
+                .collect(ImmutableCollectors.toList());
 
-        if (sub == null) {
+        if (subs.isEmpty()) {
             Message.COMMAND_NOT_RECOGNISED.send(sender);
             return;
         }
 
-        if (!sub.isAuthorized(sender)) {
+        boolean authorize = false;
+        Command<T> sub;
+        if (subs.size() == 1) {
+            sub = subs.getFirst();
+        } else {
+            authorize = true;
+            sub = subs.stream()
+                    .filter(c -> c.isAuthorized(sender))
+                    .findFirst() // maybe more than one
+                    .orElse(null);
+        }
+
+        if (sub == null) {
             Message.COMMAND_NO_PERMISSION.send(sender);
             return;
+        } else {
+            if (!(authorize || sub.isAuthorized(sender))) {
+                Message.COMMAND_NO_PERMISSION.send(sender);
+                return;
+            }
         }
 
         if (sub.getArgumentCheck().test(args.size() - this.type.minArgs)) {
@@ -68,21 +88,13 @@ public abstract class ParentCommand<T, I> extends Command<Void> {
             var targetId = this.parseTarget(targetArgument, plugin, sender);
             if (targetId == null) return;
 
-            ReentrantLock lock = this.getLockForTarget(targetId);
-            lock.lock();
+            var target = this.getTarget(targetId, plugin, sender);
+            if (target == null) return;
+
             try {
-                var target = this.getTarget(targetId, plugin, sender);
-                if (target == null) return;
-
-                try {
-                    sub.execute(plugin, sender, target, args.subList(this.type.minArgs, args.size()), label);
-                } catch (CommandException e) {
-                    e.handle(sender, label, sub);
-                }
-
-                this.cleanup(target, plugin);
-            } finally {
-                lock.unlock();
+                sub.execute(plugin, sender, target, args.subList(this.type.minArgs, args.size()), label);
+            } catch (CommandException e) {
+                e.handle(sender, label, sub);
             }
         } else {
             try {
@@ -97,12 +109,14 @@ public abstract class ParentCommand<T, I> extends Command<Void> {
     public List<String> tabComplete(MoonRisePlugin plugin, Sender sender, ArgumentList args) {
         return switch (this.type) {
             case TARGETED -> TabCompleter.create()
-                    .at(0, CompletionSupplier.startsWith(() -> this.getTargets(plugin).stream()))
-                    .at(1, CompletionSupplier.startsWith(() -> this.getChildren().stream()
+                    .at(0, CompletionSupplier.startsWith(() -> getTargets(plugin).stream()))
+                    .at(1, CompletionSupplier.startsWith(() -> this.children.stream()
+                            .filter(s -> s.shouldDisplay(sender))
                             .filter(s -> s.isAuthorized(sender))
                             .map(s -> s.getName().toLowerCase(Locale.ROOT))
                     ))
-                    .from(2, partial -> this.getChildren().stream()
+                    .from(2, partial -> this.children.stream()
+                            .filter(s -> s.shouldDisplay(sender))
                             .filter(s -> s.isAuthorized(sender))
                             .filter(s -> s.getName().equalsIgnoreCase(args.get(1)))
                             .findFirst()
@@ -111,11 +125,13 @@ public abstract class ParentCommand<T, I> extends Command<Void> {
                     )
                     .complete(args);
             case NOT_TARGETED -> TabCompleter.create()
-                    .at(0, CompletionSupplier.startsWith(() -> this.getChildren().stream()
+                    .at(0, CompletionSupplier.startsWith(() -> this.children.stream()
+                            .filter(s -> s.shouldDisplay(sender))
                             .filter(s -> s.isAuthorized(sender))
                             .map(s -> s.getName().toLowerCase(Locale.ROOT))
                     ))
-                    .from(1, partial -> this.getChildren().stream()
+                    .from(1, partial -> this.children.stream()
+                            .filter(s -> s.shouldDisplay(sender))
                             .filter(s -> s.isAuthorized(sender))
                             .filter(s -> s.getName().equalsIgnoreCase(args.getFirst()))
                             .findFirst()
@@ -144,12 +160,24 @@ public abstract class ParentCommand<T, I> extends Command<Void> {
 
     @Override
     public void sendDetailedUsage(Sender sender, String label) {
-        this.sendUsage(sender, label);
+        sendUsage(sender, label);
     }
 
     @Override
     public boolean isAuthorized(Sender sender) {
-        return this.getChildren().stream().anyMatch(c -> c.isAuthorized(sender));
+        return this.children.stream().anyMatch(c -> c.isAuthorized(sender));
+    }
+
+    protected List<String> getTargets(MoonRisePlugin plugin) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected I parseTarget(String target, MoonRisePlugin plugin, Sender sender) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected T getTarget(I target, MoonRisePlugin plugin, Sender sender) {
+        throw new UnsupportedOperationException();
     }
 
     public enum Type {
@@ -166,25 +194,5 @@ public abstract class ParentCommand<T, I> extends Command<Void> {
             this.index = index;
             this.minArgs = index + 1;
         }
-    }
-
-    protected I parseTarget(String target, MoonRisePlugin plugin, Sender sender) {
-        throw new UnsupportedOperationException();
-    }
-
-    protected ReentrantLock getLockForTarget(I target) {
-        throw new UnsupportedOperationException();
-    }
-
-    protected T getTarget(I target, MoonRisePlugin plugin, Sender sender) {
-        throw new UnsupportedOperationException();
-    }
-
-    protected List<String> getTargets(MoonRisePlugin plugin) {
-        throw new UnsupportedOperationException();
-    }
-
-    protected void cleanup(T t, MoonRisePlugin plugin) {
-        throw new UnsupportedOperationException();
     }
 }

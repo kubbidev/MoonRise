@@ -1,4 +1,4 @@
-rootProject.name = "moonrise"
+rootProject.name = "MoonRise"
 include(
     "api",
     "common",

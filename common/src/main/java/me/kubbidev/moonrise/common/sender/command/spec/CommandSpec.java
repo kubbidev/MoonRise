@@ -3,6 +3,8 @@ package me.kubbidev.moonrise.common.sender.command.spec;
 import me.kubbidev.moonrise.common.util.ImmutableCollectors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,15 +22,17 @@ public enum CommandSpec {
             arg("install", false)
     );
 
-    private final String usage;
-    private final List<Argument> args;
+    private final @Nullable String usage;
+    private final @Nullable List<Argument> args;
 
-    CommandSpec(String usage, PartialArgument... args) {
+    CommandSpec(@Nullable String usage, @NotNull PartialArgument... args) {
         this.usage = usage;
         this.args = args.length == 0 ? null : Arrays.stream(args)
                 .map(builder -> {
                     String key = builder.id.replace(".", "").replace(' ', '-');
-                    TranslatableComponent description = Component.translatable("moonrise.usage." + key() + ".argument." + key);
+                    TranslatableComponent description = Component.translatable(
+                            "moonrise.usage." + key() + ".argument." + key);
+
                     return new Argument(builder.name, builder.required, description);
                 })
                 .collect(ImmutableCollectors.toList());
@@ -42,24 +46,34 @@ public enum CommandSpec {
         return Component.translatable("moonrise.usage." + this.key() + ".description");
     }
 
-    public String usage() {
+    /**
+     * Gets the usage information for the command.
+     *
+     * @return the usage string or null if not applicable
+     */
+    public @Nullable String usage() {
         return this.usage;
     }
 
-    public List<Argument> args() {
+    /**
+     * Gets the list of command arguments.
+     *
+     * @return the list of arguments, or null if no arguments exist
+     */
+    public @Nullable List<Argument> args() {
         return this.args;
     }
 
     public String key() {
-        return this.name().toLowerCase(Locale.ROOT).replace('_', '-');
-    }
-
-    private static PartialArgument arg(String id, String name, boolean required) {
-        return new PartialArgument(id, name, required);
+        return name().toLowerCase(Locale.ROOT).replace('_', '-');
     }
 
     private static PartialArgument arg(String name, boolean required) {
         return new PartialArgument(name, name, required);
+    }
+
+    private static PartialArgument arg(String id, String name, boolean required) {
+        return new PartialArgument(id, name, required);
     }
 
     private record PartialArgument(String id, String name, boolean required) {
