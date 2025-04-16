@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class TestPluginProvider {
+
     private TestPluginProvider() {
     }
 
@@ -15,7 +16,7 @@ public final class TestPluginProvider {
      * Creates a test MoonRise plugin instance, loads/enables it, and returns it.
      *
      * @param tempDir the temporary directory to run the plugin in
-     * @param config the config to set
+     * @param config  the config to set
      * @return the plugin
      */
     public static Plugin create(Path tempDir, Map<String, String> config) {
@@ -24,7 +25,8 @@ public final class TestPluginProvider {
 
         props.forEach((k, v) -> System.setProperty("moonrise." + k, v));
 
-        MoonRiseApplication app = new MoonRiseApplication(() -> {});
+        MoonRiseApplication app = new MoonRiseApplication(() -> {
+        });
         TestPluginBootstrap bootstrap = new TestPluginBootstrap(app, tempDir);
 
         bootstrap.onLoad();
@@ -47,13 +49,14 @@ public final class TestPluginProvider {
     /**
      * Creates a test MoonRise plugin instance, loads/enables it, runs the consumer, then disables it.
      *
-     * @param tempDir the temporary directory to run the plugin in
-     * @param config the config to set
+     * @param tempDir  the temporary directory to run the plugin in
+     * @param config   the config to set
      * @param consumer the consumer
-     * @param <E> the exception class thrown by the consumer
+     * @param <E>      the exception class thrown by the consumer
      * @throws E exception
      */
-    public static <E extends Throwable> void use(Path tempDir, Map<String, String> config, Consumer<E> consumer) throws E {
+    public static <E extends Throwable> void use(Path tempDir, Map<String, String> config, Consumer<E> consumer)
+        throws E {
         try (Plugin plugin = create(tempDir, config)) {
             consumer.accept(plugin.app, plugin.bootstrap, plugin.plugin);
         }
@@ -62,9 +65,9 @@ public final class TestPluginProvider {
     /**
      * Creates a test MoonRise plugin instance, loads/enables it, runs the consumer, then disables it.
      *
-     * @param tempDir the temporary directory to run the plugin in
+     * @param tempDir  the temporary directory to run the plugin in
      * @param consumer the consumer
-     * @param <E> the exception class thrown by the consumer
+     * @param <E>      the exception class thrown by the consumer
      * @throws E exception
      */
     public static <E extends Throwable> void use(Path tempDir, Consumer<E> consumer) throws E {
@@ -73,13 +76,15 @@ public final class TestPluginProvider {
 
     @FunctionalInterface
     public interface Consumer<E extends Throwable> {
-        void accept(MoonRiseApplication app, TestPluginBootstrap bootstrap, TestPluginBootstrap.TestPlugin plugin) throws E;
+
+        void accept(MoonRiseApplication app, TestPluginBootstrap bootstrap, TestPluginBootstrap.TestPlugin plugin)
+            throws E;
     }
 
     public record Plugin(
-            MoonRiseApplication app,
-            TestPluginBootstrap bootstrap,
-            TestPluginBootstrap.TestPlugin plugin
+        MoonRiseApplication app,
+        TestPluginBootstrap bootstrap,
+        TestPluginBootstrap.TestPlugin plugin
     ) implements AutoCloseable {
 
         @Override

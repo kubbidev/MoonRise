@@ -9,6 +9,7 @@ import me.kubbidev.moonrise.common.sender.command.spec.CommandDefinition;
 import me.kubbidev.moonrise.common.sender.command.util.ArgumentList;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.sender.Sender;
+import me.kubbidev.moonrise.common.util.ImmutableCollectors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.TextComponent;
@@ -143,11 +144,16 @@ public abstract class Command {
      */
     public void sendDetailedUsage(Sender sender, String label) {
         Message.COMMAND_USAGE_DETAILED_HEADER.send(sender, getName(), getDescription());
-        Message.COMMAND_USAGE_DETAILED_FOOTER.send(sender, label);
 
-        if (getArgs().isPresent()) {
+        List<Argument> prettyArguments = getArgs().orElse(Collections.emptyList());
+        if (prettyArguments.isEmpty()) {
+            Message.COMMAND_USAGE_DETAILED_FOOTER.send(sender, label, Collections.emptyList());
+        } else {
+            Message.COMMAND_USAGE_DETAILED_FOOTER.send(sender, label,
+                prettyArguments.stream().map(Argument::asPrettyString).collect(ImmutableCollectors.toList()));
+
             Message.COMMAND_USAGE_DETAILED_ARGS_HEADER.send(sender);
-            for (Argument arg : getArgs().get()) {
+            for (Argument arg : prettyArguments) {
                 Message.COMMAND_USAGE_DETAILED_ARG.send(sender, arg.asPrettyString(), arg.getDescription());
             }
         }

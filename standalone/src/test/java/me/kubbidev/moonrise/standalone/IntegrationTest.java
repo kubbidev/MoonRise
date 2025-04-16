@@ -36,7 +36,7 @@ public class IntegrationTest {
             assertTrue(Files.exists(config));
 
             String configString = Files.readString(config)
-                    .replace("authentication-token: ''", "authentication-token: 'TOKEN'");
+                .replace("authentication-token: ''", "authentication-token: 'TOKEN'");
 
             Files.writeString(config, configString);
             plugin.getConfiguration().reload();

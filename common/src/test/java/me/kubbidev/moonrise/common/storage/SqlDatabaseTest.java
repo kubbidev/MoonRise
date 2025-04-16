@@ -20,11 +20,12 @@ public class SqlDatabaseTest extends AbstractDatabaseTest {
     }
 
     private static class TestH2ConnectionFactory implements ConnectionFactory {
+
         private final NonClosableConnection connection;
 
         TestH2ConnectionFactory() throws SQLException {
             this.connection = new NonClosableConnection(
-                    DriverManager.getConnection("jdbc:h2:mem:test")
+                DriverManager.getConnection("jdbc:h2:mem:test")
             );
         }
 

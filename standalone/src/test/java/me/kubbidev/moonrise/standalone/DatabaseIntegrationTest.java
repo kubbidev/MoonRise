@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DatabaseIntegrationTest {
 
-    private static void testStorage(MoonRiseApplication app, TestPluginBootstrap bootstrap, TestPluginBootstrap.TestPlugin plugin) {
+    private static void testStorage(MoonRiseApplication app, TestPluginBootstrap bootstrap,
+                                    TestPluginBootstrap.TestPlugin plugin) {
         // check the plugin is healthy
         Health health = plugin.runHealthCheck();
         assertNotNull(health);
@@ -28,12 +29,14 @@ public class DatabaseIntegrationTest {
 
         @Test
         public void testH2(@TempDir Path tempDir) {
-            TestPluginProvider.use(tempDir, ImmutableMap.of("storage-method", "h2"), DatabaseIntegrationTest::testStorage);
+            TestPluginProvider.use(tempDir, ImmutableMap.of("storage-method", "h2"),
+                DatabaseIntegrationTest::testStorage);
         }
 
         @Test
         public void testSqlite(@TempDir Path tempDir) {
-            TestPluginProvider.use(tempDir, ImmutableMap.of("storage-method", "sqlite"), DatabaseIntegrationTest::testStorage);
+            TestPluginProvider.use(tempDir, ImmutableMap.of("storage-method", "sqlite"),
+                DatabaseIntegrationTest::testStorage);
         }
     }
 }

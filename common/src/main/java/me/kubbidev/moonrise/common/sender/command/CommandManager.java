@@ -160,13 +160,13 @@ public class CommandManager {
 
         // Main command not found
         if (main == null) {
-            sendCommandUsage(sender, label);
+            Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
             return;
         }
 
         // Check the Sender has permission to use the main command.
         if (!main.hasPermission(sender)) {
-            sendCommandUsage(sender, label);
+            Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
             return;
         }
 

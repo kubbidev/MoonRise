@@ -1,6 +1,7 @@
 package me.kubbidev.moonrise.standalone;
 
 import com.google.common.collect.ImmutableMap;
+import me.kubbidev.moonrise.common.sender.command.access.BuiltinPermission;
 import me.kubbidev.moonrise.standalone.app.integration.CommandExecutor;
 import me.kubbidev.moonrise.standalone.util.CommandTester;
 import me.kubbidev.moonrise.standalone.util.TestPluginProvider;
@@ -13,8 +14,8 @@ import java.util.Map;
 public class CommandsIntegrationTest {
 
     private static final Map<String, String> CONFIG = ImmutableMap.<String, String>builder()
-            .put("commands-rate-limit", "false")
-            .build();
+        .put("commands-rate-limit", "false")
+        .build();
 
     @Test
     public void testNoPermissions(@TempDir Path tempDir) {
@@ -23,19 +24,24 @@ public class CommandsIntegrationTest {
             String version = "v" + bootstrap.getVersion();
 
             new CommandTester(executor)
-                    .givenHasPermissions(/* empty */)
+                .givenHasPermissions(BuiltinPermission.HELP.getPermission())
 
-                    .whenRunCommand("")
-                    .thenExpect("""
-                            [MR] Running MoonRise %s.
-                            [MR] You do not have permission to use any sub commands.
-                            """.formatted(version))
+                .whenRunCommand("")
+                .thenExpect("""
+                    [MR] Running MoonRise %s.
+                    [MR] Use /m help to view available commands.
+                    """.formatted(version))
 
-                    .whenRunCommand("help")
-                    .thenExpect("[MR] Running MoonRise %s.".formatted(version))
+                .whenRunCommand("help")
+                .thenExpect("""
+                    [MR] Sub Commands: (/ ...)
+                    > help - [commands...]
+                    """)
 
-                    .whenRunCommand("translations install")
-                    .thenExpect("[MR] Running MoonRise %s.".formatted(version));
+                .givenHasPermissions(/* empty */)
+
+                .whenRunCommand("translations install")
+                .thenExpect("[MR] Running MoonRise %s.".formatted(version));
         });
     }
 }

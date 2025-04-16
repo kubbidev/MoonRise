@@ -21,22 +21,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Utility for testing MoonRise commands with BDD-like given/when/then assertions.
  */
 public final class CommandTester implements Consumer<Component>, Function<String, Tristate> {
+
     private static final Logger LOGGER = LogManager.getLogger(CommandTester.class);
 
-    /** The MoonRise command executor */
-    private final CommandExecutor executor;
-
-    /** The test player */
-    private final TestSender sender;
-
-    /** The current map of permissions held by the fake executor */
-    private Map<String, Tristate> permissions = null;
-
-    /** A set of the permissions that have been checked for */
-    private final Set<String> checkedPermissions = Collections.synchronizedSet(new HashSet<>());
-
-    /** A buffer of messages received by the test tool */
-    private final List<Component> messageBuffer = Collections.synchronizedList(new ArrayList<>());
+    /**
+     * The MoonRise command executor
+     */
+    private final CommandExecutor       executor;
+    /**
+     * The test player
+     */
+    private final TestSender            sender;
+    /**
+     * The current map of permissions held by the fake executor
+     */
+    private       Map<String, Tristate> permissions        = null;
+    /**
+     * A set of the permissions that have been checked for
+     */
+    private final Set<String>           checkedPermissions = Collections.synchronizedSet(new HashSet<>());
+    /**
+     * A buffer of messages received by the test tool
+     */
+    private final List<Component>       messageBuffer      = Collections.synchronizedList(new ArrayList<>());
 
     public CommandTester(CommandExecutor executor, TestSender sender) {
         this.executor = executor;
@@ -140,7 +147,8 @@ public final class CommandTester implements Consumer<Component>, Function<String
      */
     public CommandTester thenExpectStartsWith(String expected) {
         String actual = this.renderBuffer();
-        assertTrue(actual.trim().startsWith(expected.trim()), "expected '" + actual + "' to start with '" + expected + "'");
+        assertTrue(actual.trim().startsWith(expected.trim()),
+            "expected '" + actual + "' to start with '" + expected + "'");
 
         if (this.permissions != null) {
             assertEquals(this.checkedPermissions, this.permissions.keySet());
@@ -205,8 +213,8 @@ public final class CommandTester implements Consumer<Component>, Function<String
         this.whenRunCommand(cmd);
 
         String checkedPermissions = this.checkedPermissions.stream()
-                .map(s -> "\"" + s + "\"")
-                .collect(Collectors.joining(", "));
+            .map(s -> "\"" + s + "\"")
+            .collect(Collectors.joining(", "));
 
         System.out.printf(".givenHasPermissions(%s)%n", checkedPermissions);
         System.out.printf(".whenRunCommand(\"%s\")%n", cmd);

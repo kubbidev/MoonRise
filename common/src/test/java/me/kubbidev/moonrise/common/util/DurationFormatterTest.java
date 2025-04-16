@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DurationFormatterTest {
+
     private static TranslatableComponentRenderer<Locale> renderer;
 
     @BeforeAll
@@ -42,26 +43,26 @@ public class DurationFormatterTest {
         Duration months = ChronoUnit.MONTHS.getDuration();
 
         return Stream.of(
-                Arguments.of("1 year", years.multipliedBy(1)),
-                Arguments.of("2 years", years.multipliedBy(2)),
-                Arguments.of("3 years", years.multipliedBy(3)),
-                Arguments.of("15 years", years.multipliedBy(15)),
-                Arguments.of("1 month", months.multipliedBy(1)),
-                Arguments.of("2 months", months.multipliedBy(2)),
-                Arguments.of("1 week", Duration.ofDays(7)),
-                Arguments.of("2 weeks", Duration.ofDays(7 * 2)),
-                Arguments.of("1 day", Duration.ofDays(1)),
-                Arguments.of("2 days", Duration.ofDays(2)),
-                Arguments.of("1 hour", Duration.ofHours(1)),
-                Arguments.of("2 hours", Duration.ofHours(2)),
-                Arguments.of("15 hours", Duration.ofHours(15)),
-                Arguments.of("1 minute", Duration.ofMinutes(1)),
-                Arguments.of("2 minutes", Duration.ofMinutes(2)),
-                Arguments.of("15 minutes", Duration.ofMinutes(15)),
-                Arguments.of("1 second", Duration.ofSeconds(1)),
-                Arguments.of("2 seconds", Duration.ofSeconds(2)),
-                Arguments.of("15 seconds", Duration.ofSeconds(15)),
-                Arguments.of("0 seconds", Duration.ZERO)
+            Arguments.of("1 year", years.multipliedBy(1)),
+            Arguments.of("2 years", years.multipliedBy(2)),
+            Arguments.of("3 years", years.multipliedBy(3)),
+            Arguments.of("15 years", years.multipliedBy(15)),
+            Arguments.of("1 month", months.multipliedBy(1)),
+            Arguments.of("2 months", months.multipliedBy(2)),
+            Arguments.of("1 week", Duration.ofDays(7)),
+            Arguments.of("2 weeks", Duration.ofDays(7 * 2)),
+            Arguments.of("1 day", Duration.ofDays(1)),
+            Arguments.of("2 days", Duration.ofDays(2)),
+            Arguments.of("1 hour", Duration.ofHours(1)),
+            Arguments.of("2 hours", Duration.ofHours(2)),
+            Arguments.of("15 hours", Duration.ofHours(15)),
+            Arguments.of("1 minute", Duration.ofMinutes(1)),
+            Arguments.of("2 minutes", Duration.ofMinutes(2)),
+            Arguments.of("15 minutes", Duration.ofMinutes(15)),
+            Arguments.of("1 second", Duration.ofSeconds(1)),
+            Arguments.of("2 seconds", Duration.ofSeconds(2)),
+            Arguments.of("15 seconds", Duration.ofSeconds(15)),
+            Arguments.of("0 seconds", Duration.ZERO)
         );
     }
 
@@ -74,15 +75,16 @@ public class DurationFormatterTest {
     @Test
     public void testFormats() {
         Duration duration = ChronoUnit.YEARS.getDuration().multipliedBy(5)
-                .plus(ChronoUnit.MONTHS.getDuration().multipliedBy(4))
-                .plus(ChronoUnit.WEEKS.getDuration().multipliedBy(3))
-                .plusDays(2)
-                .plusHours(1)
-                .plusMinutes(6)
-                .plusSeconds(7);
+            .plus(ChronoUnit.MONTHS.getDuration().multipliedBy(4))
+            .plus(ChronoUnit.WEEKS.getDuration().multipliedBy(3))
+            .plusDays(2)
+            .plusHours(1)
+            .plusMinutes(6)
+            .plusSeconds(7);
 
         assertEquals("5y 4mo 3w 2d 1h 6m 7s", render(DurationFormatter.CONCISE.format(duration)));
         assertEquals("5y 4mo 3w", render(DurationFormatter.CONCISE_LOW_ACCURACY.format(duration)));
-        assertEquals("5 years 4 months 3 weeks 2 days 1 hour 6 minutes 7 seconds", render(DurationFormatter.LONG.format(duration)));
+        assertEquals("5 years 4 months 3 weeks 2 days 1 hour 6 minutes 7 seconds",
+            render(DurationFormatter.LONG.format(duration)));
     }
 }

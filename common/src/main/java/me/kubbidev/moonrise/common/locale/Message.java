@@ -167,11 +167,19 @@ public interface Message {
             .append(text().color(GRAY).append(usage)))
     );
 
-    Args1<String> COMMAND_USAGE_DETAILED_FOOTER = usage -> prefixed(translatable()
-        // "&3Usage: &3/{}"
+    Args2<String, List<Component>> COMMAND_USAGE_DETAILED_FOOTER = (usage, arguments) -> prefixed(translatable()
+        // "&3Usage: &7/{} {}"
         .key("moonrise.commandsystem.usage.usage-footer")
         .color(DARK_AQUA)
         .append(text(':'))
+        .append(space())
+        .append(text()
+            .color(GRAY)
+            .clickEvent(suggestCommand('/' + usage))
+            .append(text('/'))
+            .append(text(usage))
+            .append(space())
+            .append(join(separator(space()), arguments)))
     );
 
     Args0 COMMAND_USAGE_DETAILED_ARGS_HEADER = () -> prefixed(translatable()

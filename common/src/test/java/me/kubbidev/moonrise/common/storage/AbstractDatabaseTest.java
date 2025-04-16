@@ -20,11 +20,10 @@ import static org.mockito.Mockito.mock;
 @ExtendWith(MockitoExtension.class)
 public abstract class AbstractDatabaseTest {
 
-    @Mock protected MoonRisePlugin plugin;
-    @Mock protected MoonRiseBootstrap bootstrap;
-    @Mock protected MoonRiseConfiguration configuration;
-
-    protected StorageImplementation database;
+    protected @Mock MoonRisePlugin        plugin;
+    protected @Mock MoonRiseBootstrap     bootstrap;
+    protected @Mock MoonRiseConfiguration configuration;
+    protected       StorageImplementation database;
 
     @BeforeEach
     public final void setupMocksAndDatabase() throws Exception {
@@ -33,7 +32,7 @@ public abstract class AbstractDatabaseTest {
         lenient().when(this.plugin.getEventDispatcher()).thenReturn(mock(EventDispatcher.class));
         lenient().when(this.bootstrap.getScheduler()).thenReturn(mock(SchedulerAdapter.class));
         lenient().when(this.bootstrap.getResourceStream(anyString()))
-                .then(answer((String path) -> AbstractDatabaseTest.class.getClassLoader().getResourceAsStream(path)));
+            .then(answer((String path) -> AbstractDatabaseTest.class.getClassLoader().getResourceAsStream(path)));
         lenient().when(this.plugin.getEventDispatcher()).thenReturn(mock(EventDispatcher.class));
 
         this.database = makeDatabase(this.plugin);
