@@ -14,8 +14,9 @@ import java.util.List;
  * The terminal/console-style interface presented to the user.
  */
 public class TerminalInterface extends SimpleTerminalConsole {
+
     private final MoonRiseApplication application;
-    private final CommandExecutor commandExecutor;
+    private final CommandExecutor     commandExecutor;
 
     public TerminalInterface(MoonRiseApplication application, CommandExecutor commandExecutor) {
         this.application = application;
@@ -25,8 +26,8 @@ public class TerminalInterface extends SimpleTerminalConsole {
     @Override
     protected LineReader buildReader(LineReaderBuilder builder) {
         return super.buildReader(builder
-                .appName("MoonRise")
-                .completer(this::completeCommand)
+            .appName("MoonRise")
+            .completer(this::completeCommand)
         );
     }
 

@@ -1,17 +1,18 @@
 package me.kubbidev.moonrise.common.sender.commands;
 
-import me.kubbidev.moonrise.common.sender.command.abstraction.SingleCommand;
-import me.kubbidev.moonrise.common.sender.command.access.CommandPermission;
-import me.kubbidev.moonrise.common.sender.command.spec.CommandSpec;
+import me.kubbidev.moonrise.common.sender.command.abstraction.Command;
+import me.kubbidev.moonrise.common.sender.command.access.BuiltinPermission;
+import me.kubbidev.moonrise.common.sender.command.spec.BuildinDefinition;
 import me.kubbidev.moonrise.common.sender.command.util.ArgumentList;
 import me.kubbidev.moonrise.common.locale.Message;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import me.kubbidev.moonrise.common.sender.Sender;
 import me.kubbidev.moonrise.common.util.Predicates;
 
-public class InfoCommand extends SingleCommand {
+public class InfoCommand extends Command {
+
     public InfoCommand() {
-        super(CommandSpec.INFO, "Info", CommandPermission.INFO, Predicates.alwaysFalse());
+        super("Info", BuildinDefinition.INFO, BuiltinPermission.INFO, Predicates.alwaysFalse());
     }
 
     @Override

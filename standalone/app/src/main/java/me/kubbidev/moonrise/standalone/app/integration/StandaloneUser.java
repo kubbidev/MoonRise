@@ -9,8 +9,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 /**
- * The sender instance used for the console / users executing commands
- * on a standalone instance of MoonRise
+ * The sender instance used for the console / users executing commands on a standalone instance of MoonRise
  */
 public class StandaloneUser implements StandaloneSender {
 

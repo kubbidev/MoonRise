@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Instant;
 
 public class ApiPlatform implements Platform, PluginMetadata {
+
     private final MoonRisePlugin plugin;
 
     public ApiPlatform(MoonRisePlugin plugin) {

@@ -12,11 +12,12 @@ import java.util.EnumSet;
 import java.util.Properties;
 
 public class H2ConnectionFactory extends FlatfileConnectionFactory {
+
     public static final StatementProcessor STATEMENT_PROCESSOR = s -> s
-            .replace('\'', '`')
-            .replace("LIKE", "ILIKE")
-            .replace("value", "`value`")
-            .replace("``value``", "`value`");
+        .replace('\'', '`')
+        .replace("LIKE", "ILIKE")
+        .replace("value", "`value`")
+        .replace("``value``", "`value`");
 
     private Constructor<?> connectionConstructor;
 
@@ -34,7 +35,8 @@ public class H2ConnectionFactory extends FlatfileConnectionFactory {
         ClassLoader classLoader = plugin.getDependencyManager().obtainClassLoaderWith(EnumSet.of(Dependency.H2_DRIVER));
         try {
             Class<?> connectionClass = classLoader.loadClass("org.h2.jdbc.JdbcConnection");
-            this.connectionConstructor = connectionClass.getConstructor(String.class, Properties.class, String.class, Object.class, boolean.class);
+            this.connectionConstructor = connectionClass.getConstructor(String.class, Properties.class, String.class,
+                Object.class, boolean.class);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
@@ -43,7 +45,8 @@ public class H2ConnectionFactory extends FlatfileConnectionFactory {
     @Override
     protected Connection createConnection(Path file) throws SQLException {
         try {
-            return (Connection) this.connectionConstructor.newInstance("jdbc:h2:" + file.toString(), new Properties(), null, null, false);
+            return (Connection) this.connectionConstructor.newInstance("jdbc:h2:" + file.toString(), new Properties(),
+                null, null, false);
         } catch (ReflectiveOperationException e) {
             if (e.getCause() instanceof SQLException) {
                 throw (SQLException) e.getCause();

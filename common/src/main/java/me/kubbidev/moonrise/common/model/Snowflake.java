@@ -3,17 +3,18 @@ package me.kubbidev.moonrise.common.model;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An <i>unsigned</i> 64-bit ID that is guaranteed to be unique across all of Discord,
- * except in some unique scenarios in which child objects share their parent's ID.
+ * An <i>unsigned</i> 64-bit ID that is guaranteed to be unique across all of Discord, except in some unique scenarios
+ * in which child objects share their parent's ID.
  *
  * @see <a href="https://discord.com/developers/docs/reference#snowflake-ids">Snowflake IDs</a>
  */
 public class Snowflake implements Comparable<Snowflake> {
 
-    /** The <i>raw</i> mention for notifying all users in a channel. */
+    /**
+     * The <i>raw</i> mention for notifying all users in a channel.
+     */
     public static final String EVERYONE = "@everyone";
-
-    protected final long id;
+    protected final     long   id;
 
     public static Snowflake of(long id) {
         return new Snowflake(id);
@@ -88,6 +89,9 @@ public class Snowflake implements Comparable<Snowflake> {
      */
     @Override
     public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
         if (!(o instanceof Snowflake that)) {
             return false;
         }

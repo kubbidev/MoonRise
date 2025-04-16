@@ -13,8 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class InteractionSource implements Source {
+
     protected final CommandInteraction interaction;
-    private boolean deferred = false;
+    private         boolean            deferred = false;
 
     @Nullable
     protected InteractionHook cachedHook = null;
@@ -47,7 +48,7 @@ public class InteractionSource implements Source {
     @Override
     public CompletableFuture<Message> sendMessage(Component message) {
         String translated = ComponentSerializer.serialize(message,
-                this.interaction.getUserLocale().toLocale()
+            this.interaction.getUserLocale().toLocale()
         );
 
         return getInteraction().sendMessage(translated).submit();
@@ -56,10 +57,10 @@ public class InteractionSource implements Source {
     @Override
     public CompletableFuture<Message> sendMessage(ComponentEmbed embed) {
         var message = new MessageCreateBuilder()
-                .setEmbeds(embed.build(
-                        this.interaction.getUserLocale().toLocale()
-                ))
-                .build();
+            .setEmbeds(embed.build(
+                this.interaction.getUserLocale().toLocale()
+            ))
+            .build();
 
         return getInteraction().sendMessage(message).submit();
     }

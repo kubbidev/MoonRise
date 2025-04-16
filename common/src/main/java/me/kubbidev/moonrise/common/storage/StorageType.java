@@ -23,9 +23,9 @@ public enum StorageType {
         @Override
         @NotNull StorageImplementation createNewImplementation(@NotNull MoonRisePlugin plugin) {
             return new SqlStorage(
-                    plugin,
-                    new MariaDbConnectionFactory(plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES)),
-                    plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
+                plugin,
+                new MariaDbConnectionFactory(plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES)),
+                plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
             );
         }
     },
@@ -33,9 +33,9 @@ public enum StorageType {
         @Override
         @NotNull StorageImplementation createNewImplementation(@NotNull MoonRisePlugin plugin) {
             return new SqlStorage(
-                    plugin,
-                    new MySqlConnectionFactory(plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES)),
-                    plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
+                plugin,
+                new MySqlConnectionFactory(plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES)),
+                plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
             );
         }
     },
@@ -43,9 +43,9 @@ public enum StorageType {
         @Override
         @NotNull StorageImplementation createNewImplementation(@NotNull MoonRisePlugin plugin) {
             return new SqlStorage(
-                    plugin,
-                    new PostgresConnectionFactory(plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES)),
-                    plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
+                plugin,
+                new PostgresConnectionFactory(plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES)),
+                plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
             );
         }
     },
@@ -55,9 +55,9 @@ public enum StorageType {
         @Override
         @NotNull StorageImplementation createNewImplementation(@NotNull MoonRisePlugin plugin) {
             return new SqlStorage(
-                    plugin,
-                    new SqliteConnectionFactory(plugin.getBootstrap().getDataDirectory().resolve("moonrise-sqlite.db")),
-                    plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
+                plugin,
+                new SqliteConnectionFactory(plugin.getBootstrap().getDataDirectory().resolve("moonrise-sqlite.db")),
+                plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
             );
         }
     },
@@ -65,9 +65,9 @@ public enum StorageType {
         @Override
         @NotNull StorageImplementation createNewImplementation(@NotNull MoonRisePlugin plugin) {
             return new SqlStorage(
-                    plugin,
-                    new H2ConnectionFactory(plugin.getBootstrap().getDataDirectory().resolve("moonrise-h2-v2")),
-                    plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
+                plugin,
+                new H2ConnectionFactory(plugin.getBootstrap().getDataDirectory().resolve("moonrise-h2-v2")),
+                plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
             );
         }
     },
@@ -89,7 +89,9 @@ public enum StorageType {
     public static StorageType parse(String name, StorageType def) {
         return Arrays.stream(values()).filter(t -> {
             for (String i : t.identifiers) {
-                if (i.equalsIgnoreCase(name)) return true;
+                if (i.equalsIgnoreCase(name)) {
+                    return true;
+                }
             }
             return false;
         }).findFirst().orElse(def);

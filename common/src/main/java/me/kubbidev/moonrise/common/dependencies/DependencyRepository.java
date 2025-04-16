@@ -62,8 +62,7 @@ public enum DependencyRepository {
     }
 
     /**
-     * Downloads the raw bytes of the {@code dependency}, and ensures the downloaded
-     * bytes match the checksum.
+     * Downloads the raw bytes of the {@code dependency}, and ensures the downloaded bytes match the checksum.
      *
      * @param dependency the dependency to download
      * @return the downloaded bytes
@@ -78,19 +77,18 @@ public enum DependencyRepository {
         // ensure the hash matches the expected checksum
         if (!dependency.checksumMatches(hash)) {
             throw new DependencyDownloadException("Downloaded file had an invalid hash. " +
-                    "Expected: " + Base64.getEncoder().encodeToString(dependency.getChecksum()) + " " +
-                    "Actual: " + Base64.getEncoder().encodeToString(hash));
+                "Expected: " + Base64.getEncoder().encodeToString(dependency.getChecksum()) + " " +
+                "Actual: " + Base64.getEncoder().encodeToString(hash));
         }
 
         return bytes;
     }
 
     /**
-     * Downloads the the {@code dependency} to the {@code file}, ensuring the
-     * downloaded bytes match the checksum.
+     * Downloads the the {@code dependency} to the {@code file}, ensuring the downloaded bytes match the checksum.
      *
      * @param dependency the dependency to download
-     * @param file the file to write to
+     * @param file       the file to write to
      * @throws DependencyDownloadException if unable to download
      */
     public void download(Dependency dependency, Path file) throws DependencyDownloadException {

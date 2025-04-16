@@ -9,9 +9,12 @@ import java.io.IOException;
 import java.io.Reader;
 
 public abstract class AbstractHttpClient {
+
     public static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
 
-    /** The http client */
+    /**
+     * The http client
+     */
     protected final OkHttpClient okHttp;
 
     public AbstractHttpClient(OkHttpClient okHttp) {
@@ -19,7 +22,7 @@ public abstract class AbstractHttpClient {
     }
 
     protected Response makeHttpRequest(Request request)
-            throws IOException, UnsuccessfulRequestException {
+        throws IOException, UnsuccessfulRequestException {
 
         Response response = this.okHttp.newCall(request).execute();
         if (!response.isSuccessful()) {
@@ -39,12 +42,12 @@ public abstract class AbstractHttpClient {
      * @throws IOException if an error occurs
      */
     public @NotNull JsonElement getJsonContent(String url)
-            throws IOException, UnsuccessfulRequestException {
+        throws IOException, UnsuccessfulRequestException {
 
         Request request = new Request.Builder()
-                .header("User-Agent", this.getUserAgent())
-                .url(url)
-                .build();
+            .header("User-Agent", this.getUserAgent())
+            .url(url)
+            .build();
 
         try (Response response = this.makeHttpRequest(request)) {
             try (ResponseBody responseBody = response.body()) {

@@ -40,28 +40,30 @@ import java.util.stream.Collectors;
 
 public class InteractionManager extends ListenerAdapter {
 
-    private final MoonRisePlugin plugin;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder()
+    private final MoonRisePlugin           plugin;
+    private final ExecutorService          executor         = Executors.newSingleThreadExecutor(
+        new ThreadFactoryBuilder()
             .setDaemon(true)
             .setNameFormat("moonrise-interaction-executor")
             .build()
     );
-    private final AtomicBoolean executingCommand = new AtomicBoolean(false);
+    private final AtomicBoolean            executingCommand = new AtomicBoolean(false);
     private final Map<String, Interaction> interactions;
 
     public InteractionManager(MoonRisePlugin plugin) {
         this.plugin = plugin;
         this.interactions = ImmutableList.<Interaction>builder()
-                .add(new PingCommand())
-                .add(new AboutCommand())
-                .add(new BiographyCommand())
-                .add(new ProfileCommand())
-                .add(new LeaderboardChannelCommand())
-                .add(new LeaderboardEnabledCommand())
-                .add(new LeaderboardRefreshCommand())
-                .build()
-                .stream()
-                .collect(ImmutableCollectors.toMap(c -> c.getMetadata().getName().toLowerCase(Locale.ROOT), Function.identity()));
+            .add(new PingCommand())
+            .add(new AboutCommand())
+            .add(new BiographyCommand())
+            .add(new ProfileCommand())
+            .add(new LeaderboardChannelCommand())
+            .add(new LeaderboardEnabledCommand())
+            .add(new LeaderboardRefreshCommand())
+            .build()
+            .stream()
+            .collect(ImmutableCollectors.toMap(c -> c.getMetadata().getName().toLowerCase(Locale.ROOT),
+                Function.identity()));
     }
 
     public MoonRisePlugin getPlugin() {
@@ -76,8 +78,7 @@ public class InteractionManager extends ListenerAdapter {
     /**
      * Registers the {@link Interaction}s with the specified JDA (Java Discord API) shard.
      * <p>
-     * This method updates and queues the commands associated with the interactions currently
-     * available in the manager.
+     * This method updates and queues the commands associated with the interactions currently available in the manager.
      *
      * @param shard The JDA instance representing a shard.
      */
@@ -123,11 +124,6 @@ public class InteractionManager extends ListenerAdapter {
                 this.execute(source, label, context);
             } catch (Throwable e) {
                 this.handleStackTrace(context, e);
-//                Throwable cause = e;
-//                do {
-//                    this.handleStackTrace(context, cause);
-//                } while ((cause = cause.getCause()) != null);
-
                 // catch any exception
                 this.plugin.getLogger().severe("Exception whilst executing command: " + label, e);
             } finally {
@@ -173,12 +169,14 @@ public class InteractionManager extends ListenerAdapter {
     private void handleCommandTimeout(AtomicReference<Thread> thread, String label) {
         Thread executorThread = thread.get();
         if (executorThread == null) {
-            this.plugin.getLogger().warn("Interaction execution " + label + " has not completed - is another interaction execution blocking it?");
+            this.plugin.getLogger().warn("Interaction execution " + label
+                + " has not completed - is another interaction execution blocking it?");
         } else {
             String stackTrace = Arrays.stream(executorThread.getStackTrace())
-                    .map(s -> "  " + s)
-                    .collect(Collectors.joining("\n"));
-            this.plugin.getLogger().warn("Interaction execution " + label + " has not completed. Trace: \n" + stackTrace);
+                .map(s -> "  " + s)
+                .collect(Collectors.joining("\n"));
+            this.plugin.getLogger()
+                .warn("Interaction execution " + label + " has not completed. Trace: \n" + stackTrace);
         }
     }
 

@@ -14,22 +14,23 @@ import java.util.Locale;
  * Formats durations to a readable form
  */
 public class DurationFormatter {
-    public static final DurationFormatter LONG = new DurationFormatter(false);
-    public static final DurationFormatter CONCISE = new DurationFormatter(true);
+
+    public static final DurationFormatter LONG                 = new DurationFormatter(false);
+    public static final DurationFormatter CONCISE              = new DurationFormatter(true);
     public static final DurationFormatter CONCISE_LOW_ACCURACY = new DurationFormatter(true, 3);
 
     private static final ChronoUnit[] UNITS = new ChronoUnit[]{
-            ChronoUnit.YEARS,
-            ChronoUnit.MONTHS,
-            ChronoUnit.WEEKS,
-            ChronoUnit.DAYS,
-            ChronoUnit.HOURS,
-            ChronoUnit.MINUTES,
-            ChronoUnit.SECONDS
+        ChronoUnit.YEARS,
+        ChronoUnit.MONTHS,
+        ChronoUnit.WEEKS,
+        ChronoUnit.DAYS,
+        ChronoUnit.HOURS,
+        ChronoUnit.MINUTES,
+        ChronoUnit.SECONDS
     };
 
     private final boolean concise;
-    private final int accuracy;
+    private final int     accuracy;
 
     public DurationFormatter(boolean concise) {
         this(concise, Integer.MAX_VALUE);

@@ -21,96 +21,96 @@ import java.util.*;
 public class SqlStorage implements StorageImplementation {
 
     private static final String USER_SELECT_BY_ID = """
-                SELECT username, global_name, avatar, last_seen
-                FROM '{prefix}users'
-                WHERE id=?
-                LIMIT 1
-            """;
+            SELECT username, global_name, avatar, last_seen
+            FROM '{prefix}users'
+            WHERE id=?
+            LIMIT 1
+        """;
 
     private static final String USER_UPDATE_BY_ID = """
-                UPDATE '{prefix}users'
-                SET username=?, global_name=?, avatar=?, last_seen=?
-                WHERE id=?
-            """;
+            UPDATE '{prefix}users'
+            SET username=?, global_name=?, avatar=?, last_seen=?
+            WHERE id=?
+        """;
 
     private static final String USER_INSERT = """
-                INSERT INTO '{prefix}users' (id, username, global_name, avatar, last_seen)
-                VALUES (?, ?, ?, ?, ?)
-            """;
+            INSERT INTO '{prefix}users' (id, username, global_name, avatar, last_seen)
+            VALUES (?, ?, ?, ?, ?)
+        """;
 
     private static final String USER_SELECT_IDS = """
-                SELECT id
-                FROM '{prefix}users'
-            """;
+            SELECT id
+            FROM '{prefix}users'
+        """;
 
     private static final String GUILD_SELECT_ALL = """
-                SELECT id, name, icon, leaderboard, leaderboard_channel
-                FROM '{prefix}guilds'
-            """;
+            SELECT id, name, icon, leaderboard, leaderboard_channel
+            FROM '{prefix}guilds'
+        """;
 
     private static final String GUILD_SELECT_BY_ID = """
-                SELECT name, icon, leaderboard, leaderboard_channel
-                FROM '{prefix}guilds'
-                WHERE id=?
-                LIMIT 1
-            """;
+            SELECT name, icon, leaderboard, leaderboard_channel
+            FROM '{prefix}guilds'
+            WHERE id=?
+            LIMIT 1
+        """;
 
     private static final String GUILD_UPDATE_BY_ID = """
-                UPDATE '{prefix}guilds'
-                SET name=?, icon=?, leaderboard=?, leaderboard_channel=?
-                WHERE id=?
-            """;
+            UPDATE '{prefix}guilds'
+            SET name=?, icon=?, leaderboard=?, leaderboard_channel=?
+            WHERE id=?
+        """;
 
     private static final String GUILD_INSERT = """
-                INSERT INTO '{prefix}guilds' (id, name, icon, leaderboard, leaderboard_channel)
-                VALUES (?, ?, ?, ?, ?)
-            """;
+            INSERT INTO '{prefix}guilds' (id, name, icon, leaderboard, leaderboard_channel)
+            VALUES (?, ?, ?, ?, ?)
+        """;
 
     private static final String GUILD_SELECT_IDS = """
-                SELECT id
-                FROM '{prefix}guilds'
-            """;
+            SELECT id
+            FROM '{prefix}guilds'
+        """;
 
     private static final String MEMBER_SELECT_ALL_WITH_HIGHEST_EXPERIENCE = """
-                SELECT user_id, nickname, guild_avatar, biography, experience, voice_activity, placement
-                FROM '{prefix}members'
-                WHERE guild_id=?
-                ORDER BY experience DESC
-                LIMIT ?
-            """;
+            SELECT user_id, nickname, guild_avatar, biography, experience, voice_activity, placement
+            FROM '{prefix}members'
+            WHERE guild_id=?
+            ORDER BY experience DESC
+            LIMIT ?
+        """;
 
     private static final String MEMBER_SELECT_BY_IDS = """
-                SELECT nickname, guild_avatar, biography, experience, voice_activity, placement
-                FROM '{prefix}members'
-                WHERE user_id=? AND guild_id=?
-                LIMIT 1
-            """;
+            SELECT nickname, guild_avatar, biography, experience, voice_activity, placement
+            FROM '{prefix}members'
+            WHERE user_id=? AND guild_id=?
+            LIMIT 1
+        """;
 
     private static final String MEMBER_UPDATE_BY_IDS = """
-                UPDATE '{prefix}members'
-                SET nickname=?, guild_avatar=?, biography=?, experience=?, voice_activity=?, placement=?
-                WHERE user_id=? AND guild_id=?
-            """;
+            UPDATE '{prefix}members'
+            SET nickname=?, guild_avatar=?, biography=?, experience=?, voice_activity=?, placement=?
+            WHERE user_id=? AND guild_id=?
+        """;
 
     private static final String MEMBER_INSERT = """
-                INSERT INTO '{prefix}members' (user_id, guild_id, nickname, guild_avatar, biography, experience, voice_activity, placement)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """;
+            INSERT INTO '{prefix}members' (user_id, guild_id, nickname, guild_avatar, biography, experience, voice_activity, placement)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """;
 
     private static final String MEMBER_SELECT_USER_ID_BY_GUILD_ID = """
-                SELECT user_id
-                FROM '{prefix}members'
-                WHERE guild_id=?
-            """;
+            SELECT user_id
+            FROM '{prefix}members'
+            WHERE guild_id=?
+        """;
 
     private static final String MEMBER_SELECT_USER_IDS = """
-                SELECT user_id
-                FROM '{prefix}members'
-            """;
+            SELECT user_id
+            FROM '{prefix}members'
+        """;
 
     private final MoonRisePlugin plugin;
 
-    private final ConnectionFactory connectionFactory;
+    private final ConnectionFactory  connectionFactory;
     private final StatementProcessor statementProcessor;
 
     public SqlStorage(MoonRisePlugin plugin, ConnectionFactory connectionFactory, String prefix) {
@@ -192,7 +192,8 @@ public class SqlStorage implements StorageImplementation {
 
     @Override
     public Set<ApiGuild> loadGuilds() throws Exception {
-        return getAllAsSet(GUILD_SELECT_ALL, null, rs -> populateGuild(new ApiGuild(rs.getLong("id"), this.plugin), rs));
+        return getAllAsSet(GUILD_SELECT_ALL, null,
+            rs -> populateGuild(new ApiGuild(rs.getLong("id"), this.plugin), rs));
     }
 
     private ApiGuild populateGuild(ApiGuild guild, ResultSet rs) throws SQLException {
@@ -249,90 +250,90 @@ public class SqlStorage implements StorageImplementation {
     @Override
     public void saveUser(ApiUser user) throws Exception {
         saveStatement(USER_SELECT_BY_ID, USER_UPDATE_BY_ID, USER_INSERT,
-                ps -> ps.setLong(1, user.getId()),
-                ps -> {
-                    // where
-                    ps.setLong(5, user.getId());
+            ps -> ps.setLong(1, user.getId()),
+            ps -> {
+                // where
+                ps.setLong(5, user.getId());
 
-                    // content
-                    ps.setString(1, DataConstraints.desanitize(user.getUsername(), true));
-                    ps.setString(2, DataConstraints.desanitize(user.getGlobalName().orElse(null)));
-                    ps.setString(3, DataConstraints.desanitize(user.getAvatar()));
-                    ps.setLong(4, user.getLastSeen().toEpochMilli());
-                },
-                ps -> {
-                    // where
-                    ps.setLong(1, user.getId());
+                // content
+                ps.setString(1, DataConstraints.desanitize(user.getUsername(), true));
+                ps.setString(2, DataConstraints.desanitize(user.getGlobalName().orElse(null)));
+                ps.setString(3, DataConstraints.desanitize(user.getAvatar()));
+                ps.setLong(4, user.getLastSeen().toEpochMilli());
+            },
+            ps -> {
+                // where
+                ps.setLong(1, user.getId());
 
-                    // content
-                    ps.setString(2, DataConstraints.desanitize(user.getUsername(), true));
-                    ps.setString(3, DataConstraints.desanitize(user.getGlobalName().orElse(null)));
-                    ps.setString(4, DataConstraints.desanitize(user.getAvatar()));
-                    ps.setLong(5, user.getLastSeen().toEpochMilli());
-                });
+                // content
+                ps.setString(2, DataConstraints.desanitize(user.getUsername(), true));
+                ps.setString(3, DataConstraints.desanitize(user.getGlobalName().orElse(null)));
+                ps.setString(4, DataConstraints.desanitize(user.getAvatar()));
+                ps.setLong(5, user.getLastSeen().toEpochMilli());
+            });
 
     }
 
     @Override
     public void saveGuild(ApiGuild guild) throws Exception {
         saveStatement(GUILD_SELECT_BY_ID, GUILD_UPDATE_BY_ID, GUILD_INSERT,
-                ps -> ps.setLong(1, guild.getId()),
-                ps -> {
-                    // where
-                    ps.setLong(5, guild.getId());
+            ps -> ps.setLong(1, guild.getId()),
+            ps -> {
+                // where
+                ps.setLong(5, guild.getId());
 
-                    // content
-                    ps.setString(1, DataConstraints.desanitize(guild.getName()));
-                    ps.setString(2, DataConstraints.desanitize(guild.getIcon()));
-                    ps.setBoolean(3, guild.isLeaderboardEnabled());
-                    ps.setLong(4, guild.getLeaderboardChannelId());
-                },
-                ps -> {
-                    // where
-                    ps.setLong(1, guild.getId());
+                // content
+                ps.setString(1, DataConstraints.desanitize(guild.getName()));
+                ps.setString(2, DataConstraints.desanitize(guild.getIcon()));
+                ps.setBoolean(3, guild.isLeaderboardEnabled());
+                ps.setLong(4, guild.getLeaderboardChannelId());
+            },
+            ps -> {
+                // where
+                ps.setLong(1, guild.getId());
 
-                    // content
-                    ps.setString(2, DataConstraints.desanitize(guild.getName()));
-                    ps.setString(3, DataConstraints.desanitize(guild.getIcon()));
-                    ps.setBoolean(4, guild.isLeaderboardEnabled());
-                    ps.setLong(5, guild.getLeaderboardChannelId());
-                });
+                // content
+                ps.setString(2, DataConstraints.desanitize(guild.getName()));
+                ps.setString(3, DataConstraints.desanitize(guild.getIcon()));
+                ps.setBoolean(4, guild.isLeaderboardEnabled());
+                ps.setLong(5, guild.getLeaderboardChannelId());
+            });
     }
 
     @Override
     public void saveMember(ApiMember member) throws Exception {
         saveUser(member);
         saveStatement(MEMBER_SELECT_BY_IDS, MEMBER_UPDATE_BY_IDS, MEMBER_INSERT,
-                ps -> {
-                    ps.setLong(1, member.getId());
-                    ps.setLong(2, member.getGuildId());
-                },
-                ps -> {
-                    // where
-                    ps.setLong(7, member.getId());
-                    ps.setLong(8, member.getGuildId());
+            ps -> {
+                ps.setLong(1, member.getId());
+                ps.setLong(2, member.getGuildId());
+            },
+            ps -> {
+                // where
+                ps.setLong(7, member.getId());
+                ps.setLong(8, member.getGuildId());
 
-                    // content
-                    ps.setString(1, DataConstraints.desanitize(member.getNickname().orElse(null)));
-                    ps.setString(2, DataConstraints.desanitize(member.getGuildAvatar()));
-                    ps.setString(3, DataConstraints.desanitize(member.getBiography().orElse(null)));
-                    ps.setLong(4, member.getExperience());
-                    ps.setLong(5, member.getVoiceActivity());
-                    ps.setLong(6, member.getPlacement());
-                },
-                ps -> {
-                    // where
-                    ps.setLong(1, member.getId());
-                    ps.setLong(2, member.getGuildId());
+                // content
+                ps.setString(1, DataConstraints.desanitize(member.getNickname().orElse(null)));
+                ps.setString(2, DataConstraints.desanitize(member.getGuildAvatar()));
+                ps.setString(3, DataConstraints.desanitize(member.getBiography().orElse(null)));
+                ps.setLong(4, member.getExperience());
+                ps.setLong(5, member.getVoiceActivity());
+                ps.setLong(6, member.getPlacement());
+            },
+            ps -> {
+                // where
+                ps.setLong(1, member.getId());
+                ps.setLong(2, member.getGuildId());
 
-                    // content
-                    ps.setString(3, DataConstraints.desanitize(member.getNickname().orElse(null)));
-                    ps.setString(4, DataConstraints.desanitize(member.getGuildAvatar()));
-                    ps.setString(5, DataConstraints.desanitize(member.getBiography().orElse(null)));
-                    ps.setLong(6, member.getExperience());
-                    ps.setLong(7, member.getVoiceActivity());
-                    ps.setLong(8, member.getPlacement());
-                });
+                // content
+                ps.setString(3, DataConstraints.desanitize(member.getNickname().orElse(null)));
+                ps.setString(4, DataConstraints.desanitize(member.getGuildAvatar()));
+                ps.setString(5, DataConstraints.desanitize(member.getBiography().orElse(null)));
+                ps.setLong(6, member.getExperience());
+                ps.setLong(7, member.getVoiceActivity());
+                ps.setLong(8, member.getPlacement());
+            });
     }
 
     @Override
@@ -352,20 +353,24 @@ public class SqlStorage implements StorageImplementation {
 
     @Override
     public Set<Snowflake> getUniqueMembers(long guildId) throws Exception {
-        return getAllAsSet(MEMBER_SELECT_USER_ID_BY_GUILD_ID, ps -> ps.setLong(1, guildId), rs -> Snowflake.of(rs.getLong("user_id")));
+        return getAllAsSet(MEMBER_SELECT_USER_ID_BY_GUILD_ID, ps -> ps.setLong(1, guildId),
+            rs -> Snowflake.of(rs.getLong("user_id")));
     }
 
     @FunctionalInterface
     private interface ResultSetFunction<T> {
+
         T apply(ResultSet rs) throws SQLException;
     }
 
     @FunctionalInterface
     private interface StatementConsumer {
+
         void accept(PreparedStatement ps) throws SQLException;
     }
 
-    private void executeStatement(Connection c, String query, @Nullable StatementConsumer consumer) throws SQLException {
+    private void executeStatement(Connection c, String query, @Nullable StatementConsumer consumer)
+        throws SQLException {
         try (PreparedStatement statement = c.prepareStatement(this.statementProcessor.process(query))) {
             if (consumer != null) {
                 consumer.accept(statement);
@@ -380,7 +385,8 @@ public class SqlStorage implements StorageImplementation {
         }
     }
 
-    private <T> T executeQuery(Connection c, String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function) throws SQLException {
+    private <T> T executeQuery(Connection c, String query, @Nullable StatementConsumer consumer,
+                               ResultSetFunction<T> function) throws SQLException {
         try (PreparedStatement statement = c.prepareStatement(this.statementProcessor.process(query))) {
             if (consumer != null) {
                 consumer.accept(statement);
@@ -392,7 +398,8 @@ public class SqlStorage implements StorageImplementation {
         }
     }
 
-    private <T> T executeQuery(String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function) throws SQLException {
+    private <T> T executeQuery(String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function)
+        throws SQLException {
         try (Connection c = this.connectionFactory.getConnection()) {
             return executeQuery(c, query, consumer, function);
         }
@@ -400,10 +407,12 @@ public class SqlStorage implements StorageImplementation {
 
     @FunctionalInterface
     private interface CollectionFactory<T> {
+
         Collection<T> create();
     }
 
-    private <T> Collection<T> getAll(String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function, CollectionFactory<T> factory) throws SQLException {
+    private <T> Collection<T> getAll(String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function,
+                                     CollectionFactory<T> factory) throws SQLException {
         return executeQuery(query, consumer, rs -> {
             Collection<T> collection = factory.create();
             while (rs.next()) {
@@ -413,21 +422,23 @@ public class SqlStorage implements StorageImplementation {
         });
     }
 
-    private <T> List<T> getAllAsList(String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function) throws SQLException {
+    private <T> List<T> getAllAsList(String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function)
+        throws SQLException {
         return (List<T>) getAll(query, consumer, function, ArrayList::new);
     }
 
-    private <T> Set<T> getAllAsSet(String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function) throws SQLException {
+    private <T> Set<T> getAllAsSet(String query, @Nullable StatementConsumer consumer, ResultSetFunction<T> function)
+        throws SQLException {
         return (Set<T>) getAll(query, consumer, function, HashSet::new);
     }
 
     private void saveStatement(
-            String existsQuery,
-            String updateQuery,
-            String insertQuery,
-            @Nullable StatementConsumer existsAction,
-            @Nullable StatementConsumer updateAction,
-            @Nullable StatementConsumer insertAction
+        String existsQuery,
+        String updateQuery,
+        String insertQuery,
+        @Nullable StatementConsumer existsAction,
+        @Nullable StatementConsumer updateAction,
+        @Nullable StatementConsumer insertAction
     ) throws SQLException {
         try (Connection c = this.connectionFactory.getConnection()) {
             if (executeQuery(c, existsQuery, existsAction, ResultSet::next)) {
@@ -441,13 +452,16 @@ public class SqlStorage implements StorageImplementation {
     private static List<String> listTables(Connection connection) throws SQLException {
         List<String> tables = new ArrayList<>();
         try (var rs = connection.getMetaData().getTables(connection.getCatalog(), null, "%", null)) {
-            while (rs.next()) tables.add(rs.getString(3).toLowerCase(Locale.ROOT));
+            while (rs.next()) {
+                tables.add(rs.getString(3).toLowerCase(Locale.ROOT));
+            }
         }
         return tables;
     }
 
     private void applySchema(List<String> existingTables) throws IOException, SQLException {
-        String schemaFileName = "me/kubbidev/moonrise/schema/" + this.getImplementationName().toLowerCase(Locale.ROOT) + ".sql";
+        String schemaFileName =
+            "me/kubbidev/moonrise/schema/" + this.getImplementationName().toLowerCase(Locale.ROOT) + ".sql";
 
         List<String> statements;
         try (InputStream is = this.plugin.getBootstrap().getResourceStream(schemaFileName)) {
@@ -456,11 +470,13 @@ public class SqlStorage implements StorageImplementation {
             }
 
             statements = SchemaReader.getStatements(is).stream()
-                    .map(this.statementProcessor::process).collect(ImmutableCollectors.toList());
+                .map(this.statementProcessor::process).collect(ImmutableCollectors.toList());
         }
 
         statements = SchemaReader.filterStatements(statements, existingTables);
-        if (statements.isEmpty()) return;
+        if (statements.isEmpty()) {
+            return;
+        }
 
         try (Connection connection = this.connectionFactory.getConnection()) {
             boolean utf8mb4Unsupported = false;

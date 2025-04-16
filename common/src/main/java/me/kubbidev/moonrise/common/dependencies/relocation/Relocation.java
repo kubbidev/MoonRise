@@ -3,6 +3,7 @@ package me.kubbidev.moonrise.common.dependencies.relocation;
 import java.util.Objects;
 
 public final class Relocation {
+
     private static final String RELOCATION_PREFIX = "me.kubbidev.moonrise.lib.";
 
     public static Relocation of(String id, String pattern) {
@@ -27,12 +28,15 @@ public final class Relocation {
 
     @Override
     public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
         if (!(o instanceof Relocation that)) {
             return false;
         }
 
         return this.pattern.equals(that.pattern)
-                && this.relocatedPattern.equals(that.relocatedPattern);
+            && this.relocatedPattern.equals(that.relocatedPattern);
     }
 
     @Override

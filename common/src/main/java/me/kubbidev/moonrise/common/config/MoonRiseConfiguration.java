@@ -5,6 +5,7 @@ import me.kubbidev.moonrise.common.config.generic.adapter.ConfigurationAdapter;
 import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 
 public class MoonRiseConfiguration extends KeyedConfiguration {
+
     private final MoonRisePlugin plugin;
 
     public MoonRiseConfiguration(MoonRisePlugin plugin, ConfigurationAdapter adapter) {

@@ -6,6 +6,7 @@ import me.kubbidev.moonrise.api.event.MoonRiseEvent;
 /**
  * Defines a class which listens to {@link MoonRiseEvent}s.
  */
+@FunctionalInterface
 public interface MoonRiseEventListener {
 
     void bind(EventBus bus);

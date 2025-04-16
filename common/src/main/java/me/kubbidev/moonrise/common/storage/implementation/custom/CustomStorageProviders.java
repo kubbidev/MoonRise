@@ -4,7 +4,9 @@ package me.kubbidev.moonrise.common.storage.implementation.custom;
  * Hook to allow external code to provide a storage implementation
  */
 public final class CustomStorageProviders {
-    private CustomStorageProviders() {}
+
+    private CustomStorageProviders() {
+    }
 
     private static CustomStorageProvider provider = null;
 

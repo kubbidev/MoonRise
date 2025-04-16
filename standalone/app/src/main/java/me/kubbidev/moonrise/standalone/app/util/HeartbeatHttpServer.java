@@ -17,12 +17,13 @@ import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 public class HeartbeatHttpServer implements HttpHandler, AutoCloseable {
+
     private static final Logger LOGGER = LogManager.getLogger(HeartbeatHttpServer.class);
 
     private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(new ThreadFactoryBuilder()
-            .setDaemon(true)
-            .setNameFormat("heartbeat-http-server-%d")
-            .build()
+        .setDaemon(true)
+        .setNameFormat("heartbeat-http-server-%d")
+        .build()
     );
 
     public static HeartbeatHttpServer createAndStart(int port, Supplier<Health> healthReporter) {
@@ -39,7 +40,7 @@ public class HeartbeatHttpServer implements HttpHandler, AutoCloseable {
     }
 
     private final Supplier<Health> healthReporter;
-    private final HttpServer server;
+    private final HttpServer       server;
 
     public HeartbeatHttpServer(Supplier<Health> healthReporter, int port) throws IOException {
         this.healthReporter = healthReporter;

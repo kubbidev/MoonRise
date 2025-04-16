@@ -24,29 +24,27 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public final class LeaderboardManager implements Runnable, AutoCloseable {
-    /** A constant representing the UTC timezone as used */
-    private static final ZoneId ZONE_ID = ZoneId.of("Europe/Paris");
 
     /**
-     * A constant representing the specific day of the week on which the scheduled
-     * operations of the {@link LeaderboardManager} are intended to occur.
+     * A constant representing the UTC timezone as used
      */
-    public static final DayOfWeek DAY_OF_WEEK = DayOfWeek.MONDAY;
-
+    private static final ZoneId        ZONE_ID       = ZoneId.of("Europe/Paris");
     /**
-     * A constant representing the specific time of day at which the
-     * {@link LeaderboardManager} operations are scheduled to occur.
+     * A constant representing the specific day of the week on which the scheduled operations of the
+     * {@link LeaderboardManager} are intended to occur.
+     */
+    public static final  DayOfWeek     DAY_OF_WEEK   = DayOfWeek.MONDAY;
+    /**
+     * A constant representing the specific time of day at which the {@link LeaderboardManager} operations are scheduled
+     * to occur.
      *
      * <p>This value defines the daily fixed time set to 18:00 (6:00 PM).</p>
      */
-    public static final LocalTime TIME_OF_DAY = LocalTime.of(18, 0);
-
-
-    private final GatewayClient client;
-    private boolean scheduled;
-
+    public static final  LocalTime     TIME_OF_DAY   = LocalTime.of(18, 0);
+    private final        GatewayClient client;
+    private              boolean       scheduled;
     @Nullable
-    private SchedulerTask repeatingTask = null;
+    private              SchedulerTask repeatingTask = null;
 
     public LeaderboardManager(GatewayClient client) {
         this.client = client;
@@ -94,24 +92,23 @@ public final class LeaderboardManager implements Runnable, AutoCloseable {
         ZonedDateTime targetDateTime = currentDate.with(TIME_OF_DAY);
 
         return currentDate.isBefore(targetDateTime)
-                ? targetDateTime.with(
-                TemporalAdjusters.nextOrSame(DAY_OF_WEEK))
-
-                : targetDateTime.with(
-                TemporalAdjusters.next(DAY_OF_WEEK));
+            ? targetDateTime.with(TemporalAdjusters.nextOrSame(DAY_OF_WEEK))
+            : targetDateTime.with(TemporalAdjusters.next(DAY_OF_WEEK));
     }
 
     @Override
     public void run() {
         ShardManager shardManager = this.client.getShardManager().orElseThrow(
-                () -> new IllegalStateException("Shard manager seems to be null?"));
+            () -> new IllegalStateException("Shard manager seems to be null?"));
 
         // Retrieve the instance of the plugin linked to the client
         MoonRisePlugin plugin = this.client.getPlugin();
         this.client.getGuilds().thenComposeAsync(g -> {
             List<CompletableFuture<?>> futures = new ArrayList<>(g.size());
             g.forEach(apiGuild -> {
-                if (!apiGuild.isLeaderboardEnabled()) return;
+                if (!apiGuild.isLeaderboardEnabled()) {
+                    return;
+                }
 
                 // Retrieve the corresponding guild from its id
                 var guildById = shardManager.getGuildById(apiGuild.getId());
@@ -128,7 +125,9 @@ public final class LeaderboardManager implements Runnable, AutoCloseable {
 
     public CompletableFuture<Void> renderLeaderboard(Guild guild, ApiGuild apiGuild) {
         var channel = getLeaderboardChannel(guild, apiGuild);
-        if (channel == null) return CompletableFutures.NULL;
+        if (channel == null) {
+            return CompletableFutures.NULL;
+        }
 
         return getSortedMembers(guild).thenComposeAsync(apiMembers -> {
             if (apiMembers.isEmpty()) {
@@ -164,10 +163,10 @@ public final class LeaderboardManager implements Runnable, AutoCloseable {
             }
 
             leaderboard.registerEntry(new Leaderboard.Entry(
-                    apiMember.getDisplayName(),
-                    apiMember.getExperience(),
-                    currentPlacement,
-                    previousPlacement
+                apiMember.getDisplayName(),
+                apiMember.getExperience(),
+                currentPlacement,
+                previousPlacement
             ));
 
             if (previousPlacement != currentPlacement) {
@@ -181,11 +180,12 @@ public final class LeaderboardManager implements Runnable, AutoCloseable {
     }
 
     private CompletableFuture<Message> sendLeaderboard(GuildMessageChannel channel, Leaderboard leaderboard) {
-        return channel.getIterableHistory().takeAsync(10).thenAcceptAsync(messages -> channel.purgeMessages(messages.stream()
+        return channel.getIterableHistory().takeAsync(10)
+            .thenAcceptAsync(messages -> channel.purgeMessages(messages.stream()
                 .filter(message -> !message.isPinned())
                 .filter(message -> !message.isEphemeral()).collect(ImmutableCollectors.toList()
                 ))
-        ).thenComposeAsync(__ -> MessageChannelSource.wrap(channel).sendMessage(leaderboard.build())
+            ).thenComposeAsync(__ -> MessageChannelSource.wrap(channel).sendMessage(leaderboard.build())
                 .thenComposeAsync(message -> {
                     if (channel instanceof NewsChannel) {
                         return ((NewsChannel) channel).crosspostMessageById(message.getId()).submit();

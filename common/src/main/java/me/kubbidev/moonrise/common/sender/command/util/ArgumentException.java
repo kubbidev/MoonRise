@@ -14,7 +14,7 @@ public abstract class ArgumentException extends CommandException {
         }
 
         @Override
-        public void handle(Sender sender, String label, Command<?> command) {
+        public void handle(Sender sender, String label, Command command) {
             command.sendDetailedUsage(sender, label);
         }
     }

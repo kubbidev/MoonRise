@@ -24,25 +24,39 @@ import java.util.concurrent.Executor;
  */
 public class DependencyManagerImpl implements DependencyManager {
 
-    /** A registry containing plugin specific behaviour for dependencies. */
+    /**
+     * A registry containing plugin specific behaviour for dependencies.
+     */
     private final DependencyRegistry registry;
 
-    /** The path where library jars are cached. */
+    /**
+     * The path where library jars are cached.
+     */
     private final Path cacheDirectory;
 
-    /** The classpath appender to preload dependencies into */
+    /**
+     * The classpath appender to preload dependencies into
+     */
     private final ClassPathAppender classPathAppender;
 
-    /** The executor to use when loading dependencies */
+    /**
+     * The executor to use when loading dependencies
+     */
     private final Executor loadingExecutor;
 
-    /** A map of dependencies which have already been loaded. */
+    /**
+     * A map of dependencies which have already been loaded.
+     */
     private final EnumMap<Dependency, Path> loaded = new EnumMap<>(Dependency.class);
 
-    /** A map of isolated classloaders which have been created. */
+    /**
+     * A map of isolated classloaders which have been created.
+     */
     private final Map<ImmutableSet<Dependency>, IsolatedClassLoader> loaders = new HashMap<>();
 
-    /** Cached relocation handler instance. */
+    /**
+     * Cached relocation handler instance.
+     */
     private RelocationHandler relocationHandler = null;
 
     public DependencyManagerImpl(MoonRisePlugin plugin) {
@@ -83,15 +97,15 @@ public class DependencyManagerImpl implements DependencyManager {
             }
 
             URL[] urls = set.stream()
-                    .map(this.loaded::get)
-                    .map(file -> {
-                        try {
-                            return file.toUri().toURL();
-                        } catch (MalformedURLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    })
-                    .toArray(URL[]::new);
+                .map(this.loaded::get)
+                .map(file -> {
+                    try {
+                        return file.toUri().toURL();
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .toArray(URL[]::new);
 
             classLoader = new IsolatedClassLoader(urls);
             this.loaders.put(set, classLoader);

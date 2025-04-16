@@ -5,9 +5,9 @@ import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
 import org.jetbrains.annotations.Nullable;
 
 public class SystemPropertyConfigAdapter extends StringBasedConfigurationAdapter {
-    private static final String PREFIX = "moonrise.";
 
-    private final MoonRisePlugin plugin;
+    private static final String         PREFIX = "moonrise.";
+    private final        MoonRisePlugin plugin;
 
     public SystemPropertyConfigAdapter(MoonRisePlugin plugin) {
         this.plugin = plugin;
@@ -23,7 +23,8 @@ public class SystemPropertyConfigAdapter extends StringBasedConfigurationAdapter
         String value = System.getProperty(key);
         if (value != null) {
             String printableValue = ConfigKeys.shouldCensorValue(path) ? "*****" : value;
-            this.plugin.getLogger().info(String.format("Resolved configuration value from system property: %s = %s", key, printableValue));
+            this.plugin.getLogger()
+                .info(String.format("Resolved configuration value from system property: %s = %s", key, printableValue));
         }
         return value;
     }

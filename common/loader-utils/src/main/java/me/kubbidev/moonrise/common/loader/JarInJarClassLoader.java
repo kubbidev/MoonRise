@@ -21,6 +21,7 @@ import java.nio.file.StandardCopyOption;
  * by the loading code & this classloader.</p>
  */
 public class JarInJarClassLoader extends URLClassLoader {
+
     static {
         ClassLoader.registerAsParallelCapable();
     }
@@ -29,7 +30,7 @@ public class JarInJarClassLoader extends URLClassLoader {
      * Creates a new jar-in-jar class loader.
      *
      * @param loaderClassLoader the loader plugin's classloader (setup and created by the platform)
-     * @param jarResourcePath the path to the jar-in-jar resource within the loader jar
+     * @param jarResourcePath   the path to the jar-in-jar resource within the loader jar
      * @throws LoadingException if something unexpectedly bad happens
      */
     public JarInJarClassLoader(ClassLoader loaderClassLoader, String jarResourcePath) throws LoadingException {
@@ -57,14 +58,14 @@ public class JarInJarClassLoader extends URLClassLoader {
     /**
      * Creates a new plugin instance.
      *
-     * @param bootstrapClass the name of the bootstrap plugin class
-     * @param loaderPluginType the type of the loader plugin, the only parameter of the bootstrap
-     *                         plugin constructor
-     * @param loaderPlugin the loader plugin instance
-     * @param <T> the type of the loader plugin
+     * @param bootstrapClass   the name of the bootstrap plugin class
+     * @param loaderPluginType the type of the loader plugin, the only parameter of the bootstrap plugin constructor
+     * @param loaderPlugin     the loader plugin instance
+     * @param <T>              the type of the loader plugin
      * @return the instantiated bootstrap plugin
      */
-    public <T> LoaderBootstrap instantiatePlugin(String bootstrapClass, Class<T> loaderPluginType, T loaderPlugin) throws LoadingException {
+    public <T> LoaderBootstrap instantiatePlugin(String bootstrapClass, Class<T> loaderPluginType, T loaderPlugin)
+        throws LoadingException {
         Class<? extends LoaderBootstrap> plugin;
         try {
             plugin = loadClass(bootstrapClass).asSubclass(LoaderBootstrap.class);
@@ -87,11 +88,11 @@ public class JarInJarClassLoader extends URLClassLoader {
     }
 
     /**
-     * Extracts the "jar-in-jar" from the loader plugin into a temporary file,
-     * then returns a URL that can be used by the {@link JarInJarClassLoader}.
+     * Extracts the "jar-in-jar" from the loader plugin into a temporary file, then returns a URL that can be used by
+     * the {@link JarInJarClassLoader}.
      *
      * @param loaderClassLoader the classloader for the "host" loader plugin
-     * @param jarResourcePath the inner jar resource path
+     * @param jarResourcePath   the inner jar resource path
      * @return a URL to the extracted file
      */
     private static URL extractJar(ClassLoader loaderClassLoader, String jarResourcePath) throws LoadingException {

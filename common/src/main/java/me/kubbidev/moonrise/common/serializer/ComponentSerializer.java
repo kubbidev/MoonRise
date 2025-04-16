@@ -16,21 +16,21 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * ComponentSerializer is a utility class that encodes a {@link Component} into a Discord-formatted
- * markdown string.
+ * ComponentSerializer is a utility class that encodes a {@link Component} into a Discord-formatted markdown string.
  * <p>
- * It supports features such as bold, italic, underline, strikethrough, link parsing,
- * and additional custom serialization options.
+ * It supports features such as bold, italic, underline, strikethrough, link parsing, and additional custom
+ * serialization options.
  * <p>
- * This serializer provides a flexible way to flatten and serialize components with defined
- * formatting and escaping behaviors.
+ * This serializer provides a flexible way to flatten and serialize components with defined formatting and escaping
+ * behaviors.
  * <p>
- * Serialization behavior can be controlled via {@link ComponentSerializerOptions}, which provides
- * the ability to customize the default options or specify options on a per-serialization basis.
+ * Serialization behavior can be controlled via {@link ComponentSerializerOptions}, which provides the ability to
+ * customize the default options or specify options on a per-serialization basis.
  *
  * @see ComponentSerializerOptions
  */
 public class ComponentSerializer implements ComponentEncoder<Component, String> {
+
     private static final Pattern LINK_PATTERN = Pattern.compile("(https?://.*\\.[^ ]*)$");
 
     /**
@@ -41,13 +41,12 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
     private static final ComponentSerializer INSTANCE = new ComponentSerializer();
 
     /**
-     * Serializes a given {@link Component} into a string, optionally taking a {@link Locale}
-     * into account for localization purposes.
+     * Serializes a given {@link Component} into a string, optionally taking a {@link Locale} into account for
+     * localization purposes.
      *
      * @param message the {@link Component} to be serialized; must not be null
      * @param locale  the {@link Locale} used for localization; may be null
-     * @return the serialized string representation of the given {@link Component},
-     *         never null
+     * @return the serialized string representation of the given {@link Component}, never null
      */
     public static @NotNull String serialize(Component message, @Nullable Locale locale) {
         return ComponentSerializer.INSTANCE.serialize(TranslationManager.render(message, locale));
@@ -98,8 +97,8 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
      * Serializes a {@link Component} to Discord formatting (markdown) with this serializer's
      * {@link ComponentSerializer#getDefaultOptions()}.
      * <p>
-     * Use {@link ComponentSerializer#serialize(Component, ComponentSerializerOptions)} to fine
-     * tune the serialization options.
+     * Use {@link ComponentSerializer#serialize(Component, ComponentSerializerOptions)} to fine tune the serialization
+     * options.
      *
      * @param component The text component from a Minecraft chat message
      * @return Discord markdown formatted String
@@ -119,7 +118,9 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
         StringBuilder builder = new StringBuilder();
         for (Text text : listener.getTexts()) {
             var content = text.getContent().toString();
-            if (content.isEmpty()) continue;
+            if (content.isEmpty()) {
+                continue;
+            }
 
             if (text.isBold()) {
                 builder.append("**");
@@ -136,8 +137,8 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
 
             if (options.escapeMarkdown() && !LINK_PATTERN.matcher(content).find()) {
                 content = content
-                        .replace("*", "\\*")
-                        .replace("~", "\\~");
+                    .replace("*", "\\*")
+                    .replace("~", "\\~");
 //                        .replace("_", "\\_")
 //                        .replace("`", "\\`")
 //                        .replace("|", "\\|");
@@ -173,12 +174,13 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
     }
 
     private static class FlattenListener implements FlattenerListener {
-        private final ComponentSerializerOptions serializerOptions;
-        private final boolean gatherLinks;
 
-        private Text currentText = null;
+        private final ComponentSerializerOptions serializerOptions;
+        private final boolean                    gatherLinks;
+
+        private       Text             currentText  = null;
         private final Map<Style, Text> previousText = new HashMap<>();
-        private final List<Text> texts = new ArrayList<>();
+        private final List<Text>       texts        = new ArrayList<>();
 
         public FlattenListener(ComponentSerializerOptions serializerOptions) {
             this.serializerOptions = serializerOptions;
@@ -255,6 +257,7 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
     }
 
     private static class FlattenToTextOnly implements FlattenerListener {
+
         private final StringBuilder builder = new StringBuilder();
 
         @Override
@@ -268,11 +271,12 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
     }
 
     private static class Text implements Cloneable {
+
         private final StringBuilder content = new StringBuilder();
-        private boolean bold;
-        private boolean strikethrough;
-        private boolean underline;
-        private boolean italic;
+        private       boolean       bold;
+        private       boolean       strikethrough;
+        private       boolean       underline;
+        private       boolean       italic;
 
         private String openUrl;
         private String urlHover;
@@ -281,13 +285,13 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
         }
 
         public Text(
-                StringBuilder content,
-                boolean bold,
-                boolean strikethrough,
-                boolean underline,
-                boolean italic,
-                String openUrl,
-                String urlHover
+            StringBuilder content,
+            boolean bold,
+            boolean strikethrough,
+            boolean underline,
+            boolean italic,
+            String openUrl,
+            String urlHover
         ) {
             this.content.append(content);
             this.bold = bold;
@@ -362,51 +366,56 @@ public class ComponentSerializer implements ComponentEncoder<Component, String> 
          */
         public boolean formattingMatches(@Nullable Text other) {
             return other != null
-                    && this.bold == other.bold
-                    && this.strikethrough == other.strikethrough
-                    && this.underline == other.underline
-                    && this.italic == other.italic
-                    && Objects.equals(this.openUrl, other.openUrl)
-                    && Objects.equals(this.urlHover, other.urlHover);
+                && this.bold == other.bold
+                && this.strikethrough == other.strikethrough
+                && this.underline == other.underline
+                && this.italic == other.italic
+                && Objects.equals(this.openUrl, other.openUrl)
+                && Objects.equals(this.urlHover, other.urlHover);
         }
 
         @SuppressWarnings("MethodDoesntCallSuperMethod")
         @Override
         public Text clone() {
             return new Text(
-                    this.content,
-                    this.bold,
-                    this.strikethrough,
-                    this.underline,
-                    this.italic,
-                    this.openUrl,
-                    this.urlHover
+                this.content,
+                this.bold,
+                this.strikethrough,
+                this.underline,
+                this.italic,
+                this.openUrl,
+                this.urlHover
             );
         }
 
         @Override
-        public final boolean equals(Object o) {
-            if (!(o instanceof Text text)) return false;
+        public boolean equals(Object o) {
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof Text text)) {
+                return false;
+            }
 
             return this.bold == text.bold
-                    && this.strikethrough == text.strikethrough
-                    && this.underline == text.underline
-                    && this.italic == text.italic
-                    && this.content.toString().contentEquals(text.content)
-                    && Objects.equals(this.openUrl, text.openUrl)
-                    && Objects.equals(this.urlHover, text.urlHover);
+                && this.strikethrough == text.strikethrough
+                && this.underline == text.underline
+                && this.italic == text.italic
+                && this.content.toString().contentEquals(text.content)
+                && Objects.equals(this.openUrl, text.openUrl)
+                && Objects.equals(this.urlHover, text.urlHover);
         }
 
         @Override
         public int hashCode() {
             return Objects.hash(
-                    this.content,
-                    this.bold,
-                    this.strikethrough,
-                    this.underline,
-                    this.italic,
-                    this.openUrl,
-                    this.urlHover
+                this.content,
+                this.bold,
+                this.strikethrough,
+                this.underline,
+                this.italic,
+                this.openUrl,
+                this.urlHover
             );
         }
     }

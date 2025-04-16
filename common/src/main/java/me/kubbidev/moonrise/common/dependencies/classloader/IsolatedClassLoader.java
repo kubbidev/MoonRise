@@ -10,6 +10,7 @@ import java.net.URLClassLoader;
  * with other plugins, or libraries provided by the application.</p>
  */
 public class IsolatedClassLoader extends URLClassLoader {
+
     static {
         ClassLoader.registerAsParallelCapable();
     }

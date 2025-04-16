@@ -25,19 +25,19 @@ public class LeaderboardEnabledCommand implements Interaction {
         assert action != null;
 
         plugin.getGatewayClient().modifyGuild(context.getGuild(), g -> g.setLeaderboardEnabled(action))
-                .thenAcceptAsync(__ -> {
-                    context.setDeferred(true);
-                    context.sendMessage((action
-                            ? Message.LEADERBOARD_ENABLE
-                            : Message.LEADERBOARD_DISABLE).build());
-                }).join();
+            .thenAcceptAsync(__ -> {
+                context.setDeferred(true);
+                context.sendMessage((action
+                    ? Message.LEADERBOARD_ENABLE
+                    : Message.LEADERBOARD_DISABLE).build());
+            }).join();
     }
 
     @Override
     public @NotNull SlashCommandData getMetadata() {
         return Commands.slash("leaderboard_enabled", "Controls the servers ranking and experience system.")
-                .setGuildOnly(true)
-                .addOption(OptionType.BOOLEAN, "action", "Whether to enable/disable the system.", true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MANAGE_SERVER));
+            .setGuildOnly(true)
+            .addOption(OptionType.BOOLEAN, "action", "Whether to enable/disable the system.", true)
+            .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MANAGE_SERVER));
     }
 }

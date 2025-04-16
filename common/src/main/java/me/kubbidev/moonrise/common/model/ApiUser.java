@@ -14,30 +14,16 @@ import java.util.Optional;
  * @see <a href="https://discord.com/developers/docs/resources/user">Users Resource</a>
  */
 public class ApiUser extends Snowflake {
-    /** The path for default user avatar image URLs. */
-    public static final String DEFAULT_IMAGE_PATH = "https://cdn.discordapp.com/embed/avatars/%s.png";
-
-    protected final MoonRisePlugin plugin;
 
     /**
-     * The last known username of an user
+     * The path for default user avatar image URLs.
      */
-    private @Nullable String username = null;
-
-    /**
-     * The last known global name of an user
-     */
-    private @Nullable String globalName = null;
-
-    /**
-     * The last known avatar url of an user
-     */
-    private @Nullable String avatar = null;
-
-    /**
-     * The last known {@link Instant} of an user's last seen.
-     */
-    private @NotNull Instant lastSeen = Instant.now();
+    public static final String         DEFAULT_IMAGE_PATH = "https://cdn.discordapp.com/embed/avatars/%s.png";
+    protected final     MoonRisePlugin plugin;
+    private @Nullable   String         username           = null;
+    private @Nullable   String         globalName         = null;
+    private @Nullable   String         avatar             = null;
+    private @NotNull    Instant        lastSeen           = Instant.now();
 
     public ApiUser(long id, MoonRisePlugin plugin) {
         super(id);
@@ -119,7 +105,7 @@ public class ApiUser extends Snowflake {
      * @return {@code true} if the user's avatar is animated, {@code false} otherwise.
      */
     public boolean hasAnimatedAvatar() {
-        return getAvatar().startsWith("a_");
+        return this.getAvatar().startsWith("a_");
     }
 
     /**

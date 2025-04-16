@@ -4,9 +4,9 @@ public record Long2(long a, long b) {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Long2(long a1, long b1)
-                && this.a == a1
-                && this.b == b1;
+        return o == this || o instanceof Long2(long a1, long b1)
+            && this.a == a1
+            && this.b == b1;
 
     }
 

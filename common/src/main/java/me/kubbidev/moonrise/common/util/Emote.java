@@ -118,17 +118,17 @@ public enum Emote {
 
     public @NotNull String getEmote() {
         return String.format(
-                "<%s:%s:%s>",
-                this.animated ? "a" : "",
-                this.emoteName,
-                this.id
+            "<%s:%s:%s>",
+            this.animated ? "a" : "",
+            this.emoteName,
+            this.id
         );
     }
 
     public @NotNull String getEmoji() {
         return String.format(
-                ":%s:",
-                this.id
+            ":%s:",
+            this.id
         );
     }
 

@@ -1,7 +1,9 @@
 package me.kubbidev.moonrise.common.leaderboard.util;
 
 public final class Experiences {
-    private Experiences() {}
+
+    private Experiences() {
+    }
 
     /**
      * Calculates the amount of experience required to reach a specific level.

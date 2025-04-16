@@ -41,20 +41,18 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
 
     // init during load
-    private DependencyManager dependencyManager;
-    private TranslationManager translationManager;
-
+    private DependencyManager     dependencyManager;
+    private TranslationManager    translationManager;
     // init during enable
     private MoonRiseConfiguration configuration;
-    private OkHttpClient httpClient;
-    private BytebinClient bytebin;
+    private OkHttpClient          httpClient;
+    private BytebinClient         bytebin;
     private TranslationRepository translationRepository;
-    private Storage storage;
-    private MoonRiseApiProvider apiProvider;
-    private EventDispatcher eventDispatcher;
-    private GatewayClient gateway;
-
-    private boolean running = false;
+    private Storage               storage;
+    private MoonRiseApiProvider   apiProvider;
+    private EventDispatcher       eventDispatcher;
+    private GatewayClient         gateway;
+    private boolean               running = false;
 
     /**
      * Performs the initial actions to load the plugin
@@ -82,20 +80,20 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
         getLogger().info("Loading configuration...");
         ConfigurationAdapter configFileAdapter = provideConfigurationAdapter();
         this.configuration = new MoonRiseConfiguration(this, new MultiConfigurationAdapter(this,
-                new SystemPropertyConfigAdapter(this),
-                new EnvironmentVariableConfigAdapter(this),
-                configFileAdapter
+            new SystemPropertyConfigAdapter(this),
+            new EnvironmentVariableConfigAdapter(this),
+            configFileAdapter
         ));
 
         // setup a bytebin instance
         this.httpClient = new OkHttpClient.Builder()
-                .callTimeout(15, TimeUnit.SECONDS)
-                .build();
+            .callTimeout(15, TimeUnit.SECONDS)
+            .build();
 
         this.bytebin = new BytebinClient(
-                this.httpClient,
-                getConfiguration().get(ConfigKeys.BYTEBIN_URL),
-                "moonrise"
+            this.httpClient,
+            getConfiguration().get(ConfigKeys.BYTEBIN_URL),
+            "moonrise"
         );
 
         // init translation repo and update bundle files
@@ -188,18 +186,18 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
 
     protected Set<Dependency> getGlobalDependencies() {
         return EnumSet.of(
-                Dependency.ADVENTURE,
-                Dependency.CAFFEINE,
-                Dependency.OKIO,
-                Dependency.OKHTTP,
-                Dependency.EVENT,
-                Dependency.JACKSON_ANNOTATIONS,
-                Dependency.JACKSON_CORE,
-                Dependency.JACKSON_DATABIND,
-                Dependency.TROVE4J,
-                Dependency.NEOVISIONARIES,
-                Dependency.COLLECTIONS4,
-                Dependency.JDA
+            Dependency.ADVENTURE,
+            Dependency.CAFFEINE,
+            Dependency.OKIO,
+            Dependency.OKHTTP,
+            Dependency.EVENT,
+            Dependency.JACKSON_ANNOTATIONS,
+            Dependency.JACKSON_CORE,
+            Dependency.JACKSON_DATABIND,
+            Dependency.TROVE4J,
+            Dependency.NEOVISIONARIES,
+            Dependency.COLLECTIONS4,
+            Dependency.JDA
         );
     }
 
@@ -225,7 +223,8 @@ public abstract class AbstractMoonRisePlugin implements MoonRisePlugin {
 
     // hooks called during disable
 
-    protected void removePlatformHooks() {}
+    protected void removePlatformHooks() {
+    }
 
     protected Path resolveConfig(String fileName) {
         Path configFile = getBootstrap().getConfigDirectory().resolve(fileName);

@@ -28,7 +28,8 @@ public class StandaloneDependencyPreloader {
         Path cacheDirectory = Paths.get("data").resolve("libs");
         MoreFiles.createDirectoriesIfNotExists(cacheDirectory);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(8, new ThreadFactoryBuilder().setDaemon(true).build());
+        ExecutorService executorService = Executors.newFixedThreadPool(8,
+            new ThreadFactoryBuilder().setDaemon(true).build());
         DependencyManager dependencyManager = new DependencyManagerImpl(cacheDirectory, executorService);
 
         Set<Dependency> dependencies = new HashSet<>(Arrays.asList(Dependency.values()));

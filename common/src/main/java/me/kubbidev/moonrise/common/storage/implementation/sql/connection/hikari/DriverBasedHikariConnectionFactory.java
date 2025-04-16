@@ -12,6 +12,7 @@ import java.util.Enumeration;
  * Extension of {@link HikariConnectionFactory} that uses the driver class name to configure Hikari.
  */
 public abstract class DriverBasedHikariConnectionFactory extends HikariConnectionFactory {
+
     public DriverBasedHikariConnectionFactory(StorageCredentials configuration) {
         super(configuration);
     }
@@ -21,7 +22,8 @@ public abstract class DriverBasedHikariConnectionFactory extends HikariConnectio
     protected abstract String driverJdbcIdentifier();
 
     @Override
-    protected void configureDatabase(HikariConfig config, String address, String port, String database, String username, String password) {
+    protected void configureDatabase(HikariConfig config, String address, String port, String database, String username,
+                                     String password) {
         config.setDriverClassName(this.driverClassName());
         config.setJdbcUrl(String.format("jdbc:%s://%s:%s/%s", this.driverJdbcIdentifier(), address, port, database));
         config.setUsername(username);

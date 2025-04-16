@@ -18,9 +18,10 @@ import java.util.stream.Stream;
  * MoonRise implementation for the standalone app.
  */
 public class MStandalonePlugin extends AbstractMoonRisePlugin {
+
     private final MStandaloneBootstrap bootstrap;
 
-    private StandaloneSenderFactory senderFactory;
+    private StandaloneSenderFactory  senderFactory;
     private StandaloneCommandManager commandManager;
 
     public MStandalonePlugin(MStandaloneBootstrap bootstrap) {

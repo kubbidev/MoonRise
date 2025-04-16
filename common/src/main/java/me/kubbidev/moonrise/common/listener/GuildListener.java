@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public class GuildListener extends ListenerAdapter {
+
     private final GatewayClient client;
 
     public GuildListener(GatewayClient client) {
@@ -21,20 +22,23 @@ public class GuildListener extends ListenerAdapter {
     @Override
     public void onGuildUpdateName(@NotNull GuildUpdateNameEvent e) {
         this.handleGuildUpdate(e.getGuild(), e.getOldName(), e.getNewValue(), g -> g.setName(e.getNewName()),
-                "An error occurred while updating guild name");
+            "An error occurred while updating guild name");
     }
 
     @Override
     public void onGuildUpdateIcon(@NotNull GuildUpdateIconEvent e) {
         this.handleGuildUpdate(e.getGuild(), e.getOldIconUrl(), e.getNewIconUrl(), g -> g.setIcon(e.getNewIconUrl()),
-                "An error occurred while updating guild icon");
+            "An error occurred while updating guild icon");
     }
 
     /**
      * A generic method to handle guild updates with minimal duplication.
      */
-    private <T> void handleGuildUpdate(Guild guild, T oldValue, T newValue, Consumer<ApiGuild> action, String errorMessage) {
-        if (Objects.equals(oldValue, newValue)) return;
+    private <T> void handleGuildUpdate(Guild guild, T oldValue, T newValue, Consumer<ApiGuild> action,
+                                       String errorMessage) {
+        if (Objects.equals(oldValue, newValue)) {
+            return;
+        }
 
         this.client.modifyGuild(guild, action).exceptionally(t -> {
             this.client.getPlugin().getLogger().warn(errorMessage, t);

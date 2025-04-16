@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public class MemberListener extends ListenerAdapter {
+
     private final GatewayClient client;
 
     public MemberListener(GatewayClient client) {
@@ -24,22 +25,29 @@ public class MemberListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberUpdateNickname(@NotNull GuildMemberUpdateNicknameEvent e) {
-        this.handleMemberUpdate(e.getMember(), e.getOldNickname(), e.getNewNickname(), m -> m.setNickname(e.getNewNickname()),
-                "An error occurred while updating member nickname");
+        this.handleMemberUpdate(e.getMember(), e.getOldNickname(), e.getNewNickname(),
+            m -> m.setNickname(e.getNewNickname()),
+            "An error occurred while updating member nickname");
     }
 
     @Override
     public void onGuildMemberUpdateAvatar(@NotNull GuildMemberUpdateAvatarEvent e) {
-        this.handleMemberUpdate(e.getMember(), e.getOldAvatarUrl(), e.getNewAvatarUrl(), m -> m.setGuildAvatar(e.getNewAvatarUrl()),
-                "An error occurred while updating member avatar");
+        this.handleMemberUpdate(e.getMember(), e.getOldAvatarUrl(), e.getNewAvatarUrl(),
+            m -> m.setGuildAvatar(e.getNewAvatarUrl()),
+            "An error occurred while updating member avatar");
     }
 
     /**
      * A generic method to handle member updates with minimal duplication.
      */
-    private <T> void handleMemberUpdate(Member member, T oldValue, T newValue, Consumer<ApiMember> action, String errorMessage) {
-        if (Objects.equals(oldValue, newValue)) return;
-        if (isBot(member)) return;
+    private <T> void handleMemberUpdate(Member member, T oldValue, T newValue, Consumer<ApiMember> action,
+                                        String errorMessage) {
+        if (Objects.equals(oldValue, newValue)) {
+            return;
+        }
+        if (isBot(member)) {
+            return;
+        }
 
         this.client.modifyMember(member, action).exceptionally(t -> {
             this.client.getPlugin().getLogger().warn(errorMessage, t);

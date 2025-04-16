@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * Options for {@link ComponentSerializer}s.
  */
 public record ComponentSerializerOptions(boolean maskedLinks, boolean escapeMarkdown,
-        @NotNull ComponentFlattener flattener
+                                         @NotNull ComponentFlattener flattener
 ) {
 
     /**
@@ -18,8 +18,8 @@ public record ComponentSerializerOptions(boolean maskedLinks, boolean escapeMark
      */
     public static ComponentSerializerOptions defaults() {
         return new ComponentSerializerOptions(false, true, ComponentFlattener.builder()
-                .mapper(TextComponent.class, TextComponent::content)
-                .build());
+            .mapper(TextComponent.class, TextComponent::content)
+            .build());
     }
 
     public ComponentSerializerOptions withMaskedLinks(boolean maskedLinks) {

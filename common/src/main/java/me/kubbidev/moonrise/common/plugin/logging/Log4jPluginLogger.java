@@ -3,6 +3,7 @@ package me.kubbidev.moonrise.common.plugin.logging;
 import org.apache.logging.log4j.Logger;
 
 public class Log4jPluginLogger implements PluginLogger {
+
     private final Logger logger;
 
     public Log4jPluginLogger(Logger logger) {

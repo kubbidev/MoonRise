@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * A list of {@link String} arguments, with extra methods to help
- * with parsing.
+ * A list of {@link String} arguments, with extra methods to help with parsing.
  */
 public class ArgumentList extends ForwardingList<String> {
+
     private final List<String> backingList;
 
     public ArgumentList(List<String> backingList) {
@@ -45,7 +45,7 @@ public class ArgumentList extends ForwardingList<String> {
     }
 
     public int getInt(int index, Supplier<ArgumentException> exceptionSupplier)
-            throws ArgumentException {
+        throws ArgumentException {
         try {
             return Integer.parseInt(get(index));
         } catch (NumberFormatException e) {
@@ -60,6 +60,31 @@ public class ArgumentList extends ForwardingList<String> {
 
         try {
             return Integer.parseInt(get(index));
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    public double getDouble(int index) throws ArgumentException {
+        return getDouble(index, ArgumentException.DetailedUsage::new);
+    }
+
+    public double getDouble(int index, Supplier<ArgumentException> exceptionSupplier)
+        throws ArgumentException {
+        try {
+            return Double.parseDouble(get(index));
+        } catch (NumberFormatException e) {
+            throw exceptionSupplier.get();
+        }
+    }
+
+    public double getDoubleOrDefault(int index, double defaultValue) {
+        if (indexOutOfBounds(index)) {
+            return defaultValue;
+        }
+
+        try {
+            return Double.parseDouble(get(index));
         } catch (NumberFormatException e) {
             return defaultValue;
         }

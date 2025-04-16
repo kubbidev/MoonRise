@@ -5,9 +5,8 @@ public class StorageMetadata {
     // remote
     private Boolean connected;
     private Integer ping;
-
     // local
-    private Long sizeBytes;
+    private Long    sizeBytes;
 
     public Boolean connected() {
         return this.connected;

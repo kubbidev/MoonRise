@@ -17,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
  * Implements the MoonRise API using the plugin instance
  */
 public class MoonRiseApiProvider implements MoonRise {
-    private final MoonRisePlugin plugin;
 
-    private final ApiPlatform platform;
+    private final MoonRisePlugin plugin;
+    private final ApiPlatform    platform;
 
     public MoonRiseApiProvider(MoonRisePlugin plugin) {
         this.plugin = plugin;
@@ -49,9 +49,9 @@ public class MoonRiseApiProvider implements MoonRise {
                 PluginLogger logger = this.plugin.getLogger();
                 logger.warn("It seems that the MoonRise API has been (class)loaded by a plugin other than MoonRise!");
                 logger.warn("The API was loaded by " + apiClassLoader + " (" + guilty + ") and the " +
-                        "MoonRise plugin was loaded by " + pluginClassLoader.toString() + ".");
+                    "MoonRise plugin was loaded by " + pluginClassLoader.toString() + ".");
                 logger.warn("This indicates that the other plugin has incorrectly \"shaded\" the " +
-                        "MoonRise API into its jar file. This can cause errors at runtime and should be fixed.");
+                    "MoonRise API into its jar file. This can cause errors at runtime and should be fixed.");
                 return;
             }
         }

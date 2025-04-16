@@ -10,6 +10,7 @@ import java.util.concurrent.CompletionException;
  * Base class for an interface which can perform operations asynchronously and return {@link CompletableFuture}s
  */
 public abstract class AsyncInterface {
+
     private final MoonRisePlugin plugin;
 
     protected AsyncInterface(MoonRisePlugin plugin) {

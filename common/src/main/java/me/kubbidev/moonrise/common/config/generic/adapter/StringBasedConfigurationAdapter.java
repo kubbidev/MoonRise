@@ -8,8 +8,8 @@ import java.util.Map;
 
 public abstract class StringBasedConfigurationAdapter implements ConfigurationAdapter {
 
-    private static final Splitter LIST_SPLITTER = Splitter.on(',');
-    private static final Splitter.MapSplitter MAP_SPLITTER = Splitter.on(',').withKeyValueSeparator('=');
+    private static final Splitter             LIST_SPLITTER = Splitter.on(',');
+    private static final Splitter.MapSplitter MAP_SPLITTER  = Splitter.on(',').withKeyValueSeparator('=');
 
     protected abstract @Nullable String resolveValue(String path);
 

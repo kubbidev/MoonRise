@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class StandaloneCommandManager extends CommandManager implements CommandExecutor {
+
     private final MStandalonePlugin plugin;
 
     public StandaloneCommandManager(MStandalonePlugin plugin) {

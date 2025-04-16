@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class SchemaReader {
+
     private SchemaReader() {
     }
 
@@ -72,11 +73,12 @@ public final class SchemaReader {
     /**
      * Filters which statements should be executed based on the current list of tables in the database
      *
-     * @param statements the statements to filter
+     * @param statements    the statements to filter
      * @param currentTables the current tables in the database
      * @return the filtered list of statements
      */
     public static List<String> filterStatements(List<String> statements, List<String> currentTables) {
-        return statements.stream().filter(s -> !currentTables.contains(tableFromStatement(s))).collect(Collectors.toList());
+        return statements.stream().filter(s -> !currentTables.contains(tableFromStatement(s)))
+            .collect(Collectors.toList());
     }
 }

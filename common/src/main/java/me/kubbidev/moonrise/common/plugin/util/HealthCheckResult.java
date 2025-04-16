@@ -6,6 +6,7 @@ import me.kubbidev.moonrise.api.platform.Health;
 import java.util.Map;
 
 public record HealthCheckResult(boolean isHealthy, Map<String, Object> getDetails) implements Health {
+
     private static final Gson GSON = new Gson();
 
     public static HealthCheckResult healthy(Map<String, Object> details) {

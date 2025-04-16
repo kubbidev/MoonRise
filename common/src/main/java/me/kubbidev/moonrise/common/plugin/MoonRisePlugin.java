@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * Main internal interface for MoonRise plugins, providing the base for
- * abstraction throughout the project.
+ * Main internal interface for MoonRise plugins, providing the base for abstraction throughout the project.
  * <p>
  * All plugin platforms implement this interface.
  */

@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface ConnectionFactory {
+
     String getImplementationName();
 
     void init(MoonRisePlugin plugin);

@@ -8,17 +8,16 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class LimitedInputStream extends FilterInputStream implements Closeable {
+
     private final long limit;
-    private long count;
+    private       long count;
 
     /**
-     * Creates a {@code FilterInputStream}
-     * by assigning the  argument {@code in}
-     * to the field {@code this.in} so as
-     * to remember it for later use.
+     * Creates a {@code FilterInputStream} by assigning the  argument {@code in} to the field {@code this.in} so as to
+     * remember it for later use.
      *
-     * @param in the underlying input stream, or {@code null} if
-     *           this instance is to be created without an underlying stream.
+     * @param in the underlying input stream, or {@code null} if this instance is to be created without an underlying
+     *           stream.
      */
     public LimitedInputStream(InputStream in, long limit) {
         super(in);

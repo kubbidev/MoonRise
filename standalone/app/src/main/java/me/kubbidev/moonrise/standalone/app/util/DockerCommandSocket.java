@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.util.function.Consumer;
 
 public class DockerCommandSocket implements Runnable, AutoCloseable {
+
     private static final Logger LOGGER = LogManager.getLogger(DockerCommandSocket.class);
 
     public static DockerCommandSocket createAndStart(String socketPath, TerminalInterface terminal) {
@@ -42,7 +43,7 @@ public class DockerCommandSocket implements Runnable, AutoCloseable {
     }
 
     private final ServerSocketChannel channel;
-    private final Consumer<String> callback;
+    private final Consumer<String>    callback;
 
     public DockerCommandSocket(ServerSocketChannel channel, Consumer<String> callback) {
         this.channel = channel;

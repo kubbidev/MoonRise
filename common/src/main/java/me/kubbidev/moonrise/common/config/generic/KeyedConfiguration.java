@@ -10,9 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class KeyedConfiguration {
-    private final ConfigurationAdapter adapter;
+
+    private final ConfigurationAdapter         adapter;
     private final List<? extends ConfigKey<?>> keys;
-    private final ValuesMap values;
+    private final ValuesMap                    values;
 
     public KeyedConfiguration(ConfigurationAdapter adapter, List<? extends ConfigKey<?>> keys) {
         this.adapter = adapter;
@@ -61,16 +62,16 @@ public class KeyedConfiguration {
     public static List<SimpleConfigKey<?>> initialise(Class<?> keysClass) {
         // get a list of all keys
         List<SimpleConfigKey<?>> keys = Arrays.stream(keysClass.getFields())
-                .filter(f -> Modifier.isStatic(f.getModifiers()))
-                .filter(f -> ConfigKey.class.equals(f.getType()))
-                .map(f -> {
-                    try {
-                        return (SimpleConfigKey<?>) f.get(null);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(ImmutableCollectors.toList());
+            .filter(f -> Modifier.isStatic(f.getModifiers()))
+            .filter(f -> ConfigKey.class.equals(f.getType()))
+            .map(f -> {
+                try {
+                    return (SimpleConfigKey<?>) f.get(null);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            })
+            .collect(ImmutableCollectors.toList());
 
         // set ordinal values
         for (int i = 0; i < keys.size(); i++) {
@@ -81,6 +82,7 @@ public class KeyedConfiguration {
     }
 
     public static class ValuesMap {
+
         private final Object[] values;
 
         public ValuesMap(int size) {

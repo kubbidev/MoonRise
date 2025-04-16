@@ -27,17 +27,17 @@ public class LeaderboardRefreshCommand implements Interaction {
             }
 
             return plugin.getGatewayClient().getLeaderboard().renderLeaderboard(context.getGuild(), apiGuild)
-                    .thenAcceptAsync(__ -> {
-                        context.setDeferred(true);
-                        context.sendMessage(Message.LEADERBOARD_REFRESHED.build());
-                    });
+                .thenAcceptAsync(__ -> {
+                    context.setDeferred(true);
+                    context.sendMessage(Message.LEADERBOARD_REFRESHED.build());
+                });
         }).join();
     }
 
     @Override
     public @NotNull SlashCommandData getMetadata() {
         return Commands.slash("leaderboard_refresh", "Broadcast the freshly new updated leaderboard.")
-                .setGuildOnly(true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MANAGE_SERVER));
+            .setGuildOnly(true)
+            .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MANAGE_SERVER));
     }
 }

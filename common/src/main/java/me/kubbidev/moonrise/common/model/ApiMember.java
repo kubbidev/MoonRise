@@ -14,28 +14,17 @@ import java.util.Optional;
  * @see <a href="https://discord.com/developers/docs/resources/guild#guild-member-object">Guild Member Object</a>
  */
 public class ApiMember extends ApiUser {
-    private long guildId;
 
-    /**
-     * The last known nickname of a member
-     */
-    private @Nullable String nickname = null;
-
-    /**
-     * The last known guildAvatar url of a member
-     */
+    private           long   guildId;
+    private @Nullable String nickname    = null;
     private @Nullable String guildAvatar = null;
-
+    private @Nullable String biography   = null;
+    private           long   experience;
+    private           long   voiceActivity;
     /**
-     * The last known biography of a member
+     * Represents the previous placement of a member in a leaderboard or ranking system
      */
-    private @Nullable String biography = null;
-
-    private long experience;
-    private long voiceActivity;
-
-    /** Represents the previous placement of a member in a leaderboard or ranking system */
-    private int placement = -1;
+    private           int    placement   = -1;
 
     public ApiMember(long id, MoonRisePlugin plugin) {
         super(id, plugin);
@@ -157,6 +146,9 @@ public class ApiMember extends ApiUser {
 
     @Override
     public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
         if (!(o instanceof ApiMember member)) {
             return false;
         }

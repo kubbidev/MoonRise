@@ -9,6 +9,7 @@ import java.util.concurrent.Executor;
  * A wrapper around a {@link Connection} which blocks usage of the default {@link #close()} method.
  */
 public class NonClosableConnection implements Connection {
+
     private final Connection delegate;
 
     public NonClosableConnection(Connection delegate) {
@@ -139,7 +140,8 @@ public class NonClosableConnection implements Connection {
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency)
+        throws SQLException {
         return this.delegate.prepareStatement(sql, resultSetType, resultSetConcurrency);
     }
 
@@ -189,17 +191,20 @@ public class NonClosableConnection implements Connection {
     }
 
     @Override
-    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+        throws SQLException {
         return this.delegate.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency,
+                                              int resultSetHoldability) throws SQLException {
         return this.delegate.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
     @Override
-    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency,
+                                         int resultSetHoldability) throws SQLException {
         return this.delegate.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 

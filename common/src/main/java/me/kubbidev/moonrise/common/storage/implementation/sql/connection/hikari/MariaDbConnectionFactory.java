@@ -4,6 +4,7 @@ import me.kubbidev.moonrise.common.storage.implementation.sql.StatementProcessor
 import me.kubbidev.moonrise.common.storage.misc.StorageCredentials;
 
 public class MariaDbConnectionFactory extends DriverBasedHikariConnectionFactory {
+
     public MariaDbConnectionFactory(StorageCredentials configuration) {
         super(configuration);
     }

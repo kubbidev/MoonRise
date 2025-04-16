@@ -17,13 +17,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public abstract class ActivityService extends ListenerAdapter {
+
     private final GatewayClient client;
-
-    /** A thread-safe set that holds {@link Long2} identifiers to manage a cooldown period */
-    private final Set<Long2> messageCooldowns = ExpiringSet.newExpiringSet(1, TimeUnit.MINUTES);
-
-    /** An instance of {@link Random} used for generating pseudo-random numbers throughout */
-    private final Random random = new Random();
+    private final Random        random           = new Random();
+    /**
+     * A thread-safe set that holds {@link Long2} identifiers to manage a cooldown period
+     */
+    private final Set<Long2>    messageCooldowns = ExpiringSet.newExpiringSet(1, TimeUnit.MINUTES);
 
     public ActivityService(GatewayClient client) {
         this.client = client;
@@ -48,10 +48,14 @@ public abstract class ActivityService extends ListenerAdapter {
 
     protected void updateMessageActivity(MessageReceivedEvent e) {
         this.client.getGuild(e.getGuild()).thenComposeAsync(apiGuild -> {
-            if (!apiGuild.isLeaderboardEnabled()) return CompletableFutures.NULL;
+            if (!apiGuild.isLeaderboardEnabled()) {
+                return CompletableFutures.NULL;
+            }
 
             var member = e.getMember();
-            if (member == null) return CompletableFutures.NULL;
+            if (member == null) {
+                return CompletableFutures.NULL;
+            }
 
             return this.client.modifyMember(member, apiMember -> {
                 long f = this.random.nextLong(15L, 25L) * getExperienceMultiplier();
@@ -64,11 +68,13 @@ public abstract class ActivityService extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent e) {
-        if (e.isWebhookMessage() || !e.isFromGuild() || e.getAuthor().isBot()) return;
+        if (e.isWebhookMessage() || !e.isFromGuild() || e.getAuthor().isBot()) {
+            return;
+        }
 
         Long2 identifier = new Long2(
-                e.getAuthor().getIdLong(),
-                e.getGuild().getIdLong());
+            e.getAuthor().getIdLong(),
+            e.getGuild().getIdLong());
 
         if (!this.messageCooldowns.contains(identifier)) {
             updateMessageActivity(e);

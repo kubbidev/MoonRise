@@ -47,8 +47,8 @@ public enum Tristate {
      * if the value is null.</p>
      *
      * @param val the boolean value
-     * @return {@link #UNDEFINED}, {@link #TRUE} or {@link #FALSE}, if the value
-     *         is <code>null</code>, <code>true</code> or <code>false</code>, respectively.
+     * @return {@link #UNDEFINED}, {@link #TRUE} or {@link #FALSE}, if the value is <code>null</code>, <code>true</code>
+     * or <code>false</code>, respectively.
      */
     public static @NotNull Tristate of(Boolean val) {
         return val == null ? UNDEFINED : val ? TRUE : FALSE;

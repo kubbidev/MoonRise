@@ -67,21 +67,26 @@ public abstract class AbstractEventBus<P> implements EventBus, AutoCloseable {
     }
 
     @Override
-    public @NotNull <T extends MoonRiseEvent> EventSubscription<T> subscribe(@NotNull Class<T> eventClass, @NotNull Consumer<? super T> handler) {
+    public @NotNull <T extends MoonRiseEvent> EventSubscription<T> subscribe(@NotNull Class<T> eventClass,
+                                                                             @NotNull Consumer<? super T> handler) {
         Objects.requireNonNull(eventClass, "eventClass");
         Objects.requireNonNull(handler, "handler");
         return registerSubscription(eventClass, handler, null);
     }
 
     @Override
-    public @NotNull <T extends MoonRiseEvent> EventSubscription<T> subscribe(Object plugin, @NotNull Class<T> eventClass, @NotNull Consumer<? super T> handler) {
+    public @NotNull <T extends MoonRiseEvent> EventSubscription<T> subscribe(Object plugin,
+                                                                             @NotNull Class<T> eventClass,
+                                                                             @NotNull Consumer<? super T> handler) {
         Objects.requireNonNull(plugin, "plugin");
         Objects.requireNonNull(eventClass, "eventClass");
         Objects.requireNonNull(handler, "handler");
         return registerSubscription(eventClass, handler, checkPlugin(plugin));
     }
 
-    private <T extends MoonRiseEvent> EventSubscription<T> registerSubscription(Class<T> eventClass, Consumer<? super T> handler, Object plugin) {
+    private <T extends MoonRiseEvent> EventSubscription<T> registerSubscription(Class<T> eventClass,
+                                                                                Consumer<? super T> handler,
+                                                                                Object plugin) {
         if (!MoonRiseEvent.class.isAssignableFrom(eventClass)) {
             throw new IllegalArgumentException("class " + eventClass.getName() + " does not implement MoonRiseEvent");
         }
@@ -93,7 +98,8 @@ public abstract class AbstractEventBus<P> implements EventBus, AutoCloseable {
     }
 
     @Override
-    public @NotNull @Unmodifiable <T extends MoonRiseEvent> Set<EventSubscription<T>> getSubscriptions(@NotNull Class<T> eventClass) {
+    public @NotNull @Unmodifiable <T extends MoonRiseEvent> Set<EventSubscription<T>> getSubscriptions(
+        @NotNull Class<T> eventClass) {
         return this.bus.getHandlers(eventClass);
     }
 
@@ -121,6 +127,7 @@ public abstract class AbstractEventBus<P> implements EventBus, AutoCloseable {
     }
 
     private static final class Bus extends SimpleEventBus<MoonRiseEvent> {
+
         public Bus() {
             super(MoonRiseEvent.class);
         }
@@ -133,9 +140,10 @@ public abstract class AbstractEventBus<P> implements EventBus, AutoCloseable {
         public <T extends MoonRiseEvent> Set<EventSubscription<T>> getHandlers(Class<T> eventClass) {
             //noinspection unchecked
             return super.subscribers().values().stream()
-                    .filter(s -> s instanceof EventSubscription && ((EventSubscription<?>) s).getEventClass().isAssignableFrom(eventClass))
-                    .map(s -> (EventSubscription<T>) s)
-                    .collect(Collectors.toSet());
+                .filter(s -> s instanceof EventSubscription && ((EventSubscription<?>) s).getEventClass()
+                    .isAssignableFrom(eventClass))
+                .map(s -> (EventSubscription<T>) s)
+                .collect(Collectors.toSet());
         }
     }
 }
