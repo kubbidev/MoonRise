@@ -28,10 +28,12 @@ import java.util.stream.Stream;
  * </p>
  */
 public final class TestPluginBootstrap extends MStandaloneBootstrap {
-    private static final ClassPathAppender NOOP_APPENDER = file -> {};
 
-    private final Path dataDirectory;
-    private TestPlugin plugin;
+    private static final ClassPathAppender NOOP_APPENDER = file -> {
+    };
+
+    private final Path       dataDirectory;
+    private       TestPlugin plugin;
 
     public TestPluginBootstrap(MoonRiseApplication app, Path dataDirectory) {
         super(app, NOOP_APPENDER);
@@ -54,6 +56,7 @@ public final class TestPluginBootstrap extends MStandaloneBootstrap {
     }
 
     public static final class TestPlugin extends MStandalonePlugin {
+
         private final Set<StandaloneSender> onlineSenders = new CopyOnWriteArraySet<>();
 
         TestPlugin(MStandaloneBootstrap bootstrap) {
@@ -68,8 +71,8 @@ public final class TestPluginBootstrap extends MStandaloneBootstrap {
         @Override
         public Stream<Sender> getOnlineSenders() {
             return Stream.concat(
-                    Stream.of(StandaloneUser.INSTANCE),
-                    this.onlineSenders.stream()
+                Stream.of(StandaloneUser.INSTANCE),
+                this.onlineSenders.stream()
             ).map(sender -> getSenderFactory().wrap(sender));
         }
 

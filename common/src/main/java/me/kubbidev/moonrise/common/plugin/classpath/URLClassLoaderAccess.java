@@ -36,16 +36,17 @@ public abstract class URLClassLoaderAccess {
 
     private static void throwError(Throwable cause) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("""
-                MoonRise is unable to inject into the plugin URLClassLoader.
-                You may be able to fix this problem by adding the following command-line argument \
-                directly after the 'java' command in your start script:\s
-                '--add-opens java.base/java.lang=ALL-UNNAMED'""", cause);
+            MoonRise is unable to inject into the plugin URLClassLoader.
+            You may be able to fix this problem by adding the following command-line argument \
+            directly after the 'java' command in your start script:\s
+            '--add-opens java.base/java.lang=ALL-UNNAMED'""", cause);
     }
 
     /**
      * Accesses using reflection, not supported on Java 9+.
      */
     private static class Reflection extends URLClassLoaderAccess {
+
         private static final Method ADD_URL_METHOD;
 
         static {
@@ -78,6 +79,7 @@ public abstract class URLClassLoaderAccess {
     }
 
     private static class Noop extends URLClassLoaderAccess {
+
         private static final Noop INSTANCE = new Noop();
 
         private Noop() {

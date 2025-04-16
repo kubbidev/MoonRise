@@ -3,6 +3,7 @@ package me.kubbidev.moonrise.common.plugin.bootstrap;
 /**
  * A {@link MoonRiseBootstrap} that was bootstrapped by a loader.
  */
+@FunctionalInterface
 public interface BootstrappedWithLoader {
 
     /**

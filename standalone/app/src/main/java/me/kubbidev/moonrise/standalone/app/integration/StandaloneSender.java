@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public interface StandaloneSender {
+
     String getName();
 
     UUID getUniqueId();

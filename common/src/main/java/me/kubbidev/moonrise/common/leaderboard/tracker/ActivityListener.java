@@ -20,10 +20,10 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class ActivityListener extends ActivityService {
-    private final Cache<Long, GuildActivityTracker> activityTrackers = CaffeineFactory.newBuilder()
-            .expireAfterAccess(Duration.ofDays(10)).build();
 
-    private final GatewayClient client;
+    private final GatewayClient                     client;
+    private final Cache<Long, GuildActivityTracker> activityTrackers = CaffeineFactory.newBuilder()
+        .expireAfterAccess(Duration.ofDays(10)).build();
 
     public ActivityListener(GatewayClient client) {
         super(client);
@@ -38,10 +38,14 @@ public class ActivityListener extends ActivityService {
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent e) {
         AudioChannel newChannel = e.getChannelJoined();
         AudioChannel oldChannel = e.getChannelLeft();
-        if (isBot(e.getMember())) return;
+        if (isBot(e.getMember())) {
+            return;
+        }
 
         this.client.getGuild(e.getGuild()).thenComposeAsync(apiGuild -> {
-            if (!apiGuild.isLeaderboardEnabled()) return CompletableFutures.NULL;
+            if (!apiGuild.isLeaderboardEnabled()) {
+                return CompletableFutures.NULL;
+            }
 
             List<CompletableFuture<?>> futures = new ArrayList<>();
             if (oldChannel != null && isChannelAllowed(oldChannel)) {
@@ -78,7 +82,7 @@ public class ActivityListener extends ActivityService {
         }
 
         var state = tracker.removeChannel(
-                oldChannel.getIdLong(), e.getMember());
+            oldChannel.getIdLong(), e.getMember());
 
         if (tracker.isEmpty()) {
             this.activityTrackers.invalidate(guildId);

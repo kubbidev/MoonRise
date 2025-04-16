@@ -21,8 +21,9 @@ import java.util.concurrent.TimeUnit;
  * Abstract {@link ConnectionFactory} using a {@link HikariDataSource}.
  */
 public abstract class HikariConnectionFactory implements ConnectionFactory {
+
     private final StorageCredentials configuration;
-    private HikariDataSource hikari;
+    private       HikariDataSource   hikari;
 
     public HikariConnectionFactory(StorageCredentials configuration) {
         this.configuration = configuration;
@@ -40,14 +41,15 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
      *
      * <p>Each driver does this slightly differently...</p>
      *
-     * @param config the hikari config
-     * @param address the database address
-     * @param port the database port
+     * @param config   the hikari config
+     * @param address  the database address
+     * @param port     the database port
      * @param database the database name
      * @param username the database username
      * @param password the database password
      */
-    protected abstract void configureDatabase(HikariConfig config, String address, String port, String database, String username, String password);
+    protected abstract void configureDatabase(HikariConfig config, String address, String port, String database,
+                                              String username, String password);
 
     /**
      * Allows the connection factory instance to override certain properties before they are set.
@@ -62,7 +64,7 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
     /**
      * Sets the given connection properties onto the config.
      *
-     * @param config the hikari config
+     * @param config     the hikari config
      * @param properties the properties
      */
     protected void setProperties(HikariConfig config, Map<String, Object> properties) {
@@ -98,7 +100,8 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
 
         // allow the implementation to configure the HikariConfig appropriately with these values
         try {
-            this.configureDatabase(config, address, port, this.configuration.database(), this.configuration.username(), this.configuration.password());
+            this.configureDatabase(config, address, port, this.configuration.database(), this.configuration.username(),
+                this.configuration.password());
         } catch (NoSuchMethodError e) {
             handleClassloadingError(e, plugin);
         }
@@ -176,18 +179,20 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
     // detect this and print a more useful error message.
     private static void handleClassloadingError(Throwable throwable, MoonRisePlugin plugin) {
         List<String> noteworthyClasses = ImmutableList.of(
-                "org.slf4j.LoggerFactory",
-                "org.slf4j.ILoggerFactory",
-                "org.apache.logging.slf4j.Log4jLoggerFactory",
-                "org.apache.logging.log4j.spi.LoggerContext",
-                "org.apache.logging.log4j.spi.AbstractLoggerAdapter",
-                "org.slf4j.impl.StaticLoggerBinder",
-                "org.slf4j.helpers.MessageFormatter"
+            "org.slf4j.LoggerFactory",
+            "org.slf4j.ILoggerFactory",
+            "org.apache.logging.slf4j.Log4jLoggerFactory",
+            "org.apache.logging.log4j.spi.LoggerContext",
+            "org.apache.logging.log4j.spi.AbstractLoggerAdapter",
+            "org.slf4j.impl.StaticLoggerBinder",
+            "org.slf4j.helpers.MessageFormatter"
         );
 
         PluginLogger logger = plugin.getLogger();
-        logger.warn("A " + throwable.getClass().getSimpleName() + " has occurred whilst initialising Hikari. This is likely due to classloading conflicts between other plugins.");
-        logger.warn("Please check for other plugins below (and try loading MoonRise without them installed) before reporting the issue.");
+        logger.warn("A " + throwable.getClass().getSimpleName()
+            + " has occurred whilst initialising Hikari. This is likely due to classloading conflicts between other plugins.");
+        logger.warn(
+            "Please check for other plugins below (and try loading MoonRise without them installed) before reporting the issue.");
 
         for (String className : noteworthyClasses) {
             Class<?> clazz;

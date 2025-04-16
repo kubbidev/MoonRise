@@ -10,16 +10,12 @@ import org.jetbrains.annotations.Nullable;
  * @see <a href="https://discord.com/developers/docs/resources/guild">Guild Resource</a>
  */
 public class ApiGuild extends Snowflake {
-    private final MoonRisePlugin plugin;
 
-    /** The last known name of a guild */
-    private @Nullable String name = null;
-
-    /** The last known icon url of a guild */
-    private @Nullable String icon = null;
-
-    private boolean leaderboardEnabled = false;
-    private long leaderboardChannelId = 0;
+    private final     MoonRisePlugin plugin;
+    private @Nullable String         name                 = null;
+    private @Nullable String         icon                 = null;
+    private           boolean        leaderboardEnabled   = false;
+    private           long           leaderboardChannelId = 0;
 
     public ApiGuild(long id, MoonRisePlugin plugin) {
         super(id);

@@ -1,8 +1,8 @@
 package me.kubbidev.moonrise.common.sender.commands;
 
-import me.kubbidev.moonrise.common.sender.command.abstraction.SingleCommand;
-import me.kubbidev.moonrise.common.sender.command.access.CommandPermission;
-import me.kubbidev.moonrise.common.sender.command.spec.CommandSpec;
+import me.kubbidev.moonrise.common.sender.command.abstraction.Command;
+import me.kubbidev.moonrise.common.sender.command.access.BuiltinPermission;
+import me.kubbidev.moonrise.common.sender.command.spec.BuildinDefinition;
 import me.kubbidev.moonrise.common.sender.command.tabcomplete.CompletionSupplier;
 import me.kubbidev.moonrise.common.sender.command.tabcomplete.TabCompleter;
 import me.kubbidev.moonrise.common.sender.command.util.ArgumentList;
@@ -21,9 +21,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class TranslationsCommand extends SingleCommand {
+public class TranslationsCommand extends Command {
+
     public TranslationsCommand() {
-        super(CommandSpec.TRANSLATIONS, "Translations", CommandPermission.TRANSLATIONS, Predicates.notInRange(0, 1));
+        super("Translations",
+            BuildinDefinition.TRANSLATIONS,
+            BuiltinPermission.TRANSLATIONS, Predicates.notInRange(0, 1));
     }
 
     @Override
@@ -46,17 +49,19 @@ public class TranslationsCommand extends SingleCommand {
             return;
         }
 
-        Message.INSTALLED_TRANSLATIONS.send(sender, plugin.getTranslationManager().getInstalledLocales().stream().map(Locale::toLanguageTag).sorted().collect(Collectors.toList()));
+        Message.INSTALLED_TRANSLATIONS.send(sender,
+            plugin.getTranslationManager().getInstalledLocales().stream().map(Locale::toLanguageTag).sorted()
+                .collect(Collectors.toList()));
         Message.AVAILABLE_TRANSLATIONS_HEADER.send(sender);
 
         availableTranslations.stream()
-                .sorted(Comparator.comparing(language -> language.locale().toLanguageTag()))
-                .forEach(language -> Message.AVAILABLE_TRANSLATIONS_ENTRY.send(sender,
-                        language.locale().toLanguageTag(),
-                        TranslationManager.localeDisplayName(language.locale()),
-                        language.progress(),
-                        language.contributors()
-                ));
+            .sorted(Comparator.comparing(language -> language.locale().toLanguageTag()))
+            .forEach(language -> Message.AVAILABLE_TRANSLATIONS_ENTRY.send(sender,
+                language.locale().toLanguageTag(),
+                TranslationManager.localeDisplayName(language.locale()),
+                language.progress(),
+                language.contributors()
+            ));
 
         sender.sendMessage(Message.prefixed(Component.empty()));
         Message.TRANSLATIONS_DOWNLOAD_PROMPT.send(sender, label);

@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class MessageChannelSource implements Source {
+
     private final MessageChannel channel;
 
     public static Source wrap(MessageChannel channel) {
@@ -25,7 +26,7 @@ public class MessageChannelSource implements Source {
     @Override
     public CompletableFuture<Message> sendMessage(Component message) {
         return this.channel.sendMessage(ComponentSerializer.serialize(
-                message, getLocale()
+            message, getLocale()
         )).submit();
     }
 
@@ -37,6 +38,6 @@ public class MessageChannelSource implements Source {
 
     private @Nullable Locale getLocale() {
         return this.channel instanceof GuildMessageChannel
-                ? ((GuildMessageChannel) this.channel).getGuild().getLocale().toLocale() : null;
+            ? ((GuildMessageChannel) this.channel).getGuild().getLocale().toLocale() : null;
     }
 }

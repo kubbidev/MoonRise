@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class BiographyCommand implements Interaction {
+
     private static final int BIOGRAPHY_MAX_LENGTH = 300;
 
     @Override
@@ -31,16 +32,17 @@ public class BiographyCommand implements Interaction {
 
         String biography = message;
         plugin.getGatewayClient().modifyMember(context.getMember(), m -> m.setBiography(biography))
-                .thenAcceptAsync(__ -> {
-                    context.setDeferred(true);
-                    context.sendMessage(Message.BIOGRAPHY_UPDATED.build());
-                }).join();
+            .thenAcceptAsync(__ -> {
+                context.setDeferred(true);
+                context.sendMessage(Message.BIOGRAPHY_UPDATED.build());
+            }).join();
     }
 
     @Override
     public @NotNull SlashCommandData getMetadata() {
-        return Commands.slash("biography", "Display a pretty description in your profile (empty execution will reset your bio).")
-                .setGuildOnly(true)
-                .addOption(OptionType.STRING, "message", "The biography to display.");
+        return Commands.slash("biography",
+                "Display a pretty description in your profile (empty execution will reset your bio).")
+            .setGuildOnly(true)
+            .addOption(OptionType.STRING, "message", "The biography to display.");
     }
 }

@@ -8,6 +8,7 @@ import me.kubbidev.moonrise.common.sender.command.tabcomplete.CompletionSupplier
 import me.kubbidev.moonrise.common.sender.command.tabcomplete.TabCompleter;
 import me.kubbidev.moonrise.common.sender.command.tabcomplete.TabCompletions;
 import me.kubbidev.moonrise.common.sender.command.util.ArgumentList;
+import me.kubbidev.moonrise.common.sender.commands.HelpCommand;
 import me.kubbidev.moonrise.common.sender.commands.InfoCommand;
 import me.kubbidev.moonrise.common.sender.commands.ReloadConfigCommand;
 import me.kubbidev.moonrise.common.sender.commands.TranslationsCommand;
@@ -20,9 +21,6 @@ import me.kubbidev.moonrise.common.sender.Sender;
 import me.kubbidev.moonrise.common.util.CompletableFutures;
 import me.kubbidev.moonrise.common.util.ExpiringSet;
 import me.kubbidev.moonrise.common.util.ImmutableCollectors;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.*;
@@ -41,28 +39,31 @@ import java.util.stream.Collectors;
 @SuppressWarnings("InstantiationOfUtilityClass")
 public class CommandManager {
 
-    private final MoonRisePlugin plugin;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder()
-            .setDaemon(true)
-            .setNameFormat("moonrise-command-executor")
-            .build()
+    private static final int MAXIMUM_COMMAND_LIST = 120;
+
+    private final MoonRisePlugin       plugin;
+    private final ExecutorService      executor         = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder()
+        .setDaemon(true)
+        .setNameFormat("moonrise-command-executor")
+        .build()
     );
-    private final AtomicBoolean executingCommand = new AtomicBoolean(false);
-    private final Set<UUID> playerRateLimit = ExpiringSet.newExpiringSet(500, TimeUnit.MILLISECONDS);
-    private final TabCompletions tabCompletions;
-    private final Map<String, Command<?>> mainCommands;
+    private final AtomicBoolean        executingCommand = new AtomicBoolean(false);
+    private final TabCompletions       tabCompletions;
+    private final Map<String, Command> mainCommands;
+    private final Set<UUID>            playerRateLimit  = ExpiringSet.newExpiringSet(500, TimeUnit.MILLISECONDS);
 
     public CommandManager(MoonRisePlugin plugin) {
         this.plugin = plugin;
         this.tabCompletions = new TabCompletions(plugin);
-        this.mainCommands = ImmutableList.<Command<?>>builder()
-                .addAll(plugin.getExtraCommands())
-                .add(new InfoCommand())
-                .add(new ReloadConfigCommand())
-                .add(new TranslationsCommand())
-                .build()
-                .stream()
-                .collect(ImmutableCollectors.toMap(c -> c.getName().toLowerCase(Locale.ROOT), Function.identity()));
+        this.mainCommands = ImmutableList.<Command>builder()
+            .addAll(plugin.getExtraCommands())
+            .add(new HelpCommand())
+            .add(new InfoCommand())
+            .add(new ReloadConfigCommand())
+            .add(new TranslationsCommand())
+            .build()
+            .stream()
+            .collect(ImmutableCollectors.toMap(c -> c.getName().toLowerCase(Locale.ROOT), Function.identity()));
     }
 
     public MoonRisePlugin getPlugin() {
@@ -74,14 +75,16 @@ public class CommandManager {
     }
 
     @VisibleForTesting
-    public Map<String, Command<?>> getMainCommands() {
+    public Map<String, Command> getMainCommands() {
         return this.mainCommands;
     }
 
     public CompletableFuture<Void> executeCommand(Sender sender, String label, List<String> args) {
         UUID uniqueId = sender.getUniqueId();
-        if (this.plugin.getConfiguration().get(ConfigKeys.COMMANDS_RATE_LIMIT) && !sender.isConsole() && !this.playerRateLimit.add(uniqueId)) {
-            this.plugin.getLogger().warn("Player '" + uniqueId + "' is spamming MoonRise commands. Ignoring further inputs.");
+        if (this.plugin.getConfiguration().get(ConfigKeys.COMMANDS_RATE_LIMIT) && !sender.isConsole()
+            && !this.playerRateLimit.add(uniqueId)) {
+            this.plugin.getLogger()
+                .warn("Player '" + uniqueId + "' is spamming MoonRise commands. Ignoring further inputs.");
             return CompletableFutures.NULL;
         }
 
@@ -137,11 +140,12 @@ public class CommandManager {
     private void handleCommandTimeout(AtomicReference<Thread> thread, List<String> args) {
         Thread executorThread = thread.get();
         if (executorThread == null) {
-            this.plugin.getLogger().warn("Command execution " + args + " has not completed - is another command execution blocking it?");
+            this.plugin.getLogger()
+                .warn("Command execution " + args + " has not completed - is another command execution blocking it?");
         } else {
             String stackTrace = Arrays.stream(executorThread.getStackTrace())
-                    .map(s -> "  " + s)
-                    .collect(Collectors.joining("\n"));
+                .map(s -> "  " + s)
+                .collect(Collectors.joining("\n"));
             this.plugin.getLogger().warn("Command execution " + args + " has not completed. Trace: \n" + stackTrace);
         }
     }
@@ -152,17 +156,17 @@ public class CommandManager {
         }
 
         // Look for the main command.
-        Command<?> main = this.mainCommands.get(arguments.getFirst().toLowerCase(Locale.ROOT));
+        Command main = this.mainCommands.get(arguments.getFirst().toLowerCase(Locale.ROOT));
 
         // Main command not found
         if (main == null) {
-            sendCommandUsage(sender, label);
+            Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
             return;
         }
 
         // Check the Sender has permission to use the main command.
-        if (!main.isAuthorized(sender)) {
-            sendCommandUsage(sender, label);
+        if (!main.hasPermission(sender)) {
+            Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
             return;
         }
 
@@ -176,14 +180,14 @@ public class CommandManager {
 
         // Try to execute the command.
         try {
-            main.execute(this.plugin, sender, null, new ArgumentList(arguments), label);
+            main.execute(this.plugin, sender, new ArgumentList(arguments), label);
         } catch (CommandException e) {
             e.handle(sender, label, main);
         }
     }
 
     public boolean hasPermissionForAny(Sender sender) {
-        return this.mainCommands.values().stream().anyMatch(c -> c.shouldDisplay(sender) && c.isAuthorized(sender));
+        return this.mainCommands.values().stream().anyMatch(c -> c.shouldDisplay(sender) && c.hasPermission(sender));
     }
 
     private boolean isEmptyCommandCall(Sender sender, String label, List<String> arguments) {
@@ -203,34 +207,40 @@ public class CommandManager {
     }
 
     public List<String> tabCompleteCommand(Sender sender, List<String> arguments) {
-        List<Command<?>> mains = this.mainCommands.values().stream()
-                .filter(m -> m.shouldDisplay(sender))
-                .filter(m -> m.isAuthorized(sender))
-                .collect(ImmutableCollectors.toList());
+        List<Command> mains = this.mainCommands.values().stream()
+            .filter(m -> m.shouldDisplay(sender))
+            .filter(m -> m.hasPermission(sender))
+            .collect(ImmutableCollectors.toList());
 
         return TabCompleter.create()
-                .at(0, CompletionSupplier.startsWith(() -> mains.stream().map(c -> c.getName().toLowerCase(Locale.ROOT))))
-                .from(1, partial -> mains.stream()
-                        .filter(c -> c.getName().equalsIgnoreCase(arguments.getFirst()))
-                        .findFirst()
-                        .map(c -> c.tabComplete(this.plugin, sender, new ArgumentList(arguments.subList(1, arguments.size()))))
-                        .orElse(Collections.emptyList())
-                )
-                .complete(arguments);
+            .at(0, CompletionSupplier.startsWith(() -> mains.stream().map(c -> c.getName().toLowerCase(Locale.ROOT))))
+            .from(1, partial -> mains.stream()
+                .filter(c -> c.getName().equalsIgnoreCase(arguments.getFirst()))
+                .findFirst()
+                .map(c -> c.tabComplete(this.plugin, sender, new ArgumentList(arguments.subList(1, arguments.size()))))
+                .orElse(Collections.emptyList())
+            )
+            .complete(arguments);
     }
 
-    private void sendCommandUsage(Sender sender, String label) {
-        Message.PLUGIN_INFO.send(sender, this.plugin.getBootstrap());
+    public void sendCommandUsage(Sender sender, String label) {
+        Message.MAIN_COMMAND_USAGE_HEADER.send(sender, "");
 
-        this.mainCommands.values().stream()
-                .filter(c -> c.shouldDisplay(sender))
-                .filter(c -> c.isAuthorized(sender))
-                .forEach(c -> sender.sendMessage(Component.text()
-                        .append(Component.text('>', NamedTextColor.DARK_AQUA))
-                        .append(Component.space())
-                        .append(Component.text(String.format(c.getUsage(), label), NamedTextColor.GREEN))
-                        .clickEvent(ClickEvent.suggestCommand(String.format(c.getUsage(), label)))
-                        .build()
-                ));
+        int i = 0;
+        int j = this.mainCommands.size();
+        for (Command c : this.mainCommands.values()) {
+            if (i == MAXIMUM_COMMAND_LIST) {
+                int remaining = j - i;
+                Message.COMMAND_LIST_TOO_MUCH_REMAINING.send(sender, remaining);
+                break;
+            }
+
+            i++;
+            boolean shouldDisplay = c.shouldDisplay(sender);
+            boolean hasPermission = c.hasPermission(sender);
+            if (shouldDisplay && hasPermission) {
+                c.sendUsage(sender, String.format("%s %s", label, c.getName().toLowerCase(Locale.ROOT)));
+            }
+        }
     }
 }

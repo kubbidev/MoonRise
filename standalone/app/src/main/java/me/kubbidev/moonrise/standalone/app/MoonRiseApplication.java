@@ -18,26 +18,35 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class MoonRiseApplication implements AutoCloseable {
 
-    /** A logger instance */
+    /**
+     * A logger instance
+     */
     public static final Logger LOGGER = LogManager.getLogger(MoonRiseApplication.class);
 
-    /** A callback to shutdown the application via the loader bootstrap. */
-    private final ShutdownCallback shutdownCallback;
-
-    /** The instance of the MoonRise API available within the app */
-    private MoonRise moonRiseApi;
-
-    /** A command executor interface to run MoonRise commands */
-    private CommandExecutor commandExecutor;
-
-    /** If the application is running */
-    private final AtomicBoolean running = new AtomicBoolean(true);
-
-    /** The docker command socket */
-    private DockerCommandSocket dockerCommandSocket;
-
-    /** The heartbeat http server */
-    private HeartbeatHttpServer heartbeatHttpServer;
+    /**
+     * A callback to shutdown the application via the loader bootstrap.
+     */
+    private final ShutdownCallback    shutdownCallback;
+    /**
+     * The instance of the MoonRise API available within the app
+     */
+    private       MoonRise            moonRiseApi;
+    /**
+     * A command executor interface to run MoonRise commands
+     */
+    private       CommandExecutor     commandExecutor;
+    /**
+     * If the application is running
+     */
+    private final AtomicBoolean       running = new AtomicBoolean(true);
+    /**
+     * The docker command socket
+     */
+    private       DockerCommandSocket dockerCommandSocket;
+    /**
+     * The heartbeat http server
+     */
+    private       HeartbeatHttpServer heartbeatHttpServer;
 
     public MoonRiseApplication(ShutdownCallback shutdownCallback) {
         this.shutdownCallback = shutdownCallback;
@@ -52,7 +61,8 @@ public class MoonRiseApplication implements AutoCloseable {
         List<String> arguments = Arrays.asList(args);
         if (arguments.contains("--docker")) {
             this.dockerCommandSocket = DockerCommandSocket.createAndStart("/opt/moonrise/moonrise.sock", terminal);
-            this.heartbeatHttpServer = HeartbeatHttpServer.createAndStart(3001, () -> this.moonRiseApi.runHealthCheck());
+            this.heartbeatHttpServer = HeartbeatHttpServer.createAndStart(3001,
+                () -> this.moonRiseApi.runHealthCheck());
         }
 
         terminal.start(); // blocking

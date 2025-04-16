@@ -10,11 +10,12 @@ import org.jetbrains.annotations.NotNull;
  * instance, however, this provider can be used if this is not viable.</p>
  */
 public final class MoonRiseProvider {
+
     private static MoonRise instance = null;
 
     /**
-     * Gets an instance of the {@link MoonRise} API,
-     * throwing {@link IllegalStateException} if the API is not loaded yet.
+     * Gets an instance of the {@link MoonRise} API, throwing {@link IllegalStateException} if the API is not loaded
+     * yet.
      *
      * <p>This method will never return null.</p>
      *
@@ -48,15 +49,16 @@ public final class MoonRiseProvider {
      * Exception thrown when the API is requested before it has been loaded.
      */
     private static final class NotLoadedException extends IllegalStateException {
+
         private static final String MESSAGE = """
-                The MoonRise API isn't loaded yet!
-                This could be because:
-                  a) the MoonRise plugin is not installed or it failed to enable
-                  b) the plugin in the stacktrace does not declare a dependency on MoonRise
-                  c) the plugin in the stacktrace is retrieving the API before the plugin 'enable' phase
-                     (call the #get method in onEnable, not the constructor!)
-                  d) the plugin in the stacktrace is incorrectly 'shading' the MoonRise API into its jar
-                """;
+            The MoonRise API isn't loaded yet!
+            This could be because:
+              a) the MoonRise plugin is not installed or it failed to enable
+              b) the plugin in the stacktrace does not declare a dependency on MoonRise
+              c) the plugin in the stacktrace is retrieving the API before the plugin 'enable' phase
+                 (call the #get method in onEnable, not the constructor!)
+              d) the plugin in the stacktrace is incorrectly 'shading' the MoonRise API into its jar
+            """;
 
         NotLoadedException() {
             super(MESSAGE);

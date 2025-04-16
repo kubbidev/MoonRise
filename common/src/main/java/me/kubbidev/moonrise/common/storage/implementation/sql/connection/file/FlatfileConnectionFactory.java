@@ -14,11 +14,14 @@ import java.sql.SQLException;
  */
 abstract class FlatfileConnectionFactory implements ConnectionFactory {
 
-    /** The current open connection, if any */
-    private NonClosableConnection connection;
-
-    /** The path to the database file */
-    private final Path file;
+    /**
+     * The current open connection, if any
+     */
+    private       NonClosableConnection connection;
+    /**
+     * The path to the database file
+     */
+    private final Path                  file;
 
     FlatfileConnectionFactory(Path file) {
         this.file = file;

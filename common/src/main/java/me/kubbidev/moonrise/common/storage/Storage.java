@@ -16,7 +16,8 @@ import java.util.concurrent.CompletableFuture;
  * Provides a {@link CompletableFuture} based API for interacting with a {@link StorageImplementation}.
  */
 public class Storage extends AsyncInterface {
-    private final MoonRisePlugin plugin;
+
+    private final MoonRisePlugin        plugin;
     private final StorageImplementation implementation;
 
     public Storage(MoonRisePlugin plugin, StorageImplementation implementation) {

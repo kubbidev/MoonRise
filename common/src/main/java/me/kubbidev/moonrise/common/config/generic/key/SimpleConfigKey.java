@@ -10,9 +10,10 @@ import java.util.function.Function;
  * @param <T> the value type
  */
 public class SimpleConfigKey<T> implements ConfigKey<T> {
+
     private final Function<? super ConfigurationAdapter, ? extends T> function;
 
-    private int ordinal = -1;
+    private int     ordinal    = -1;
     private boolean reloadable = true;
 
     SimpleConfigKey(Function<? super ConfigurationAdapter, ? extends T> function) {

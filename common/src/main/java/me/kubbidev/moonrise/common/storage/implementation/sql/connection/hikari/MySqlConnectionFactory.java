@@ -6,6 +6,7 @@ import me.kubbidev.moonrise.common.storage.misc.StorageCredentials;
 import java.util.Map;
 
 public class MySqlConnectionFactory extends DriverBasedHikariConnectionFactory {
+
     public MySqlConnectionFactory(StorageCredentials configuration) {
         super(configuration);
     }

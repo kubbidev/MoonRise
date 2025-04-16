@@ -9,7 +9,7 @@ public abstract class CommandException extends Exception {
 
     protected abstract void handle(Sender sender);
 
-    public void handle(Sender sender, String label, Command<?> command) {
+    public void handle(Sender sender, String label, Command command) {
         this.handle(sender);
     }
 }

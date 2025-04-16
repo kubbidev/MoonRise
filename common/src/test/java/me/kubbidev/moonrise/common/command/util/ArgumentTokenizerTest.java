@@ -15,16 +15,16 @@ public class ArgumentTokenizerTest {
 
     private static Stream<Arguments> testBasicTokenize() {
         return Stream.of(
-                Arguments.of("", new String[]{}),
-                Arguments.of("hello world", new String[]{"hello", "world"}),
-                Arguments.of("hello  world", new String[]{"hello", "", "world"}),
-                Arguments.of("hello   world", new String[]{"hello", "", "", "world"}),
-                Arguments.of("\"hello world\"", new String[]{"hello world"}),
-                Arguments.of("\"hello  world\"", new String[]{"hello  world"}),
-                Arguments.of("\" hello world\"", new String[]{" hello world"}),
-                Arguments.of("\"hello world \"", new String[]{"hello world "}),
-                Arguments.of("\"hello\"\"world\"", new String[]{"hello", "world"}),
-                Arguments.of("\"hello\" \"world\"", new String[]{"hello", "world"})
+            Arguments.of("", new String[]{}),
+            Arguments.of("hello world", new String[]{"hello", "world"}),
+            Arguments.of("hello  world", new String[]{"hello", "", "world"}),
+            Arguments.of("hello   world", new String[]{"hello", "", "", "world"}),
+            Arguments.of("\"hello world\"", new String[]{"hello world"}),
+            Arguments.of("\"hello  world\"", new String[]{"hello  world"}),
+            Arguments.of("\" hello world\"", new String[]{" hello world"}),
+            Arguments.of("\"hello world \"", new String[]{"hello world "}),
+            Arguments.of("\"hello\"\"world\"", new String[]{"hello", "world"}),
+            Arguments.of("\"hello\" \"world\"", new String[]{"hello", "world"})
         );
     }
 
@@ -33,14 +33,15 @@ public class ArgumentTokenizerTest {
     public void testBasicTokenize(String input, String[] expectedTokens) {
         for (ArgumentTokenizer tokenizer : ArgumentTokenizer.values()) {
             List<String> tokens = tokenizer.tokenizeInput(input);
-            assertEquals(ImmutableList.copyOf(expectedTokens), ImmutableList.copyOf(tokens), "tokenizer " + tokenizer + " produced tokens " + tokens);
+            assertEquals(ImmutableList.copyOf(expectedTokens), ImmutableList.copyOf(tokens),
+                "tokenizer " + tokenizer + " produced tokens " + tokens);
         }
     }
 
     private static Stream<Arguments> testExecuteTokenize() {
         return Stream.of(
-                Arguments.of("hello world ", new String[]{"hello", "world"}),
-                Arguments.of("hello world  ", new String[]{"hello", "world", ""})
+            Arguments.of("hello world ", new String[]{"hello", "world"}),
+            Arguments.of("hello world  ", new String[]{"hello", "world", ""})
         );
     }
 
@@ -53,8 +54,8 @@ public class ArgumentTokenizerTest {
 
     private static Stream<Arguments> testTabCompleteTokenize() {
         return Stream.of(
-                Arguments.of("hello world ", new String[]{"hello", "world", ""}),
-                Arguments.of("hello world  ", new String[]{"hello", "world", "", ""})
+            Arguments.of("hello world ", new String[]{"hello", "world", ""}),
+            Arguments.of("hello world  ", new String[]{"hello", "world", "", ""})
         );
     }
 

@@ -13,13 +13,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class TestSender implements StandaloneSender {
-    private final Set<Consumer<Component>> messageSinks;
 
-    private String name = "StandaloneUser";
-    private UUID uniqueId = UUID.randomUUID();
-    private boolean isConsole = false;
-
-    private Function<String, Tristate> permissionChecker;
+    private final Set<Consumer<Component>>   messageSinks;
+    private       String                     name      = "StandaloneUser";
+    private       UUID                       uniqueId  = UUID.randomUUID();
+    private       boolean                    isConsole = false;
+    private       Function<String, Tristate> permissionChecker;
 
     public TestSender() {
         this.messageSinks = new CopyOnWriteArraySet<>();
@@ -54,8 +53,8 @@ public class TestSender implements StandaloneSender {
     @Override
     public Tristate getPermissionValue(String permission) {
         return this.permissionChecker == null
-                ? Tristate.TRUE
-                : this.permissionChecker.apply(permission);
+            ? Tristate.TRUE
+            : this.permissionChecker.apply(permission);
     }
 
     @Override

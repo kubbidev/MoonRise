@@ -75,6 +75,9 @@ public final class AbstractSender<T> implements Sender {
 
     @Override
     public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
         if (!(o instanceof AbstractSender<?> that)) {
             return false;
         }

@@ -10,6 +10,7 @@ import java.util.function.Predicate;
  * A collection of predicate utilities used mostly in command classes
  */
 public final class Predicates {
+
     private Predicates() {
     }
 
@@ -36,7 +37,7 @@ public final class Predicates {
         }
     };
     @SuppressWarnings("rawtypes")
-    private static final Predicate TRUE = new Predicate() {
+    private static final Predicate TRUE  = new Predicate() {
         @Override
         public boolean test(Object o) {
             return true;

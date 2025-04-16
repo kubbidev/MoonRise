@@ -6,6 +6,7 @@ import me.kubbidev.moonrise.api.event.type.Cancellable;
 import me.kubbidev.moonrise.api.event.type.ResultEvent;
 
 public record EventDispatcher(AbstractEventBus<?> eventBus) {
+
     private void post(MoonRiseEvent event) {
         this.eventBus.post(event);
     }

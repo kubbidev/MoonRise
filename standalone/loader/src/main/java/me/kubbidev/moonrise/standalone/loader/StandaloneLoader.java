@@ -14,31 +14,29 @@ import java.io.IOException;
  * <p>
  * There are three main modules:
  * <p>
- * 1. the loader (this)
- *      - performs jar-in-jar loading for the plugin
- *      - starts the application
+ * 1. the loader (this) - performs jar-in-jar loading for the plugin - starts the application
  * <p>
- * 2. the plugin (MStandaloneBootstrap, MStandalonePlugin, etc)
- *      - implements the standard classes required to create an abstract MoonRise "plugin")
+ * 2. the plugin (MStandaloneBootstrap, MStandalonePlugin, etc) - implements the standard classes required to create an
+ * abstract MoonRise "plugin")
  * <p>
- * 3. the application
- *      - allows the user to interact with the plugin through a basic terminal layer
+ * 3. the application - allows the user to interact with the plugin through a basic terminal layer
  */
 public class StandaloneLoader implements ShutdownCallback {
+
     public static final Logger LOGGER = LogManager.getLogger(StandaloneLoader.class);
 
     private static final String JAR_NAME
-            = "moonrise-standalone.jarinjar";
+        = "moonrise-standalone.jarinjar";
 
     private static final String BOOTSTRAP_PLUGIN_CLASS
-            = "me.kubbidev.moonrise.standalone.MStandaloneBootstrap";
+        = "me.kubbidev.moonrise.standalone.MStandaloneBootstrap";
 
     private static final String BOOTSTRAP_DEPENDENCY_PRELOADER_CLASS
-            = "me.kubbidev.moonrise.standalone.StandaloneDependencyPreloader";
+        = "me.kubbidev.moonrise.standalone.StandaloneDependencyPreloader";
 
     private MoonRiseApplication app;
     private JarInJarClassLoader loader;
-    private LoaderBootstrap plugin;
+    private LoaderBootstrap     plugin;
 
     // Entrypoint
     public static void main(String[] args) {

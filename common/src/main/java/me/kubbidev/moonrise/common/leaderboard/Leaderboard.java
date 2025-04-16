@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Leaderboard {
+
     public static final int MAX_ENTRIES = 16;
 
     /**
@@ -36,28 +37,30 @@ public final class Leaderboard {
     }
 
     private final LeaderboardManager leaderboardManager;
-    private final List<Entry> entries = new ArrayList<>(MAX_ENTRIES);
+    private final List<Entry>        entries = new ArrayList<>(MAX_ENTRIES);
 
     public Leaderboard(LeaderboardManager leaderboardManager) {
         this.leaderboardManager = leaderboardManager;
     }
 
     /**
-     * Registers a new entry in the {@link Leaderboard} if the maximum
-     * number of entries has not been reached.
+     * Registers a new entry in the {@link Leaderboard} if the maximum number of entries has not been reached.
      *
      * @param entry The leaderboard entry to be added. This includes information such as the participant's name,
      *              experience points, current placement, and previous placement.
      */
     public void registerEntry(Entry entry) {
-        if (this.entries.size() < MAX_ENTRIES) this.entries.add(entry);
+        if (this.entries.size() < MAX_ENTRIES) {
+            this.entries.add(entry);
+        }
     }
 
     public ComponentEmbed build() {
         ComponentEmbed embed = new ComponentEmbed()
-                .author(Message.LEADERBOARD_FIELD_HEADER.build())
-                .thumbnail("https://static.wikia.nocookie.net/gensin-impact/images/1/17/Achievement_Wonders_of_the_World.png")
-                .color(0xFFE193);
+            .author(Message.LEADERBOARD_FIELD_HEADER.build())
+            .thumbnail(
+                "https://static.wikia.nocookie.net/gensin-impact/images/1/17/Achievement_Wonders_of_the_World.png")
+            .color(0xFFE193);
 
         ZonedDateTime nextDate = this.leaderboardManager.getNextScheduleDate();
         ZonedDateTime pastDate = nextDate.minusWeeks(1);
@@ -116,13 +119,12 @@ public final class Leaderboard {
     /**
      * Truncates a given {@link String} to a specified maximum length.
      * <p>
-     * If the string exceeds the maximum length, it appends an ellipsis ("...")
-     * to indicate truncation.
+     * If the string exceeds the maximum length, it appends an ellipsis ("...") to indicate truncation.
      *
      * @param message   The original string to be truncated.
      * @param maxLength The maximum allowed length of the resulting string, including the ellipsis, if applicable.
-     * @return The truncated string, either unchanged if it does not exceed the specified length
-     *         or modified with an ellipsis if necessary.
+     * @return The truncated string, either unchanged if it does not exceed the specified length or modified with an
+     * ellipsis if necessary.
      */
     public static String truncateString(String message, int maxLength) {
         return message.length() <= maxLength ? message : message.substring(0, maxLength - 3) + "...";
@@ -131,15 +133,14 @@ public final class Leaderboard {
     /**
      * Formats an experience value (exp) into a more readable {@link String} representation.
      * <p>
-     * If the absolute value of the experience is greater than or equal to 1000, it converts
-     * the value into a shortened format with a "K" suffix (e.g., 1500 becomes "1.50K").
+     * If the absolute value of the experience is greater than or equal to 1000, it converts the value into a shortened
+     * format with a "K" suffix (e.g., 1500 becomes "1.50K").
      *
      * <p>Otherwise, it returns the value as a string representation.</p>
      *
      * @param experience The experience value to format, expressed as a long integer.
-     * @return A formatted string representing the experience value. If the value is
-     *         greater than or equal to 1000 (absolute value), it is returned in "K" format;
-     *         otherwise, the original value is returned as a string.
+     * @return A formatted string representing the experience value. If the value is greater than or equal to 1000
+     * (absolute value), it is returned in "K" format; otherwise, the original value is returned as a string.
      */
     public static String formatExp(long experience) {
         if (Math.abs(experience) >= 1000) {

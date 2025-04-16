@@ -6,10 +6,14 @@ import java.io.IOException;
 
 public class BytebinClient extends AbstractHttpClient {
 
-    /** The bytebin URL */
+    /**
+     * The bytebin URL
+     */
     private final String url;
 
-    /** The client user agent */
+    /**
+     * The client user agent
+     */
     private final String userAgent;
 
     public BytebinClient(OkHttpClient okHttp, String url, String userAgent) {
@@ -35,14 +39,14 @@ public class BytebinClient extends AbstractHttpClient {
     /**
      * POSTs GZIP compressed content to bytebin.
      *
-     * @param buf the compressed content
-     * @param contentType the type of the content
+     * @param buf            the compressed content
+     * @param contentType    the type of the content
      * @param userAgentExtra extra string to append to the user agent
      * @return the key of the resultant content
      * @throws IOException if an error occurs
      */
     public Content postContent(byte[] buf, MediaType contentType, String userAgentExtra)
-            throws IOException, UnsuccessfulRequestException {
+        throws IOException, UnsuccessfulRequestException {
 
         RequestBody body = RequestBody.create(buf, contentType);
 
@@ -52,9 +56,9 @@ public class BytebinClient extends AbstractHttpClient {
         }
 
         Request.Builder requestBuilder = new Request.Builder()
-                .url(this.url + "post")
-                .header("User-Agent", userAgent)
-                .header("Content-Encoding", "gzip");
+            .url(this.url + "post")
+            .header("User-Agent", userAgent)
+            .header("Content-Encoding", "gzip");
 
         Request request = requestBuilder.post(body).build();
         try (Response response = this.makeHttpRequest(request)) {
@@ -71,5 +75,6 @@ public class BytebinClient extends AbstractHttpClient {
     }
 
     public record Content(String key) {
+
     }
 }

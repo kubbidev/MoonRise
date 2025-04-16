@@ -7,11 +7,13 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 
 public class JarInJarClassPathAppender implements ClassPathAppender {
+
     private final JarInJarClassLoader classLoader;
 
     public JarInJarClassPathAppender(ClassLoader classLoader) {
         if (!(classLoader instanceof JarInJarClassLoader)) {
-            throw new IllegalArgumentException("Loader is not a JarInJarClassLoader: " + classLoader.getClass().getName());
+            throw new IllegalArgumentException(
+                "Loader is not a JarInJarClassLoader: " + classLoader.getClass().getName());
         }
         this.classLoader = (JarInJarClassLoader) classLoader;
     }

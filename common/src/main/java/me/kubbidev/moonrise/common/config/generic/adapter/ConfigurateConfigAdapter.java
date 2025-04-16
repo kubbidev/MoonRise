@@ -13,9 +13,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class ConfigurateConfigAdapter implements ConfigurationAdapter {
-    private final MoonRisePlugin plugin;
-    private final Path path;
-    private ConfigurationNode root;
+
+    private final MoonRisePlugin    plugin;
+    private final Path              path;
+    private       ConfigurationNode root;
 
     public ConfigurateConfigAdapter(MoonRisePlugin plugin, Path path) {
         this.plugin = plugin;

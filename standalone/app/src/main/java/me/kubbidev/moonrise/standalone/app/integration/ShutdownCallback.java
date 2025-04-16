@@ -5,6 +5,7 @@ package me.kubbidev.moonrise.standalone.app.integration;
  * <p>
  * (in practice this is always implemented by the StandaloneLoader class)
  */
+@FunctionalInterface
 public interface ShutdownCallback {
 
     void shutdown();

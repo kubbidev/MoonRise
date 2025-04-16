@@ -15,12 +15,14 @@ import java.util.*;
  * Handles class runtime relocation of packages in downloaded dependencies
  */
 public class RelocationHandler {
-    public static final Set<Dependency> DEPENDENCIES = EnumSet.of(Dependency.ASM, Dependency.ASM_COMMONS, Dependency.JAR_RELOCATOR);
-    private static final String JAR_RELOCATOR_CLASS = "me.lucko.jarrelocator.JarRelocator";
-    private static final String JAR_RELOCATOR_RUN_METHOD = "run";
+
+    public static final  Set<Dependency> DEPENDENCIES             = EnumSet.of(Dependency.ASM, Dependency.ASM_COMMONS,
+        Dependency.JAR_RELOCATOR);
+    private static final String          JAR_RELOCATOR_CLASS      = "me.lucko.jarrelocator.JarRelocator";
+    private static final String          JAR_RELOCATOR_RUN_METHOD = "run";
 
     private final Constructor<?> jarRelocatorConstructor;
-    private final Method jarRelocatorRunMethod;
+    private final Method         jarRelocatorRunMethod;
 
     public RelocationHandler(DependencyManager dependencyManager) {
         ClassLoader classLoader = null;

@@ -7,8 +7,10 @@ public interface LoaderBootstrap {
 
     void onLoad();
 
-    default void onEnable() {}
+    default void onEnable() {
+    }
 
-    default void onDisable() {}
+    default void onDisable() {
+    }
 
 }

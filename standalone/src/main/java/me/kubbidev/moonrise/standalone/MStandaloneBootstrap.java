@@ -21,15 +21,16 @@ import java.util.concurrent.CountDownLatch;
  * Bootstrap plugin for MoonRise running as a standalone app.
  */
 public class MStandaloneBootstrap implements MoonRiseBootstrap, LoaderBootstrap, BootstrappedWithLoader {
+
     private final MoonRiseApplication loader;
 
-    private final PluginLogger logger;
+    private final PluginLogger               logger;
     private final StandaloneSchedulerAdapter schedulerAdapter;
-    private final ClassPathAppender classPathAppender;
-    private final MStandalonePlugin plugin;
+    private final ClassPathAppender          classPathAppender;
+    private final MStandalonePlugin          plugin;
 
-    private Instant startTime;
-    private final CountDownLatch loadLatch = new CountDownLatch(1);
+    private       Instant        startTime;
+    private final CountDownLatch loadLatch   = new CountDownLatch(1);
     private final CountDownLatch enableLatch = new CountDownLatch(1);
 
     public MStandaloneBootstrap(MoonRiseApplication loader) {

@@ -6,6 +6,7 @@ import me.kubbidev.moonrise.common.plugin.MoonRisePlugin;
  * Common completion suppliers used by the plugin
  */
 public final class TabCompletions {
+
     private static final CompletionSupplier BOOLEAN = CompletionSupplier.startsWith("true", "false");
 
     public TabCompletions(MoonRisePlugin plugin) {

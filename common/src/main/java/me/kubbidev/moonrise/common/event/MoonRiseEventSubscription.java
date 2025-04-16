@@ -41,7 +41,8 @@ public class MoonRiseEventSubscription<T extends MoonRiseEvent> implements Event
      */
     private final AtomicBoolean active = new AtomicBoolean(true);
 
-    public MoonRiseEventSubscription(AbstractEventBus<?> eventBus, Class<T> eventClass, Consumer<? super T> consumer, @Nullable Object plugin) {
+    public MoonRiseEventSubscription(AbstractEventBus<?> eventBus, Class<T> eventClass, Consumer<? super T> consumer,
+                                     @Nullable Object plugin) {
         this.eventBus = eventBus;
         this.eventClass = eventClass;
         this.consumer = consumer;
@@ -68,7 +69,9 @@ public class MoonRiseEventSubscription<T extends MoonRiseEvent> implements Event
         try {
             this.consumer.accept(event);
         } catch (Throwable t) {
-            this.eventBus.getPlugin().getLogger().warn("Unable to pass event " + event.getClass().getSimpleName() + " to handler " + this.consumer.getClass().getName(), t);
+            this.eventBus.getPlugin().getLogger().warn(
+                "Unable to pass event " + event.getClass().getSimpleName() + " to handler " + this.consumer.getClass()
+                    .getName(), t);
         }
     }
 

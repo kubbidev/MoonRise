@@ -10,17 +10,18 @@ import java.util.Map;
  * A {@link ConfigurationAdapter} composed of one or more other ConfigurationAdapters.
  */
 public class MultiConfigurationAdapter implements ConfigurationAdapter {
-    private final MoonRisePlugin plugin;
+
+    private final MoonRisePlugin             plugin;
     private final List<ConfigurationAdapter> adapters;
 
     /**
      * Creates a {@link MultiConfigurationAdapter}.
      *
      * <p>The first adapter in the list has priority (the final say) in deciding what the value is.
-     * All adapters are tried in reverse order, and the value returned from the previous adapter
-     * is passed into the next as the {@code def} value.</p>
+     * All adapters are tried in reverse order, and the value returned from the previous adapter is passed into the next
+     * as the {@code def} value.</p>
      *
-     * @param plugin the plugin
+     * @param plugin   the plugin
      * @param adapters a list of adapters
      */
     public MultiConfigurationAdapter(MoonRisePlugin plugin, List<ConfigurationAdapter> adapters) {

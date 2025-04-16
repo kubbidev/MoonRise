@@ -42,16 +42,14 @@ public interface MoonRiseBootstrap {
     ClassPathAppender getClassPathAppender();
 
     /**
-     * Returns a countdown latch which {@link CountDownLatch#countDown() counts down}
-     * after the plugin has loaded.
+     * Returns a countdown latch which {@link CountDownLatch#countDown() counts down} after the plugin has loaded.
      *
      * @return a loading latch
      */
     CountDownLatch getLoadLatch();
 
     /**
-     * Returns a countdown latch which {@link CountDownLatch#countDown() counts down}
-     * after the plugin has enabled.
+     * Returns a countdown latch which {@link CountDownLatch#countDown() counts down} after the plugin has enabled.
      *
      * @return an enable latch
      */

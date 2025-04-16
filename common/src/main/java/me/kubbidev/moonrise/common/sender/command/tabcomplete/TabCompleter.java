@@ -16,15 +16,14 @@ public class TabCompleter {
     }
 
     private final Map<Integer, CompletionSupplier> suppliers = new HashMap<>();
-    private int from = Integer.MAX_VALUE;
+    private       int                              from      = Integer.MAX_VALUE;
 
     private TabCompleter() {
 
     }
 
     /**
-     * Marks that the given completion supplier should be used to compute tab
-     * completions at the given index.
+     * Marks that the given completion supplier should be used to compute tab completions at the given index.
      *
      * @param position the position
      * @param supplier the supplier
@@ -37,8 +36,8 @@ public class TabCompleter {
     }
 
     /**
-     * Marks that the given completion supplier should be used to compute tab
-     * completions at the given index and at all subsequent indexes infinitely.
+     * Marks that the given completion supplier should be used to compute tab completions at the given index and at all
+     * subsequent indexes infinitely.
      *
      * @param position the position
      * @param supplier the supplier

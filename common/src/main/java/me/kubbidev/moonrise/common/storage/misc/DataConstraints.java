@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 
 public final class DataConstraints {
+
     private DataConstraints() {
     }
 
@@ -32,7 +33,9 @@ public final class DataConstraints {
     }
 
     public static @NotNull String desanitize(String s, boolean lowerCase) {
-        if (s == null) s = "null";
+        if (s == null) {
+            s = "null";
+        }
         if (lowerCase) {
             s = s.toLowerCase(Locale.ROOT);
         }

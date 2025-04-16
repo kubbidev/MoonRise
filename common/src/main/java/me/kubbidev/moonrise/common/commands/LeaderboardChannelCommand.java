@@ -26,17 +26,17 @@ public class LeaderboardChannelCommand implements Interaction {
         assert selected != null;
 
         plugin.getGatewayClient().modifyGuild(context.getGuild(), g -> g.setLeaderboardChannelId(selected.getIdLong()))
-                .thenAcceptAsync(__ -> {
-                    context.setDeferred(true);
-                    context.sendMessage(Message.LEADERBOARD_CHANNEL_UPDATED.build(selected));
-                }).join();
+            .thenAcceptAsync(__ -> {
+                context.setDeferred(true);
+                context.sendMessage(Message.LEADERBOARD_CHANNEL_UPDATED.build(selected));
+            }).join();
     }
 
     @Override
     public @NotNull SlashCommandData getMetadata() {
         return Commands.slash("leaderboard_channel", "Configure the channel were the leaderboard will be broadcast.")
-                .setGuildOnly(true)
-                .addOption(OptionType.CHANNEL, "channel", "The channel to broadcast.", true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MANAGE_SERVER));
+            .setGuildOnly(true)
+            .addOption(OptionType.CHANNEL, "channel", "The channel to broadcast.", true)
+            .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MANAGE_SERVER));
     }
 }

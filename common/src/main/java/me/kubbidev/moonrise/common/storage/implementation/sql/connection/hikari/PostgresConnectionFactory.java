@@ -6,6 +6,7 @@ import me.kubbidev.moonrise.common.storage.misc.StorageCredentials;
 import java.util.Map;
 
 public class PostgresConnectionFactory extends DriverBasedHikariConnectionFactory {
+
     public PostgresConnectionFactory(StorageCredentials configuration) {
         super(configuration);
     }

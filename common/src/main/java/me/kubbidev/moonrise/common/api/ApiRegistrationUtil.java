@@ -7,8 +7,10 @@ import java.lang.reflect.Method;
 
 @SuppressWarnings("CallToPrintStackTrace")
 public final class ApiRegistrationUtil {
+
     private static final Method REGISTER;
     private static final Method UNREGISTER;
+
     static {
         try {
             REGISTER = MoonRiseProvider.class.getDeclaredMethod("register", MoonRise.class);
@@ -21,7 +23,8 @@ public final class ApiRegistrationUtil {
         }
     }
 
-    private ApiRegistrationUtil() {}
+    private ApiRegistrationUtil() {
+    }
 
     public static void registerProvider(MoonRise moonRiseApi) {
         try {

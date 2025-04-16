@@ -10,13 +10,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A class that tracks and calculates the voice activity of members in a
- * synchronized and thread-safe manner.
+ * A class that tracks and calculates the voice activity of members in a synchronized and thread-safe manner.
  */
 public class ActivityTracker {
-    private final MoonRisePlugin plugin;
 
-    /** A thread-safe map that holds the voice activity states of members in the form of {@link MemberState} */
+    private final MoonRisePlugin         plugin;
+    /**
+     * A thread-safe map that holds the voice activity states of members in the form of {@link MemberState}
+     */
     private final Map<Long, MemberState> states = new ConcurrentHashMap<>();
 
     public ActivityTracker(MoonRisePlugin plugin) {
@@ -37,15 +38,14 @@ public class ActivityTracker {
     /**
      * Adds a new member to the {@link ActivityTracker} with a specified frozen state.
      * <p>
-     * Invokes the accumulate method to ensure current activity metrics are updated
-     * prior to adding a new member.
+     * Invokes the accumulate method to ensure current activity metrics are updated prior to adding a new member.
      *
      * @param userId The unique identifier of the member to be added.
      * @param frozen A boolean indicating whether the member should initially be marked as frozen.
      */
     public void addMember(long userId, boolean frozen) {
         synchronized (this.states) {
-            accumulate();
+            this.accumulate();
             this.states.put(userId, new MemberState(frozen));
         }
     }
@@ -53,16 +53,15 @@ public class ActivityTracker {
     /**
      * Removes a member from the {@link ActivityTracker} associated with the given user id.
      * <p>
-     * Invokes the accumulate method to ensure current activity metrics are updated
-     * before the removal.
+     * Invokes the accumulate method to ensure current activity metrics are updated before the removal.
      *
      * @param member The member to be removed.
-     * @return The state of the removed {@link MemberState} if a member with the specified id
-     * existed, or null if no such member was found.
+     * @return The state of the removed {@link MemberState} if a member with the specified id existed, or null if no
+     * such member was found.
      */
     public synchronized @Nullable MemberState removeMember(Member member) {
         synchronized (this.states) {
-            accumulate();
+            this.accumulate();
             return this.states.remove(member.getIdLong());
         }
     }
@@ -70,18 +69,18 @@ public class ActivityTracker {
     /**
      * Updates the frozen state of a specific {@link MemberState} in the voice activity tracker.
      * <p>
-     * Invokes the accumulate method to ensure any ongoing activity metrics are updated before
-     * altering the member's frozen state.
+     * Invokes the accumulate method to ensure any ongoing activity metrics are updated before altering the member's
+     * frozen state.
      * <p>
      * If a member with the specified id exists, its frozen state is updated to the provided value.
      *
      * @param userId The unique identifier of the member whose frozen state is to be modified.
-     * @param frozen A boolean value indicating the new frozen state for the member.
-     *               Set to {@code true} to mark the member as frozen, or {@code false} to unfreeze.
+     * @param frozen A boolean value indicating the new frozen state for the member. Set to {@code true} to mark the
+     *               member as frozen, or {@code false} to unfreeze.
      */
     public synchronized void freeze(long userId, boolean frozen) {
         synchronized (this.states) {
-            accumulate();
+            this.accumulate();
             var state = this.states.get(userId);
             if (state != null) {
                 state.setFrozen(frozen);

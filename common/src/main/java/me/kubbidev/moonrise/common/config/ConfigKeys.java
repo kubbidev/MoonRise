@@ -24,12 +24,14 @@ public final class ConfigKeys {
     /**
      * The Discord application authentication token used to connect.
      */
-    public static final ConfigKey<String> AUTHENTICATION_TOKEN = notReloadable(ConfigKeyFactory.stringKey("authentication-token", ""));
+    public static final ConfigKey<String> AUTHENTICATION_TOKEN = notReloadable(
+        ConfigKeyFactory.stringKey("authentication-token", ""));
 
     /**
      * If MoonRise should automatically install translation bundles and periodically update them.
      */
-    public static final ConfigKey<Boolean> AUTO_INSTALL_TRANSLATIONS = notReloadable(booleanKey("auto-install-translations", true));
+    public static final ConfigKey<Boolean> AUTO_INSTALL_TRANSLATIONS = notReloadable(
+        booleanKey("auto-install-translations", true));
 
     /**
      * If MoonRise should rate-limit command executions to users spamming.
@@ -44,17 +46,18 @@ public final class ConfigKeys {
     /**
      * A configuration key representing the multiplier applied to activity-based experience calculations.
      */
-    public static final ConfigKey<Integer> ACTIVITY_EXPERIENCE_MULTIPLIER = integerKey("activity-experience-multiplier", 1);
+    public static final ConfigKey<Integer> ACTIVITY_EXPERIENCE_MULTIPLIER = integerKey("activity-experience-multiplier",
+        1);
 
     /**
      * The database settings, username, password, etc for use by any database
      */
     public static final ConfigKey<StorageCredentials> DATABASE_VALUES = notReloadable(key(c -> {
         return new StorageCredentials(
-                c.getString("data.address", null),
-                c.getString("data.database", null),
-                c.getString("data.username", null),
-                c.getString("data.password", null)
+            c.getString("data.address", null),
+            c.getString("data.database", null),
+            c.getString("data.username", null),
+            c.getString("data.password", null)
         );
     }));
 

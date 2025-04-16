@@ -22,12 +22,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TranslationManager {
-    /** The default locale used by MoonRise messages */
+
+    /**
+     * The default locale used by MoonRise messages
+     */
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
-    private final MoonRisePlugin plugin;
-    private final Set<Locale> installed = ConcurrentHashMap.newKeySet();
-    private TranslationRegistry registry;
+    private final MoonRisePlugin      plugin;
+    private final Set<Locale>         installed = ConcurrentHashMap.newKeySet();
+    private       TranslationRegistry registry;
 
     private final Path translationsDirectory;
     private final Path repositoryTranslationsDirectory;
@@ -131,7 +134,8 @@ public class TranslationManager {
         // try registering the locale without a country code - if we don't already have a registration for that
         loaded.forEach((locale, bundle) -> {
             Locale localeWithoutCountry = Locale.of(locale.getLanguage());
-            if (!locale.equals(localeWithoutCountry) && !localeWithoutCountry.equals(DEFAULT_LOCALE) && this.installed.add(localeWithoutCountry)) {
+            if (!locale.equals(localeWithoutCountry) && !localeWithoutCountry.equals(DEFAULT_LOCALE)
+                && this.installed.add(localeWithoutCountry)) {
                 try {
                     this.registry.registerAll(localeWithoutCountry, bundle, false);
                 } catch (IllegalArgumentException e) {
@@ -162,7 +166,8 @@ public class TranslationManager {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean isAdventureDuplicatesException(Exception e) {
-        return e instanceof IllegalArgumentException && (e.getMessage().startsWith("Invalid key") || e.getMessage().startsWith("Translation already exists"));
+        return e instanceof IllegalArgumentException && (e.getMessage().startsWith("Invalid key") || e.getMessage()
+            .startsWith("Translation already exists"));
     }
 
     public static Component render(Component component) {

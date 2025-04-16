@@ -24,10 +24,11 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class TranslationRepository {
-    private static final String TRANSLATIONS_INFO_ENDPOINT = "https://metadata.kubbidev.me/moonrise/translations";
+
+    private static final String TRANSLATIONS_INFO_ENDPOINT     = "https://metadata.kubbidev.me/moonrise/translations";
     private static final String TRANSLATIONS_DOWNLOAD_ENDPOINT = "https://metadata.kubbidev.me/moonrise/translation/";
-    private static final long MAX_BUNDLE_SIZE = 0x100000L; // 1mb
-    private static final long CACHE_MAX_AGE = TimeUnit.HOURS.toMillis(23);
+    private static final long   MAX_BUNDLE_SIZE                = 0x100000L; // 1mb
+    private static final long   CACHE_MAX_AGE                  = TimeUnit.HOURS.toMillis(23);
 
     private final MoonRisePlugin plugin;
 
@@ -39,7 +40,7 @@ public class TranslationRepository {
      * Gets a list of available languages.
      *
      * @return a list of languages
-     * @throws IOException if an i/o error occurs
+     * @throws IOException                  if an i/o error occurs
      * @throws UnsuccessfulRequestException if the http request fails
      */
     public List<LanguageInfo> getAvailableLanguages() throws UnsuccessfulRequestException, IOException {
@@ -100,11 +101,12 @@ public class TranslationRepository {
     /**
      * Downloads and installs translations for the given languages.
      *
-     * @param languages the languages to install translations for
-     * @param sender the sender to report progress to
+     * @param languages    the languages to install translations for
+     * @param sender       the sender to report progress to
      * @param updateStatus if the status file should be updated
      */
-    public void downloadAndInstallTranslations(List<LanguageInfo> languages, @Nullable Sender sender, boolean updateStatus) {
+    public void downloadAndInstallTranslations(List<LanguageInfo> languages, @Nullable Sender sender,
+                                               boolean updateStatus) {
         TranslationManager manager = this.plugin.getTranslationManager();
         Path translationsDirectory = manager.getRepositoryTranslationsDirectory();
 
@@ -125,13 +127,14 @@ public class TranslationRepository {
         manager.reload();
     }
 
-    private void downloadAndInstallTranslation(LanguageInfo language, Path translationsDirectory, @Nullable Sender sender) {
+    private void downloadAndInstallTranslation(LanguageInfo language, Path translationsDirectory,
+                                               @Nullable Sender sender) {
         Path file = translationsDirectory.resolve(language.locale().toString() + ".properties");
 
         Request request = new Request.Builder()
-                .header("User-Agent", this.plugin.getBytebin().getUserAgent())
-                .url(TRANSLATIONS_DOWNLOAD_ENDPOINT + language.id())
-                .build();
+            .header("User-Agent", this.plugin.getBytebin().getUserAgent())
+            .url(TRANSLATIONS_DOWNLOAD_ENDPOINT + language.id())
+            .build();
 
         try (Response response = this.plugin.getBytebin().makeHttpRequest(request)) {
             try (ResponseBody responseBody = response.body()) {
@@ -200,13 +203,15 @@ public class TranslationRepository {
     }
 
     private record MetadataResponse(long cacheMaxAge, List<LanguageInfo> languages) {
+
     }
 
     public static final class LanguageInfo {
-        private final String id;
-        private final String name;
-        private final Locale locale;
-        private final int progress;
+
+        private final String       id;
+        private final String       name;
+        private final Locale       locale;
+        private final int          progress;
         private final List<String> contributors;
 
         LanguageInfo(String id, JsonObject data) {

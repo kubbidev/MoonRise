@@ -25,7 +25,7 @@ public class DependencyRegistry {
             .build();
 
     private static final Set<Platform.Type> SNAKEYAML_PROVIDED_BY_PLATFORM = ImmutableSet.of(
-            // empty
+        // empty
     );
 
     private final Platform.Type platformType;
@@ -38,7 +38,8 @@ public class DependencyRegistry {
         Set<Dependency> dependencies = new LinkedHashSet<>(STORAGE_DEPENDENCIES.get(storageType));
 
         // don't load slf4j if it's already present
-        if ((dependencies.contains(Dependency.SLF4J_API) || dependencies.contains(Dependency.SLF4J_SIMPLE)) && slf4jPresent()) {
+        if ((dependencies.contains(Dependency.SLF4J_API) || dependencies.contains(Dependency.SLF4J_SIMPLE))
+            && slf4jPresent()) {
             dependencies.remove(Dependency.SLF4J_API);
             dependencies.remove(Dependency.SLF4J_SIMPLE);
         }

@@ -22,7 +22,7 @@ public interface EntityRetriever {
      *
      * @param user the user object representing the user to retrieve
      * @return a {@link CompletableFuture} that will complete with the {@link ApiUser} associated with the given user,
-     *         or complete exceptionally if the user is not found or an error occurs
+     * or complete exceptionally if the user is not found or an error occurs
      */
     CompletableFuture<ApiUser> getUser(User user);
 
@@ -32,8 +32,8 @@ public interface EntityRetriever {
      * Retrieves a corresponding {@link ApiGuild} asynchronously for the given {@link Guild}.
      *
      * @param guild the {@link Guild} object representing the guild to retrieve
-     * @return a {@link CompletableFuture} that completes with the {@link ApiGuild} associated with the given guild,
-     *         or completes exceptionally if the guild is not found or an error occurs
+     * @return a {@link CompletableFuture} that completes with the {@link ApiGuild} associated with the given guild, or
+     * completes exceptionally if the guild is not found or an error occurs
      */
     CompletableFuture<ApiGuild> getGuild(Guild guild);
 
@@ -45,8 +45,8 @@ public interface EntityRetriever {
      * Retrieves a corresponding {@link ApiMember} asynchronously for the given {@link Member}.
      *
      * @param member the {@link Member} object representing the member to retrieve
-     * @return a {@link CompletableFuture} that will complete with the {@link ApiMember} associated with the given member,
-     *         or complete exceptionally if the member is not found or an error occurs
+     * @return a {@link CompletableFuture} that will complete with the {@link ApiMember} associated with the given
+     * member, or complete exceptionally if the member is not found or an error occurs
      */
     CompletableFuture<ApiMember> getMember(Member member);
 

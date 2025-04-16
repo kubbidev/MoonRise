@@ -1,24 +1,33 @@
 package me.kubbidev.moonrise.common.sender.command.access;
 
+import java.util.function.Supplier;
 import me.kubbidev.moonrise.common.sender.Sender;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An enumeration of the permissions required to execute built in MoonRise commands.
+ * Represents a command permission check.
  */
-@SuppressWarnings("SpellCheckingInspection")
-public enum CommandPermission {
+@FunctionalInterface
+public interface CommandPermission {
 
-    INFO("info"),
-    RELOAD_CONFIG("reloadconfig"),
-    TRANSLATIONS("translations");
+    /**
+     * Creates a CommandPermission instance with a static permission string.
+     *
+     * @param permission the permission string
+     * @return a CommandPermission instance
+     */
+    static CommandPermission of(String permission) {
+        return () -> permission;
+    }
 
-    public static final String ROOT = "moonrise.";
-
-    private final String permission;
-
-    CommandPermission(String node) {
-        this.permission = ROOT + node;
+    /**
+     * Creates a CommandPermission instance with a dynamic permission {@link Supplier}.
+     *
+     * @param permission a supplier providing the permission string
+     * @return a CommandPermission instance
+     */
+    static CommandPermission of(Supplier<String> permission) {
+        return permission::get;
     }
 
     /**
@@ -26,9 +35,7 @@ public enum CommandPermission {
      *
      * @return the permission string
      */
-    public @NotNull String getPermission() {
-        return this.permission;
-    }
+    @NotNull String getPermission();
 
     /**
      * Checks if a given {@link Sender} is authorized to execute the command.
@@ -36,7 +43,7 @@ public enum CommandPermission {
      * @param sender the command sender
      * @return true if the sender is authorized, false otherwise
      */
-    public boolean isAuthorized(Sender sender) {
+    default boolean isAuthorized(Sender sender) {
         return sender.hasPermission(this);
     }
 }

@@ -16,6 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 public abstract class AbstractEntityRetriever implements EntityRetriever {
+
     private final Storage storage;
 
     public AbstractEntityRetriever(Storage storage) {
@@ -27,55 +28,55 @@ public abstract class AbstractEntityRetriever implements EntityRetriever {
     @Override
     public CompletableFuture<ApiUser> getUser(User user) {
         return this.storage.loadUser(user.getIdLong())
-                .thenCompose(data -> {
-                    if (updateUser(data, user)) {
-                        return this.storage.saveUser(data)
-                                .thenApply(v -> data);
-                    } else {
-                        return CompletableFuture.completedFuture(data);
-                    }
-                });
+            .thenCompose(data -> {
+                if (updateUser(data, user)) {
+                    return this.storage.saveUser(data)
+                        .thenApply(v -> data);
+                } else {
+                    return CompletableFuture.completedFuture(data);
+                }
+            });
     }
 
     @Override
     public CompletableFuture<Void> modifyUser(User user, Consumer<ApiUser> action) {
         return this.storage.loadUser(user.getIdLong())
-                .thenApplyAsync(data -> {
-                    updateUser(data, user);
-                    return data;
-                })
-                .thenApplyAsync(data -> {
-                    action.accept(data);
-                    return data;
-                }, this.actionExecutor())
-                .thenCompose(this.storage::saveUser);
+            .thenApplyAsync(data -> {
+                updateUser(data, user);
+                return data;
+            })
+            .thenApplyAsync(data -> {
+                action.accept(data);
+                return data;
+            }, this.actionExecutor())
+            .thenCompose(this.storage::saveUser);
     }
 
     @Override
     public CompletableFuture<ApiGuild> getGuild(Guild guild) {
         return this.storage.loadGuild(guild.getIdLong())
-                .thenCompose(data -> {
-                    if (updateGuild(data, guild)) {
-                        return this.storage.saveGuild(data)
-                                .thenApply(v -> data);
-                    } else {
-                        return CompletableFuture.completedFuture(data);
-                    }
-                });
+            .thenCompose(data -> {
+                if (updateGuild(data, guild)) {
+                    return this.storage.saveGuild(data)
+                        .thenApply(v -> data);
+                } else {
+                    return CompletableFuture.completedFuture(data);
+                }
+            });
     }
 
     @Override
     public CompletableFuture<Void> modifyGuild(Guild guild, Consumer<ApiGuild> action) {
         return this.storage.loadGuild(guild.getIdLong())
-                .thenApplyAsync(data -> {
-                    updateGuild(data, guild);
-                    return data;
-                })
-                .thenApplyAsync(data -> {
-                    action.accept(data);
-                    return data;
-                }, this.actionExecutor())
-                .thenCompose(this.storage::saveGuild);
+            .thenApplyAsync(data -> {
+                updateGuild(data, guild);
+                return data;
+            })
+            .thenApplyAsync(data -> {
+                action.accept(data);
+                return data;
+            }, this.actionExecutor())
+            .thenCompose(this.storage::saveGuild);
     }
 
     @Override
@@ -87,29 +88,29 @@ public abstract class AbstractEntityRetriever implements EntityRetriever {
     public CompletableFuture<ApiMember> getMember(Member member) {
         long guildId = member.getGuild().getIdLong();
         return this.storage.loadMember(guildId, member.getIdLong())
-                .thenCompose(data -> {
-                    if (updateMember(data, member)) {
-                        return this.storage.saveMember(data)
-                                .thenApply(v -> data);
-                    } else {
-                        return CompletableFuture.completedFuture(data);
-                    }
-                });
+            .thenCompose(data -> {
+                if (updateMember(data, member)) {
+                    return this.storage.saveMember(data)
+                        .thenApply(v -> data);
+                } else {
+                    return CompletableFuture.completedFuture(data);
+                }
+            });
     }
 
     @Override
     public CompletableFuture<Void> modifyMember(Member member, Consumer<ApiMember> action) {
         long guildId = member.getGuild().getIdLong();
         return this.storage.loadMember(guildId, member.getIdLong())
-                .thenApplyAsync(data -> {
-                    updateMember(data, member);
-                    return data;
-                })
-                .thenApplyAsync(data -> {
-                    action.accept(data);
-                    return data;
-                }, this.actionExecutor())
-                .thenCompose(this.storage::saveMember);
+            .thenApplyAsync(data -> {
+                updateMember(data, member);
+                return data;
+            })
+            .thenApplyAsync(data -> {
+                action.accept(data);
+                return data;
+            }, this.actionExecutor())
+            .thenCompose(this.storage::saveMember);
     }
 
     @Override

@@ -27,17 +27,21 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 public class GatewayClient extends AbstractEntityRetriever implements AutoCloseable {
-    private final MoonRisePlugin plugin;
 
-    /** A synchronization aid used to manage the shutdown process of asynchronous */
-    private final CountDownLatch shutdownLatch = new CountDownLatch(1);
-
-    /** Manages and handles user interactions within the system */
-    private final InteractionManager interactionManager;
-    private final LeaderboardManager leaderboardManager;
-
-    /** Manages the lifecycle and functionality of shards for a distributed client gateway */
-    private @Nullable ShardManager shardManager;
+    private final     MoonRisePlugin     plugin;
+    /**
+     * A synchronization aid used to manage the shutdown process of asynchronous
+     */
+    private final     CountDownLatch     shutdownLatch = new CountDownLatch(1);
+    /**
+     * Manages and handles user interactions within the system
+     */
+    private final     InteractionManager interactionManager;
+    private final     LeaderboardManager leaderboardManager;
+    /**
+     * Manages the lifecycle and functionality of shards for a distributed client gateway
+     */
+    private @Nullable ShardManager       shardManager;
 
     public GatewayClient(MoonRisePlugin plugin, Storage storage) {
         super(storage);
@@ -60,41 +64,41 @@ public class GatewayClient extends AbstractEntityRetriever implements AutoClosea
 
     private void establishConnection(String token) {
         this.shardManager = DefaultShardManagerBuilder.createDefault(token)
-                .enableIntents(
-                        GatewayIntent.MESSAGE_CONTENT,
-                        GatewayIntent.GUILD_MEMBERS,
-                        GatewayIntent.GUILD_MESSAGES,
-                        GatewayIntent.GUILD_PRESENCES,
-                        GatewayIntent.GUILD_VOICE_STATES
-                )
-                .enableCache(
-                        CacheFlag.ACTIVITY,
-                        CacheFlag.VOICE_STATE,
-                        CacheFlag.ONLINE_STATUS
-                )
-                .setMemberCachePolicy(MemberCachePolicy.ALL)
-                .setEnableShutdownHook(false)
-                .setActivity(Activity.playing(AbstractMoonRisePlugin.getPluginName()))
-                .addEventListeners(this.interactionManager)
-                .addEventListeners(
-                        new UserListener(this),
-                        new GuildListener(this),
-                        new MemberListener(this)
-                )
-                .addEventListeners(new ActivityListener(this))
-                .addEventListeners(new ListenerAdapter() {
+            .enableIntents(
+                GatewayIntent.MESSAGE_CONTENT,
+                GatewayIntent.GUILD_MEMBERS,
+                GatewayIntent.GUILD_MESSAGES,
+                GatewayIntent.GUILD_PRESENCES,
+                GatewayIntent.GUILD_VOICE_STATES
+            )
+            .enableCache(
+                CacheFlag.ACTIVITY,
+                CacheFlag.VOICE_STATE,
+                CacheFlag.ONLINE_STATUS
+            )
+            .setMemberCachePolicy(MemberCachePolicy.ALL)
+            .setEnableShutdownHook(false)
+            .setActivity(Activity.playing(AbstractMoonRisePlugin.getPluginName()))
+            .addEventListeners(this.interactionManager)
+            .addEventListeners(
+                new UserListener(this),
+                new GuildListener(this),
+                new MemberListener(this)
+            )
+            .addEventListeners(new ActivityListener(this))
+            .addEventListeners(new ListenerAdapter() {
 
-                    @Override
-                    public void onReady(@NotNull ReadyEvent e) {
-                        GatewayClient.this.onShardReady(e.getJDA());
-                    }
+                @Override
+                public void onReady(@NotNull ReadyEvent e) {
+                    GatewayClient.this.onShardReady(e.getJDA());
+                }
 
-                    @Override
-                    public void onShutdown(@NotNull ShutdownEvent e) {
-                        GatewayClient.this.shutdownLatch.countDown();
-                    }
-                })
-                .build();
+                @Override
+                public void onShutdown(@NotNull ShutdownEvent e) {
+                    GatewayClient.this.shutdownLatch.countDown();
+                }
+            })
+            .build();
     }
 
     public MoonRisePlugin getPlugin() {

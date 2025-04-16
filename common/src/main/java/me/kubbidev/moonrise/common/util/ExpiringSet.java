@@ -5,7 +5,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ExpiringSet {
-    private ExpiringSet() {}
+
+    private ExpiringSet() {
+    }
 
     /**
      * An expiring set using Caffeine caches
@@ -14,6 +16,7 @@ public class ExpiringSet {
      * @return a new expiring set
      */
     public static <E> Set<E> newExpiringSet(long duration, TimeUnit unit) {
-        return Collections.newSetFromMap(CaffeineFactory.newBuilder().expireAfterWrite(duration, unit).<E, Boolean>build().asMap());
+        return Collections.newSetFromMap(
+            CaffeineFactory.newBuilder().expireAfterWrite(duration, unit).<E, Boolean>build().asMap());
     }
 }
